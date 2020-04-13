@@ -21,6 +21,7 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
+    "moment": "^2.24.0",
     "ringcentral-chatbot": "^1.2.5",
     "sqlite3": "^4.1.1"
   },
