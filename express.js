@@ -1,17 +1,22 @@
-/* 
-Just going to put some comments and test stuff within node to make the beginning 
-stages go faster. When I get to a point where it can be interacted with I will 
-connect it to Glip.
-*/
-import moment from "moment";
+import { put } from "axios";
+import createApp from "ringcentral-chatbot/dist/apps";
 
-const showTheTime = () => {
-  console.clear();
-  console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
+const handle = async (event) => {
+  const { type, text, group, bot } = event;
+  if (type === "Message4Bot" && text === "ping") {
+    await bot.sendMessage(group.id, { text: "pong" });
+  }
 };
+const app = createApp(handle);
+app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 
-const date = "2020-04-13T14:05:00-07:00";
-console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
-
-showTheTime(); // for the first load
-setInterval(showTheTime, 250); // update it periodically
+setInterval(
+  async () =>
+    put(`${process.env.RINGCENTRAL_CHATBOT_SERVER}/admin/maintain`, undefined, {
+      auth: {
+        username: process.env.RINGCENTRAL_CHATBOT_ADMIN_USERNAME,
+        password: process.env.RINGCENTRAL_CHATBOT_ADMIN_PASSWORD,
+      },
+    }),
+  24 * 60 * 60 * 1000
+);
