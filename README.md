@@ -2,6 +2,8 @@
 
 This info was copied directly from Tyler's [Repo](https://github.com/tylerlong/glip-ping-chatbot). I changed some commands.
 
+This is currently in purduction and will only work locally.
+
 ### Clone Repo
 
 ```
@@ -36,7 +38,18 @@ Redirect URI should be set to `https://<chatbot-server>/bot/oauth`.
 
 ### Specify environment variables:
 
-Create `.env` file using [.express.env](https://github.com/tylerlong/ringcentral-chatbot-js/blob/master/.express.env) as template.
+Create `.env` file using this as a template:
+
+```
+RINGCENTRAL_SERVER=https://platform.devtest.ringcentral.com
+RINGCENTRAL_CHATBOT_DATABASE_CONNECTION_URI=sqlite://./db.sqlite
+RINGCENTRAL_CHATBOT_CLIENT_ID=
+RINGCENTRAL_CHATBOT_CLIENT_SECRET=
+RINGCENTRAL_CHATBOT_SERVER=https://<chatbot-server>
+RINGCENTRAL_CHATBOT_EXPRESS_PORT=3000
+RINGCENTRAL_CHATBOT_ADMIN_USERNAME=admin
+RINGCENTRAL_CHATBOT_ADMIN_PASSWORD=password
+```
 
 - `RINGCENTRAL_SERVER`, use https://platform.dev.ringcentral.com for sandbox and https://platform.ringcentral.com for production
 - `RINGCENTRAL_CHATBOT_DATABASE_CONNECTION_URI`, please sepcify connection URI to a relational database.
