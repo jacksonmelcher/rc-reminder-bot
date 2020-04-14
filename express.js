@@ -7,34 +7,30 @@ const handle = async (event) => {
   const { type, text, group, bot, message } = event;
   let args = [];
   let mentionId = "";
+  let resMessageString = "";
+  let resMessageArray = [];
   if (typeof text !== "undefined") {
     args = text.split(" ");
+    console.log("ARGS: ");
+    for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
+      console.log(args[i]);
+      resMessageArray.push(args[i]);
+    }
+
+    resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
 
   if (typeof message.mentions !== "undefined") {
     console.log("=========ID===========: " + message.mentions[0].id);
     mentionId = message.mentions[0].id;
-    // console.log("Mention id: " + mentionId);
   }
   if (typeof event.message.text !== "undefined") {
     console.log("EVENT: " + JSON.stringify(event.message.text, null, 2));
   }
 
-  if (type === "Message4Bot" && text === "hey") {
-    await bot.sendMessage(group.id, {
-      text:
-        "Hi I am a reminder bot, I'm stilll in development so bare with me. Would you like to create a new reminder?",
-    });
-  }
-  if (type === "Message4Bot" && text === "yes") {
-    await bot.sendMessage(group.id, {
-      text: "What is your reminder/announcement text?",
-    });
-  }
-
   if (type === "Message4Bot" && args[0] === "Remind") {
     await bot.sendMessage(mentionId, {
-      text: "hey ",
+      text: resMessageString,
     });
   }
   args = [];
