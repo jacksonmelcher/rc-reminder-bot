@@ -1,6 +1,6 @@
 # Glip-Announcements
 
-## Quick start with Express.js
+This infor was copied directly from Tyler's [Repo](https://github.com/tylerlong/glip-ping-chatbot). I changed some commands.
 
 ### Clone Repo
 
