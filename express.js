@@ -32,7 +32,7 @@ const handle = async (event) => {
     });
   }
 
-  if (type === "Message4Bot" && args[0] === "test") {
+  if (type === "Message4Bot" && args[0] === "Remind") {
     await bot.sendMessage(mentionId, {
       text: "hey ",
     });
