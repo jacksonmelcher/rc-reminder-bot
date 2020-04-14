@@ -4,7 +4,7 @@ import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
 
 const handle = async (event) => {
-  const { type, text, group, bot, message } = event;
+  const { type, text, group, bot, message, data } = event;
   let args = [];
   let mentionId = "";
   let resMessageString = "";
@@ -29,9 +29,21 @@ const handle = async (event) => {
   }
 
   if (type === "Message4Bot" && args[0] === "Remind") {
-    await bot.sendMessage(mentionId, {
-      text: resMessageString,
-    });
+    try {
+      await bot.sendMessage(mentionId, {
+        text: resMessageString,
+      });
+    } catch (error) {
+      console.log("Erorr: " + error.status);
+      if (error.data.message === "You aren't allowed to share to this group") {
+        await bot.sendMessage(group.id, {
+          text:
+            `I received an error message: **${error.status}** \n` +
+            `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
+            `Please add me to the group and try again.`,
+        });
+      }
+    }
   }
   args = [];
   mentionId = "";
