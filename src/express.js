@@ -23,33 +23,19 @@ const handle = async (event) => {
   }
   // Console check for mention data:
   if (typeof message.mentions !== "undefined") {
-    // console.log(
-    //   "=========Mentions===========: " + JSON.stringify(message, null, 2)
-    // );
     mentionId = message.mentions[0].id;
   }
-
-  // // Console check for event data
-  // if (typeof message.body !== "undefined") {
-  //   console.log(
-  //     "===================== MESSAGE DATA =========== \n" +
-  //       JSON.stringify(message.body.creatorId, null, 2)
-  //   );
-  // }
 
   if (typeof bot !== "undefined") {
     try {
       const user = await bot.getUser("228768004");
 
       const { name } = user.rc;
-      // console.log(
-      //   "++++++++++ bot object +++++++++++++++: " +
-      //     JSON.stringify(name, null, 2)
-      // );
 
       creator = name;
       // console.log("NAME: " + name);
     } catch (error) {
+      creator = "Unknown";
       console.log("GET USER ERROR: " + error);
     }
   }
