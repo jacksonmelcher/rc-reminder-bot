@@ -38,17 +38,10 @@ Redirect URI should be set to `https://<chatbot-server>/bot/oauth`.
 
 ### Specify environment variables:
 
-Create `.env` file using this as a template:
+Create `.env` files:
 
 ```
-RINGCENTRAL_SERVER=https://platform.devtest.ringcentral.com
-RINGCENTRAL_CHATBOT_DATABASE_CONNECTION_URI=sqlite://./db.sqlite
-RINGCENTRAL_CHATBOT_CLIENT_ID=
-RINGCENTRAL_CHATBOT_CLIENT_SECRET=
-RINGCENTRAL_CHATBOT_SERVER=https://<chatbot-server>
-RINGCENTRAL_CHATBOT_EXPRESS_PORT=3000
-RINGCENTRAL_CHATBOT_ADMIN_USERNAME=admin
-RINGCENTRAL_CHATBOT_ADMIN_PASSWORD=password
+cp .express.env .env
 ```
 
 - `RINGCENTRAL_SERVER`, use https://platform.dev.ringcentral.com for sandbox and https://platform.ringcentral.com for production
@@ -78,6 +71,12 @@ curl -X PUT -u admin:password https://<chatbot-server>/admin/setup-database
 
 For more information, please read [setup database](https://github.com/tylerlong/ringcentral-chatbot-js#setup-database).
 
-### [Add the bot to Glip](https://github.com/tylerlong/glip-ping-chatbot/tree/master#add-the-bot-to-glip)
+### Add the bot to Glip
 
-### [Test the bot](https://github.com/tylerlong/glip-ping-chatbot/tree/master#test-the-bot)
+Follow these steps to [add](https://github.com/tylerlong/glip-ping-chatbot/tree/master#add-the-bot-to-glip) the bot to Glip.
+
+### Test the bot
+
+1. Create a new team.
+2. Add the bot to the team.
+3. In a direct message to the bot write: `Remind @created_team -m <Reminder messsage>`
