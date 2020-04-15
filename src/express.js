@@ -8,6 +8,7 @@ const handle = async (event) => {
   let mentionId = "";
   let resMessageString = "";
   let resMessageArray = [];
+  let creator = "";
 
   // Spitting and formatting message from user
   if (typeof text !== "undefined") {
@@ -22,24 +23,32 @@ const handle = async (event) => {
   }
   // Console check for mention data:
   if (typeof message.mentions !== "undefined") {
-    console.log(
-      "=========Mentions===========: " + JSON.stringify(message, null, 2)
-    );
+    // console.log(
+    //   "=========Mentions===========: " + JSON.stringify(message, null, 2)
+    // );
     mentionId = message.mentions[0].id;
   }
 
-  // Console check for event data
-  if (typeof event.message.body !== "undefined") {
-    console.log(
-      "===================== MESSAGE DATA =========== \n" +
-        JSON.stringify(event.message.body.creatorId, null, 2)
-    );
-  }
+  // // Console check for event data
+  // if (typeof message.body !== "undefined") {
+  //   console.log(
+  //     "===================== MESSAGE DATA =========== \n" +
+  //       JSON.stringify(message.body.creatorId, null, 2)
+  //   );
+  // }
 
-  if (bot !== "undefined") {
+  if (typeof bot !== "undefined") {
     try {
       const user = await bot.getUser("228768004");
-      console.log("USER: " + JSON.stringify(user.rc.name, null, 2));
+
+      const { name } = user.rc;
+      // console.log(
+      //   "++++++++++ bot object +++++++++++++++: " +
+      //     JSON.stringify(name, null, 2)
+      // );
+
+      creator = name;
+      // console.log("NAME: " + name);
     } catch (error) {
       console.log("GET USER ERROR: " + error);
     }
@@ -50,13 +59,13 @@ const handle = async (event) => {
   }
   if (type === "Message4Bot" && mentionId === "680681005") {
     await bot.sendMessage(group.id, {
-      text: `You have a reminder:\n **${resMessageString}**`,
+      text: `You have a reminder:\n **${resMessageString}** that was made by ${creator}`,
     });
   }
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
-        text: `Reminder: ${resMessageString}. This reminder was made`,
+        text: `Reminder: ${resMessageString}. This reminder was made by ${creator}`,
       });
     } catch (error) {
       console.log("Erorr: " + error.status);
