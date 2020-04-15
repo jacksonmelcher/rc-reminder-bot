@@ -7,7 +7,6 @@
   "author": "Jackson Melcher <jackson.melcher@ringcentral.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon -r dotenv/config src/express.js",
     "dev": "nodemon -r @babel/register -r dotenv/config src/express.js",
     "ngrok": "npx ngrok http  3000"
   },
