@@ -8,6 +8,8 @@ const handle = async (event) => {
   let mentionId = "";
   let resMessageString = "";
   let resMessageArray = [];
+
+  // Spitting and formatting message from user
   if (typeof text !== "undefined") {
     args = text.split(" ");
     console.log("ARGS: ");
@@ -18,13 +20,31 @@ const handle = async (event) => {
 
     resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
-
-  if (typeof message !== "undefined") {
+  // Console check for mention data:
+  if (typeof message.mentions !== "undefined") {
     console.log(
       "=========Mentions===========: " + JSON.stringify(message, null, 2)
     );
     mentionId = message.mentions[0].id;
   }
+
+  // Console check for event data
+  if (typeof event.message.body !== "undefined") {
+    console.log(
+      "===================== MESSAGE DATA =========== \n" +
+        JSON.stringify(event.message.body.creatorId, null, 2)
+    );
+  }
+
+  if (bot !== "undefined") {
+    try {
+      const user = await bot.getUser("228768004");
+      console.log("USER: " + JSON.stringify(user, null, 2));
+    } catch (error) {
+      console.log("GET USER ERROR: " + error);
+    }
+  }
+
   if (typeof event.message.text !== "undefined") {
     console.log("EVENT: " + JSON.stringify(event.message.text, null, 2));
   }
