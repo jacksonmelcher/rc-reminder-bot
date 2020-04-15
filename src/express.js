@@ -39,7 +39,7 @@ const handle = async (event) => {
   if (bot !== "undefined") {
     try {
       const user = await bot.getUser("228768004");
-      console.log("USER: " + JSON.stringify(user, null, 2));
+      console.log("USER: " + JSON.stringify(user.rc.name, null, 2));
     } catch (error) {
       console.log("GET USER ERROR: " + error);
     }
@@ -56,7 +56,7 @@ const handle = async (event) => {
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
-        text: resMessageString,
+        text: `Reminder: ${resMessageString}. This reminder was made`,
       });
     } catch (error) {
       console.log("Erorr: " + error.status);
