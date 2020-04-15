@@ -1,5 +1,4 @@
 "use strict";
-
 import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
 
@@ -20,14 +19,20 @@ const handle = async (event) => {
     resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
 
-  if (typeof message.mentions !== "undefined") {
-    console.log("=========ID===========: " + message.mentions[0].id);
+  if (typeof message !== "undefined") {
+    console.log(
+      "=========Mentions===========: " + JSON.stringify(message, null, 2)
+    );
     mentionId = message.mentions[0].id;
   }
   if (typeof event.message.text !== "undefined") {
     console.log("EVENT: " + JSON.stringify(event.message.text, null, 2));
   }
-
+  if (type === "Message4Bot" && mentionId === "680681005") {
+    await bot.sendMessage(group.id, {
+      text: `You have a reminder:\n **${resMessageString}**`,
+    });
+  }
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
