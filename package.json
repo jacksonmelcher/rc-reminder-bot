@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon -r @babel/register -r dotenv/config src/express.js",
-    "ngrok": "npx ngrok http  3000"
+    "ngrok": "npx ngrok http  3000",
+    "side": "nodemon -r @babel/register random/time.js"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
