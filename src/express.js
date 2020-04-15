@@ -39,15 +39,13 @@ const handle = async (event) => {
       console.log("GET USER ERROR: " + error);
     }
   }
-
-  if (typeof event.message.text !== "undefined") {
-    console.log("EVENT: " + JSON.stringify(event.message.text, null, 2));
-  }
+  // For when bot is mentioned in a group.
   if (type === "Message4Bot" && mentionId === "680681005") {
     await bot.sendMessage(group.id, {
       text: `You have a reminder:\n **${resMessageString}** that was made by ${creator}`,
     });
   }
+  // For when the bot is directly messaged
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
