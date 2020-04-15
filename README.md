@@ -1,5 +1,7 @@
 # Glip-Announcements
 
+This bot is in very early stages of development.
+
 This info was copied directly from Tyler's [Repo](https://github.com/tylerlong/glip-ping-chatbot). I changed some commands.
 
 This is currently in production and will only work locally.
