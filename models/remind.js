@@ -18,3 +18,20 @@ pick up code someone else has already written.
 
 https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-moment-in-time
 */
+
+import moment from "moment";
+
+let allReminders = [];
+
+let getCurrentTime = () => {
+  return moment();
+};
+
+let reminder = {
+  id: 1,
+  creator: "Jackson",
+  reminderTime: "60", // time created + dersired time
+  timeCreated: "40",
+};
+
+console.log(reminder);
