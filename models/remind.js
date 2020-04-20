@@ -19,19 +19,54 @@ pick up code someone else has already written.
 https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-moment-in-time
 */
 
-import moment from "moment";
+class Reminder {
+  constructor(id, creator, timeCreated, desiredTime, reminderText) {
+    this._id = id;
+    this._creator = creator;
+    this._timeCreated = timeCreated;
+    this._desiredTime = desiredTime;
+    this._notificationTime = timeCreated + desiredTime;
+    this._reminderText = reminderText;
+  }
 
-let allReminders = [];
+  /**
+   * @returns {any}
+   */
+  get creator() {
+    return this._creator;
+  }
+  get id() {
+    return this._id;
+  }
+  get timeCreated() {
+    return this._timeCreated;
+  }
+  get desiredTime() {
+    return this._desiredTime;
+  }
+  get notificationTime() {
+    return this._notificationTime;
+  }
+  get reminderText() {
+    return this._reminderText;
+  }
 
-let getCurrentTime = () => {
-  return moment();
-};
+  set creator(updatedCreator) {
+    this._creator = updatedCreator;
+  }
+  set timeCreated(updatedTimeCreated) {
+    this._timeCreated = updatedTimeCreated;
+  }
+  set desiredTime(updatedDesiredTime) {
+    this._desiredTime = updatedDesiredTime;
+  }
+  set reminderText(updatedReminderText) {
+    this._reminderText = updatedReminderText;
+  }
 
-let reminder = {
-  id: 1,
-  creator: "Jackson",
-  reminderTime: "60", // time created + dersired time
-  timeCreated: "40",
-};
+  calcReminderTime() {
+    return this._timeCreated + this.desiredTime;
+  }
+}
 
-console.log(reminder);
+export default Reminder;
