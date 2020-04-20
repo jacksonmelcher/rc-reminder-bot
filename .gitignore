@@ -9,6 +9,10 @@ lerna-debug.log*
 # SQL
 db.sqlite
 
+# JSON
+json/*
+
+
 # random
 random/*
 
