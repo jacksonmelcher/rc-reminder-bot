@@ -20,13 +20,14 @@ https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-
 */
 
 class Reminder {
-  constructor(id, creator, timeCreated, desiredTime, reminderText) {
-    this._id = id;
-    this._creator = creator;
-    this._timeCreated = timeCreated;
-    this._desiredTime = desiredTime;
-    this._notificationTime = timeCreated + desiredTime;
-    this._reminderText = reminderText;
+  constructor() {
+    this._id = null;
+    this._creator = null;
+    this._timeCreated = null;
+    this._desiredTime = null;
+    this._notificationTime = null;
+    this._reminderText = null;
+    this._complete = false;
   }
 
   /**
