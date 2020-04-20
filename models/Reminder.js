@@ -27,7 +27,7 @@ class Reminder {
     this._desiredTime = null;
     this._notificationTime = null;
     this._reminderText = null;
-    this._complete = false;
+    this._reminded = false;
   }
 
   /**
@@ -52,6 +52,10 @@ class Reminder {
     return this._reminderText;
   }
 
+  set id(updatedId) {
+    this._id = updatedId;
+  }
+
   set creator(updatedCreator) {
     this._creator = updatedCreator;
   }
@@ -64,9 +68,26 @@ class Reminder {
   set reminderText(updatedReminderText) {
     this._reminderText = updatedReminderText;
   }
+  set notificationTime(updatedNotificationtime) {
+    this._notificationTime = updatedNotificationtime;
+  }
 
   calcReminderTime() {
     return this._timeCreated + this.desiredTime;
+  }
+  isReminderValid() {
+    if (
+      this._id &&
+      this._creator &&
+      this._timeCreated &&
+      this._desiredTime &&
+      this._notificationTime &&
+      this._reminderText !== null
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
