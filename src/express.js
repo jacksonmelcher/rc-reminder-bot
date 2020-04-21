@@ -12,6 +12,10 @@ let arrayBool = false;
 
 const handle = async (event) => {
   const { type, text, group, bot, message } = event;
+
+  if (typeof event !== "undefined") {
+    console.log("EVENT: " + JSON.stringify(event, null, 2));
+  }
   let args = [];
   let mentionId = "";
   let resMessageString = "";
@@ -50,10 +54,11 @@ const handle = async (event) => {
     let reminder = new Reminder();
     reminder.timeCreated = moment();
     reminder.id = uuidv4();
-    reminder.notificationTime = moment().add(parseInt(resMessageString), "s");
+    reminder.notificationTime = moment().add(50, "s");
     reminder.desiredTime = "2 minutes from now";
     reminder.reminderText = resMessageString;
     reminder.creator = fullUserName;
+    reminder.fullMessage = message;
     if (arrayBool === true) {
       allReminders.push(reminder);
       allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
@@ -104,7 +109,7 @@ const app = createApp(handle);
 app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 
 setInterval(() => {
-  console.log(`Current time: ${moment().format("MMMM Do YYYY, h:mm:ss a")} `);
+  // console.log(`Current time: ${moment().format("MMMM Do YYYY, h:mm:ss a")} `);
   // for (let i = 0; i < allReminders.length; i++) {
   //   console.log(
   //     allReminders[i].notificationTime.format("MMMM Do YYYY, h:mm:ss a")

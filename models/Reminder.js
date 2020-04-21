@@ -28,6 +28,7 @@ class Reminder {
     this._notificationTime = null;
     this._reminderText = null;
     this._reminded = false;
+    this._fullMessage = [];
   }
 
   /**
@@ -51,6 +52,9 @@ class Reminder {
   get reminderText() {
     return this._reminderText;
   }
+  get fullMessage() {
+    return this._fullMessage;
+  }
 
   set id(updatedId) {
     this._id = updatedId;
@@ -70,6 +74,9 @@ class Reminder {
   }
   set notificationTime(updatedNotificationtime) {
     this._notificationTime = updatedNotificationtime;
+  }
+  set fullMessage(updatedFullMessage) {
+    this._fullMessage = updatedFullMessage;
   }
 
   calcReminderTime() {
