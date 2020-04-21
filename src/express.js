@@ -15,7 +15,7 @@ const handle = async (event) => {
   let mentionId = "";
   let resMessageString = "";
   let resMessageArray = [];
-  let creator = "";
+  let fullUserName = "";
   let fs = require("fs");
 
   // Spitting and formatting message from user
@@ -35,15 +35,13 @@ const handle = async (event) => {
   }
   // Get creators name
   if (typeof bot !== "undefined") {
-    // console.log("GET USER ERROR: " + err=r);
     try {
       const user = await bot.getUser("228768004");
       const { name } = user.rc;
-      creator = name;
-      reminder.creator = name;
+      fullUserName = name;
     } catch (error) {
-      creator = "Unknown";
-      console.log("GET USER ERROR: " + error);
+      // creator = "Unknown";
+      console.log("GET USER ERROR: " + error + " name: " + fullUserName);
     }
   }
   // For when bot is mentioned in a group.
@@ -56,7 +54,7 @@ const handle = async (event) => {
     reminder.notificationTime = moment().add(30, "s");
     reminder.desiredTime = "2 minutes from now";
     reminder.reminderText = resMessageString;
-    reminder.creator = creator;
+    reminder.creator = fullUserName;
     if (arrayBool === true) {
       allReminders.push(reminder);
       allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
@@ -70,14 +68,14 @@ const handle = async (event) => {
     }
     arrayBool = false;
     await bot.sendMessage(group.id, {
-      text: `You have a reminder:\n **${resMessageString}** that was made by ${creator}`,
+      text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
     });
   }
   // For when the bot is directly messaged
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
-        text: `Reminder: ${resMessageString}. This reminder was made by ${creator}`,
+        text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
       });
     } catch (error) {
       console.log("Erorr: " + error.status);
