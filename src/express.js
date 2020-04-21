@@ -4,6 +4,7 @@ import createApp from "ringcentral-chatbot/dist/apps";
 import Reminder from "../models/Reminder";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import fs from "fs";
 
 let allReminders = [];
 
@@ -16,7 +17,6 @@ const handle = async (event) => {
   let resMessageString = "";
   let resMessageArray = [];
   let fullUserName = "";
-  let fs = require("fs");
 
   // Spitting and formatting message from user
   if (typeof text !== "undefined") {
@@ -40,7 +40,6 @@ const handle = async (event) => {
       const { name } = user.rc;
       fullUserName = name;
     } catch (error) {
-      // creator = "Unknown";
       console.log("GET USER ERROR: " + error + " name: " + fullUserName);
     }
   }
@@ -51,7 +50,7 @@ const handle = async (event) => {
     let reminder = new Reminder();
     reminder.timeCreated = moment();
     reminder.id = uuidv4();
-    reminder.notificationTime = moment().add(30, "s");
+    reminder.notificationTime = moment().add(parseInt(resMessageString), "s");
     reminder.desiredTime = "2 minutes from now";
     reminder.reminderText = resMessageString;
     reminder.creator = fullUserName;
@@ -104,15 +103,32 @@ const app = createApp(handle);
 
 app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 
-// setInterval(() => {
-//   console.log("================ ALL ===================");
-//   for (let i = 0; i < allReminders.length; i++) {
-//     console.log(
-//       allReminders[i].notificationTime.format("MMMM Do YYYY, h:mm:ss a")
-//     );
-//     console.log(allReminders[i].creator);
-//   }
-// }, 2000);
+setInterval(() => {
+  console.log(`Current time: ${moment().format("MMMM Do YYYY, h:mm:ss a")} `);
+  // for (let i = 0; i < allReminders.length; i++) {
+  //   console.log(
+  //     allReminders[i].notificationTime.format("MMMM Do YYYY, h:mm:ss a")
+  //   );
+  //   console.log(allReminders[i].creator);
+  // }
+  if (allReminders.length > 0) {
+    console.log(
+      "Notification time: " +
+        allReminders[0].notificationTime.format("MMMM Do YYYY, h:mm:ss a")
+    );
+    if (moment() >= allReminders[0].notificationTime) {
+      console.log(allReminders[0].reminderText);
+      allReminders.shift();
+      let jsonData = JSON.stringify(allReminders, null, 2);
+      fs.writeFile("json/reminders.json", jsonData, function (err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    } else {
+    }
+  }
+}, 800);
 
 setInterval(
   async () =>
