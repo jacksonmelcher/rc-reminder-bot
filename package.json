@@ -24,7 +24,8 @@
     "axios": "^0.19.2",
     "moment": "^2.24.0",
     "ringcentral-chatbot": "^1.2.5",
-    "sqlite3": "^4.1.1"
+    "sqlite3": "^4.1.1",
+    "uuid": "^7.0.3"
   },
   "standard": {
     "ignore": [
