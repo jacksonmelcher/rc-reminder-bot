@@ -12,10 +12,6 @@ let arrayBool = false;
 
 const handle = async (event) => {
   const { type, text, group, bot, message } = event;
-
-  if (typeof event !== "undefined") {
-    console.log("EVENT: " + JSON.stringify(event, null, 2));
-  }
   let args = [];
   let mentionId = "";
   let resMessageString = "";
@@ -24,7 +20,7 @@ const handle = async (event) => {
   let resTimeString = "";
   let fullUserName = "";
 
-  // Spitting and formatting message from user
+  // ANCHOR Command line args handling
   if (typeof text !== "undefined") {
     args = text.split(" ");
     console.log("Time: ");
@@ -59,7 +55,7 @@ const handle = async (event) => {
       console.log("GET USER ERROR: " + error + " name: " + fullUserName);
     }
   }
-  // For when bot is mentioned in a group.
+  // ANCHOR Direct message handling. Does not support mentions to other teams
   if (type === "Message4Bot" && mentionId === "680681005") {
     arrayBool = true;
 
@@ -94,13 +90,16 @@ const handle = async (event) => {
     await bot.sendMessage(group.id, {
       text: `I will send you a reminder in ${duration.humanize()}`,
     });
+
+    // ANCHOR Set timeout
     setTimeout(() => {
       bot.sendMessage(group.id, {
         text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
       });
     }, allReminders[0].duration);
   }
-  // For when the bot is directly messaged
+
+  // ANCHOR For when the bot is directly messaged
   if (type === "Message4Bot" && args[0] === "Remind") {
     try {
       await bot.sendMessage(mentionId, {
@@ -120,27 +119,14 @@ const handle = async (event) => {
   }
   args = [];
   mentionId = "";
-
-  // for (let i = 0; i < allReminders.length; i++) {
-  //   console.log(
-  //     "====================== ALL REMINDERS =============== \n" +
-  //       allReminders[i].reminderText
-  //   );
-  // }
 };
 
 const app = createApp(handle);
 
 app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 
+// ANCHOR Array monitor and manipulation
 setInterval(() => {
-  // console.log(`Current time: ${moment().format("MMMM Do YYYY, h:mm:ss a")} `);
-  // for (let i = 0; i < allReminders.length; i++) {
-  //   console.log(
-  //     allReminders[i].notificationTime.format("MMMM Do YYYY, h:mm:ss a")
-  //   );
-  //   console.log(allReminders[i].creator);
-  // }
   if (allReminders.length > 0) {
     console.log(
       "Notification time: " +
