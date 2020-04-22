@@ -24,11 +24,10 @@ class Reminder {
     this._id = null;
     this._creator = null;
     this._timeCreated = null;
-    this._desiredTime = null;
     this._notificationTime = null;
     this._reminderText = null;
     this._reminded = false;
-    this._fullMessage = [];
+    this._duration = null;
   }
 
   /**
@@ -43,31 +42,24 @@ class Reminder {
   get timeCreated() {
     return this._timeCreated;
   }
-  get desiredTime() {
-    return this._desiredTime;
-  }
   get notificationTime() {
     return this._notificationTime;
   }
   get reminderText() {
     return this._reminderText;
   }
-  get fullMessage() {
-    return this._fullMessage;
+  get duration() {
+    return this._duration;
   }
 
   set id(updatedId) {
     this._id = updatedId;
   }
-
   set creator(updatedCreator) {
     this._creator = updatedCreator;
   }
   set timeCreated(updatedTimeCreated) {
     this._timeCreated = updatedTimeCreated;
-  }
-  set desiredTime(updatedDesiredTime) {
-    this._desiredTime = updatedDesiredTime;
   }
   set reminderText(updatedReminderText) {
     this._reminderText = updatedReminderText;
@@ -75,26 +67,8 @@ class Reminder {
   set notificationTime(updatedNotificationtime) {
     this._notificationTime = updatedNotificationtime;
   }
-  set fullMessage(updatedFullMessage) {
-    this._fullMessage = updatedFullMessage;
-  }
-
-  calcReminderTime() {
-    return this._timeCreated + this.desiredTime;
-  }
-  isReminderValid() {
-    if (
-      this._id &&
-      this._creator &&
-      this._timeCreated &&
-      this._desiredTime &&
-      this._notificationTime &&
-      this._reminderText !== null
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  set duration(updatedDuration) {
+    this._duration = updatedDuration;
   }
 }
 
