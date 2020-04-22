@@ -56,67 +56,71 @@ const handle = async (event) => {
     }
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
-  if (type === "Message4Bot" && mentionId === "680681005") {
-    arrayBool = true;
+  if (type === "Message4Bot") {
+    if (mentionId === "680681005") {
+      arrayBool = true;
 
-    let reminder = new Reminder();
+      let reminder = new Reminder();
 
-    reminder.timeCreated = moment();
-    reminder.id = uuidv4();
-    reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
-    reminder.reminderText = resMessageString;
-    reminder.creator = fullUserName;
-    reminder.duration = moment
-      .duration(reminder.notificationTime.diff(reminder.timeCreated))
-      .as("milliseconds");
+      reminder.timeCreated = moment();
+      reminder.id = uuidv4();
+      reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
+      reminder.reminderText = resMessageString;
+      reminder.creator = fullUserName;
+      reminder.duration = moment
+        .duration(reminder.notificationTime.diff(reminder.timeCreated))
+        .as("milliseconds");
 
-    let duration = moment.duration(
-      reminder.notificationTime.diff(reminder.timeCreated)
-    );
+      let duration = moment.duration(
+        reminder.notificationTime.diff(reminder.timeCreated)
+      );
 
-    if (arrayBool === true) {
-      allReminders.push(reminder);
-      allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
+      if (arrayBool === true) {
+        allReminders.push(reminder);
+        allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
 
-      let jsonData = JSON.stringify(allReminders, null, 2);
-      fs.writeFile("json/reminders.json", jsonData, function (err) {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-    arrayBool = false;
-
-    await bot.sendMessage(group.id, {
-      text: `I will send you a reminder in ${duration.humanize()}`,
-    });
-
-    // ANCHOR Set timeout
-    setTimeout(() => {
-      bot.sendMessage(group.id, {
-        text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
-      });
-    }, allReminders[0].duration);
-  }
-
-  // ANCHOR For when the bot is directly messaged
-  if (type === "Message4Bot" && args[0] === "Remind") {
-    try {
-      await bot.sendMessage(mentionId, {
-        text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
-      });
-    } catch (error) {
-      console.log("Erorr: " + error.status);
-      if (error.data.message === "You aren't allowed to share to this group") {
-        await bot.sendMessage(group.id, {
-          text:
-            `I received an error message: **${error.status}** \n` +
-            `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
-            `Please add me to the group and try again.`,
+        let jsonData = JSON.stringify(allReminders, null, 2);
+        fs.writeFile("json/reminders.json", jsonData, function (err) {
+          if (err) {
+            console.log(err);
+          }
         });
       }
+      arrayBool = false;
+
+      await bot.sendMessage(group.id, {
+        text: `I will send you a reminder in ${duration.humanize()}`,
+      });
+
+      // ANCHOR For when the bot is directly messaged
+      if (args[0] === "Remind") {
+        try {
+          await bot.sendMessage(mentionId, {
+            text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
+          });
+        } catch (error) {
+          console.log("Erorr: " + error.status);
+          if (
+            error.data.message === "You aren't allowed to share to this group"
+          ) {
+            await bot.sendMessage(group.id, {
+              text:
+                `I received an error message: **${error.status}** \n` +
+                `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
+                `Please add me to the group and try again.`,
+            });
+          }
+        }
+      }
+      // ANCHOR Set timeout
+      setTimeout(() => {
+        bot.sendMessage(group.id, {
+          text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
+        });
+      }, allReminders[0].duration);
     }
   }
+
   args = [];
   mentionId = "";
 };
