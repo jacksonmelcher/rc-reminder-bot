@@ -1,4 +1,4 @@
-"use strict";
+// use(strict);
 import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
 import Reminder from "../models/Reminder";
@@ -33,9 +33,15 @@ const handle = async (event) => {
 
     resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
-  // Console check for mention data:
-  if (typeof message.mentions !== "undefined") {
-    mentionId = message.mentions[0].id;
+  // FIXME: This is where the `curl` bug happens. For some reason it throws an error here
+  if (typeof message !== "undefined") {
+    if (typeof message.mentions !== "undefined") {
+      try {
+        mentionId = message.mentions[0].id;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
   // Get creators name
   if (typeof bot !== "undefined") {
@@ -52,13 +58,20 @@ const handle = async (event) => {
     arrayBool = true;
 
     let reminder = new Reminder();
+
     reminder.timeCreated = moment();
     reminder.id = uuidv4();
-    reminder.notificationTime = moment().add(50, "s");
-    reminder.desiredTime = "2 minutes from now";
+    reminder.notificationTime = moment(resMessageString, "MM/DD/YY hh:mm a");
     reminder.reminderText = resMessageString;
     reminder.creator = fullUserName;
-    reminder.fullMessage = message;
+    reminder.duration = moment
+      .duration(reminder.notificationTime.diff(reminder.timeCreated))
+      .as("milliseconds");
+
+    let duration = moment.duration(
+      reminder.notificationTime.diff(reminder.timeCreated)
+    );
+
     if (arrayBool === true) {
       allReminders.push(reminder);
       allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
@@ -71,9 +84,15 @@ const handle = async (event) => {
       });
     }
     arrayBool = false;
+
     await bot.sendMessage(group.id, {
-      text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
+      text: `I will send you a reminder in ${duration.humanize()}`,
     });
+    setTimeout(() => {
+      bot.sendMessage(group.id, {
+        text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
+      });
+    }, allReminders[0].duration);
   }
   // For when the bot is directly messaged
   if (type === "Message4Bot" && args[0] === "Remind") {
