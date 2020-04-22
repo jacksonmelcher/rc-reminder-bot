@@ -20,20 +20,26 @@ const handle = async (event) => {
   let mentionId = "";
   let resMessageString = "";
   let resMessageArray = [];
+  let resTimeArray = [];
+  let resTimeString = "";
   let fullUserName = "";
 
   // Spitting and formatting message from user
   if (typeof text !== "undefined") {
     args = text.split(" ");
-    console.log("ARGS: ");
+    console.log("Time: ");
+    for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
+      console.log(args[i]);
+      resTimeArray.push(args[i]);
+    }
+    console.log("Message: ");
     for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
       console.log(args[i]);
       resMessageArray.push(args[i]);
     }
-
+    resTimeString = resTimeArray.toString().replace(/,/g, " ");
     resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
-  // FIXME: This is where the `curl` bug happens. For some reason it throws an error here
   if (typeof message !== "undefined") {
     if (typeof message.mentions !== "undefined") {
       try {
@@ -61,7 +67,7 @@ const handle = async (event) => {
 
     reminder.timeCreated = moment();
     reminder.id = uuidv4();
-    reminder.notificationTime = moment(resMessageString, "MM/DD/YY hh:mm a");
+    reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
     reminder.reminderText = resMessageString;
     reminder.creator = fullUserName;
     reminder.duration = moment
