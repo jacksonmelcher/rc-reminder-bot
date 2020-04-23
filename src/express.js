@@ -46,9 +46,9 @@ const handle = async (event) => {
     }
   }
   // Get creators name
-  if (typeof bot !== "undefined") {
+  if (typeof bot !== "undefined" && event !== "undefined") {
     try {
-      const user = await bot.getUser("228768004");
+      const user = await bot.getUser(event.userId);
       const { name } = user.rc;
       fullUserName = name;
     } catch (error) {
@@ -61,58 +61,66 @@ const handle = async (event) => {
       arrayBool = true;
 
       let reminder = new Reminder();
+      // Check to ee if reminder is in the past
+      if (moment() < moment(resTimeString, "MM/DD/YY hh:mm a")) {
+        reminder.timeCreated = moment();
+        reminder.id = uuidv4();
+        reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
+        reminder.reminderText = resMessageString;
+        reminder.creator = fullUserName;
+        reminder.duration = moment
+          .duration(reminder.notificationTime.diff(reminder.timeCreated))
+          .as("milliseconds");
 
-      reminder.timeCreated = moment();
-      reminder.id = uuidv4();
-      reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
-      reminder.reminderText = resMessageString;
-      reminder.creator = fullUserName;
-      reminder.duration = moment
-        .duration(reminder.notificationTime.diff(reminder.timeCreated))
-        .as("milliseconds");
+        let duration = moment.duration(
+          reminder.notificationTime.diff(reminder.timeCreated)
+        );
 
-      let duration = moment.duration(
-        reminder.notificationTime.diff(reminder.timeCreated)
-      );
+        if (arrayBool === true) {
+          allReminders.push(reminder);
+          allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
 
-      if (arrayBool === true) {
-        allReminders.push(reminder);
-        allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
+          let jsonData = JSON.stringify(allReminders, null, 2);
+          fs.writeFile("json/reminders.json", jsonData, function (err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+        arrayBool = false;
 
-        let jsonData = JSON.stringify(allReminders, null, 2);
-        fs.writeFile("json/reminders.json", jsonData, function (err) {
-          if (err) {
-            console.log(err);
-          }
+        await bot.sendMessage(group.id, {
+          text: `I will send you a reminder in ${duration.humanize()}`,
         });
       }
-      arrayBool = false;
 
       await bot.sendMessage(group.id, {
-        text: `I will send you a reminder in ${duration.humanize()}`,
+        text: `The time you gave me already happened`,
       });
+    }
 
-      // ANCHOR For when the bot is directly messaged
-      if (args[0] === "Remind") {
-        try {
-          await bot.sendMessage(mentionId, {
-            text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
+    // ANCHOR For when the bot is directly messaged
+    if (args[0] === "Remind") {
+      try {
+        await bot.sendMessage(mentionId, {
+          text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
+        });
+      } catch (error) {
+        console.log("Erorr: " + error.status);
+        if (
+          error.data.message === "You aren't allowed to share to this group"
+        ) {
+          await bot.sendMessage(group.id, {
+            text:
+              `I received an error message: **${error.status}** \n` +
+              `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
+              `Please add me to the group and try again.`,
           });
-        } catch (error) {
-          console.log("Erorr: " + error.status);
-          if (
-            error.data.message === "You aren't allowed to share to this group"
-          ) {
-            await bot.sendMessage(group.id, {
-              text:
-                `I received an error message: **${error.status}** \n` +
-                `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
-                `Please add me to the group and try again.`,
-            });
-          }
         }
       }
-      // ANCHOR Set timeout
+    }
+    // ANCHOR Set timeout
+    if (allReminders.length > 0) {
       setTimeout(() => {
         bot.sendMessage(group.id, {
           text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
