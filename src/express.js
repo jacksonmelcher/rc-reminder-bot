@@ -99,26 +99,6 @@ const handle = async (event) => {
       }
     }
 
-    // ANCHOR For when the bot is directly messaged
-    if (args[0] === "Remind") {
-      try {
-        await bot.sendMessage(mentionId, {
-          text: `Reminder: ${resMessageString}. This reminder was made by ${fullUserName}`,
-        });
-      } catch (error) {
-        console.log("Erorr: " + error.status);
-        if (
-          error.data.message === "You aren't allowed to share to this group"
-        ) {
-          await bot.sendMessage(group.id, {
-            text:
-              `I received an error message: **${error.status}** \n` +
-              `This usually means that I have not been added to the team you are trying to send a reminder to. \n\n` +
-              `Please add me to the group and try again.`,
-          });
-        }
-      }
-    }
     // ANCHOR Set timeout
     if (allReminders.length > 0) {
       setTimeout(() => {
@@ -140,10 +120,6 @@ app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 // ANCHOR Array monitor and manipulation
 setInterval(() => {
   if (allReminders.length > 0) {
-    console.log(
-      "Notification time: " +
-        allReminders[0].notificationTime.format("MMMM Do YYYY, h:mm:ss a")
-    );
     if (moment() >= allReminders[0].notificationTime) {
       console.log(allReminders[0].reminderText);
       allReminders.shift();
