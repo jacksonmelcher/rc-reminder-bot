@@ -5,6 +5,7 @@ import Reminder from "../models/Reminder";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import { types } from "util";
 
 let allReminders = [];
 
@@ -23,18 +24,29 @@ const handle = async (event) => {
   // ANCHOR Command line args handling
   if (typeof text !== "undefined") {
     args = text.split(" ");
-    console.log("Time: ");
-    for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
-      console.log(args[i]);
-      resTimeArray.push(args[i]);
+    // if (args[0] === "") {
+    // console.log(args.indexOf("-t"));
+    // }
+    //FIXME Add message to bot if there are no arguments
+    if (args.indexOf("-t") || args.indexOf("-m") === -1) {
+      console.log("MISSING INFO");
+    } else {
+      for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
+        console.log(args[i]);
+        resTimeArray.push(args[i]);
+      }
+      console.log("Message: ");
+      for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
+        console.log(args[i]);
+        resMessageArray.push(args[i]);
+      }
     }
-    console.log("Message: ");
-    for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
-      console.log(args[i]);
-      resMessageArray.push(args[i]);
-    }
-    resTimeString = resTimeArray.toString().replace(/,/g, " ");
-    resMessageString = resMessageArray.toString().replace(/,/g, " ");
+
+    // FIXME: Hardcoded time so i cna debug without having to send message everytime
+    resTimeString = moment().add(8, "seconds");
+    resMessageString = "Test text";
+    // resTimeString = resTimeArray.toString().replace(/,/g, " ");
+    // resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
   if (typeof message !== "undefined") {
     if (typeof message.mentions !== "undefined") {
@@ -54,6 +66,17 @@ const handle = async (event) => {
     } catch (error) {
       console.log("GET USER ERROR: " + error + " name: " + fullUserName);
     }
+  }
+  // ANCHOR group Joined
+  if (typeof event !== "undefined") {
+    console.log("EVENT: " + JSON.stringify(event, null, 2));
+  }
+
+  if (type === "BotJoinGroup") {
+    console.log("zgroup: " + JSON.stringify(group, null, 2));
+    await bot.sendMessage(group.id, {
+      text: `Thanks for adding me to your group!`,
+    });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
   if (type === "Message4Bot") {
@@ -101,6 +124,7 @@ const handle = async (event) => {
 
     // ANCHOR Set timeout
     if (allReminders.length > 0) {
+      console.log("Length before setTimeout: " + allReminders.length);
       setTimeout(() => {
         bot.sendMessage(group.id, {
           text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
