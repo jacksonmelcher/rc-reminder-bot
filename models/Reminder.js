@@ -19,6 +19,8 @@ pick up code someone else has already written.
 https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-moment-in-time
 */
 
+import moment from "moment";
+
 class Reminder {
   constructor() {
     this._id = null;
@@ -51,6 +53,9 @@ class Reminder {
   get duration() {
     return this._duration;
   }
+  get reminded() {
+    return this._reminded;
+  }
 
   set id(updatedId) {
     this._id = updatedId;
@@ -65,10 +70,17 @@ class Reminder {
     this._reminderText = updatedReminderText;
   }
   set notificationTime(updatedNotificationtime) {
-    this._notificationTime = updatedNotificationtime;
+    if (moment() < updatedNotificationtime) {
+      this._notificationTime = updatedNotificationtime;
+    } else {
+      this._notificationTime = "PAST";
+    }
   }
   set duration(updatedDuration) {
     this._duration = updatedDuration;
+  }
+  set reminded(updatedReminded) {
+    this._reminded = updatedReminded;
   }
 }
 
