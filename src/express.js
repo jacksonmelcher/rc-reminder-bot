@@ -92,11 +92,11 @@ const handle = async (event) => {
         await bot.sendMessage(group.id, {
           text: `I will send you a reminder in ${duration.humanize()}`,
         });
+      } else {
+        await bot.sendMessage(group.id, {
+          text: `The time you gave me already happened`,
+        });
       }
-
-      await bot.sendMessage(group.id, {
-        text: `The time you gave me already happened`,
-      });
     }
 
     // ANCHOR For when the bot is directly messaged
