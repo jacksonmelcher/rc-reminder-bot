@@ -82,4 +82,6 @@ Follow these steps to [add](https://github.com/tylerlong/glip-ping-chatbot/tree/
 1. Create a new team.
 2. Add the bot to the team.
 3. Mention the bot and write the desired time and message:
-   `@Remind -m <reminder messsage> -t <MM/DD/YY hh:mm am/pm>`
+   ```
+   @Remind -m <reminder messsage> -t <MM/DD/YY hh:mm am/pm>
+   ```
