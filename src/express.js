@@ -30,7 +30,9 @@ const handle = async (event) => {
     console.log('INDEX OF T: ' + args.indexOf('-t'));
     console.log('INDEX OF M: ' + args.indexOf('-m'));
     if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
-      console.log('MISSING INFO');
+      await bot.sendMessage(group.id, {
+        text: 'Please add a message and a time.',
+      });
     } else {
       console.log('Time: ');
       for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
@@ -70,12 +72,9 @@ const handle = async (event) => {
     }
   }
   // ANCHOR group Joined
-  if (typeof event !== 'undefined') {
-    console.log('EVENT: ' + JSON.stringify(event, null, 2));
-  }
 
   if (type === 'BotJoinGroup') {
-    console.log('zgroup: ' + JSON.stringify(group, null, 2));
+    // console.log('zgroup: ' + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
       text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
     });
@@ -106,7 +105,7 @@ const handle = async (event) => {
           allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
 
           let jsonData = JSON.stringify(allReminders, null, 2);
-          fs.writeFile('json/reminders.json', jsonData, function (err) {
+          fs.writeFile('json/reminders.json', jsonData, (err) => {
             if (err) {
               console.log(err);
             }
@@ -117,7 +116,7 @@ const handle = async (event) => {
         await bot.sendMessage(group.id, {
           text: `I will send you a reminder in ${duration.humanize()}`,
         });
-      } else {
+      } else if (moment() >= moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         await bot.sendMessage(group.id, {
           text: `The time you gave me already happened`,
         });
