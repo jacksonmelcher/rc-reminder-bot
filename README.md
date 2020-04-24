@@ -34,7 +34,7 @@ In content below, we call this public address `https://<chatbot-server>`.
 
 ### Create a RingCentral app
 
-Please read the instructions for [how to create a RingCentral chatbot app](https://github.com/tylerlong/ringcentral-chatbot-js#create-a-ringcentral-app).
+This [link](https://developer.ringcentral.com/new-app?name=Sample+Bot+App&desc=A+sample+app+created+for+the+javascript+chatbot+framework&public=true&type=ServerBot&permissions=ReadAccounts,EditExtensions,SubscriptionWebhook,Glip&redirectUri=https://%3Cchatbot-server%3E/bot/oauth) will quickly create a bot with all the necessary permissions
 
 Redirect URI should be set to `https://<chatbot-server>/bot/oauth`.
 
