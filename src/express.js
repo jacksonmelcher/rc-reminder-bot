@@ -46,8 +46,8 @@ const handle = async (event) => {
     }
 
     // FIXME: Hardcoded time so i cna debug without having to send message everytime
-    // resTimeString = moment().add(8, "seconds");
-    // resMessageString = "Test text";
+    // resTimeString = moment().add(12, "seconds");
+    // resMessageString = "/task test";
     resTimeString = resTimeArray.toString().replace(/,/g, " ");
     resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
