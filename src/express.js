@@ -28,25 +28,28 @@ const handle = async (event) => {
     // console.log(args.indexOf("-t"));
     // }
     //FIXME Add message to bot if there are no arguments
-    if (args.indexOf("-t") || args.indexOf("-m") === -1) {
+    console.log("INDEX OF T: " + args.indexOf("-t"));
+    console.log("INDEX OF M: " + args.indexOf("-m"));
+    if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
       console.log("MISSING INFO");
     } else {
-      for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
-        console.log(args[i]);
-        resTimeArray.push(args[i]);
-      }
-      console.log("Message: ");
-      for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
+      console.log("Time: ");
+      for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
         console.log(args[i]);
         resMessageArray.push(args[i]);
+      }
+      console.log("Message: ");
+      for (let i = args.indexOf("-t") + 1; i < args.length; i++) {
+        console.log(args[i]);
+        resTimeArray.push(args[i]);
       }
     }
 
     // FIXME: Hardcoded time so i cna debug without having to send message everytime
-    resTimeString = moment().add(8, "seconds");
-    resMessageString = "Test text";
-    // resTimeString = resTimeArray.toString().replace(/,/g, " ");
-    // resMessageString = resMessageArray.toString().replace(/,/g, " ");
+    // resTimeString = moment().add(8, "seconds");
+    // resMessageString = "Test text";
+    resTimeString = resTimeArray.toString().replace(/,/g, " ");
+    resMessageString = resMessageArray.toString().replace(/,/g, " ");
   }
   if (typeof message !== "undefined") {
     if (typeof message.mentions !== "undefined") {
@@ -75,7 +78,7 @@ const handle = async (event) => {
   if (type === "BotJoinGroup") {
     console.log("zgroup: " + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
-      text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n example: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
+      text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
