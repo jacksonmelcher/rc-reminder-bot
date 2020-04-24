@@ -19,7 +19,7 @@ pick up code someone else has already written.
 https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-moment-in-time
 */
 
-import moment from "moment";
+import moment from 'moment';
 
 class Reminder {
   constructor() {
@@ -73,7 +73,7 @@ class Reminder {
     if (moment() < updatedNotificationtime) {
       this._notificationTime = updatedNotificationtime;
     } else {
-      this._notificationTime = "PAST";
+      this._notificationTime = 'PAST';
     }
   }
   set duration(updatedDuration) {

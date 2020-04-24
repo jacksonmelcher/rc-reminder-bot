@@ -1,11 +1,10 @@
 // use(strict);
-import { put } from "axios";
-import createApp from "ringcentral-chatbot/dist/apps";
-import Reminder from "../models/Reminder";
-import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
-import { types } from "util";
+import { put } from 'axios';
+import createApp from 'ringcentral-chatbot/dist/apps';
+import Reminder from '../models/Reminder';
+import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
 
 let allReminders = [];
 
@@ -14,32 +13,32 @@ let arrayBool = false;
 const handle = async (event) => {
   const { type, text, group, bot, message } = event;
   let args = [];
-  let mentionId = "";
-  let resMessageString = "";
+  let mentionId = '';
+  let resMessageString = '';
   let resMessageArray = [];
   let resTimeArray = [];
-  let resTimeString = "";
-  let fullUserName = "";
+  let resTimeString = '';
+  let fullUserName = '';
 
   // ANCHOR Command line args handling
-  if (typeof text !== "undefined") {
-    args = text.split(" ");
+  if (typeof text !== 'undefined') {
+    args = text.split(' ');
     // if (args[0] === "") {
     // console.log(args.indexOf("-t"));
     // }
     //FIXME Add message to bot if there are no arguments
-    console.log("INDEX OF T: " + args.indexOf("-t"));
-    console.log("INDEX OF M: " + args.indexOf("-m"));
-    if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
-      console.log("MISSING INFO");
+    console.log('INDEX OF T: ' + args.indexOf('-t'));
+    console.log('INDEX OF M: ' + args.indexOf('-m'));
+    if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+      console.log('MISSING INFO');
     } else {
-      console.log("Time: ");
-      for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
+      console.log('Time: ');
+      for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
         console.log(args[i]);
         resMessageArray.push(args[i]);
       }
-      console.log("Message: ");
-      for (let i = args.indexOf("-t") + 1; i < args.length; i++) {
+      console.log('Message: ');
+      for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
         console.log(args[i]);
         resTimeArray.push(args[i]);
       }
@@ -48,11 +47,11 @@ const handle = async (event) => {
     // FIXME: Hardcoded time so i cna debug without having to send message everytime
     // resTimeString = moment().add(12, "seconds");
     // resMessageString = "/task test";
-    resTimeString = resTimeArray.toString().replace(/,/g, " ");
-    resMessageString = resMessageArray.toString().replace(/,/g, " ");
+    resTimeString = resTimeArray.toString().replace(/,/g, ' ');
+    resMessageString = resMessageArray.toString().replace(/,/g, ' ');
   }
-  if (typeof message !== "undefined") {
-    if (typeof message.mentions !== "undefined") {
+  if (typeof message !== 'undefined') {
+    if (typeof message.mentions !== 'undefined') {
       try {
         mentionId = message.mentions[0].id;
       } catch (error) {
@@ -61,42 +60,42 @@ const handle = async (event) => {
     }
   }
   // Get creators name
-  if (typeof bot !== "undefined" && event !== "undefined") {
+  if (typeof bot !== 'undefined' && event !== 'undefined') {
     try {
       const user = await bot.getUser(event.userId);
       const { name } = user.rc;
       fullUserName = name;
     } catch (error) {
-      console.log("GET USER ERROR: " + error + " name: " + fullUserName);
+      console.log('GET USER ERROR: ' + error + ' name: ' + fullUserName);
     }
   }
   // ANCHOR group Joined
-  if (typeof event !== "undefined") {
-    console.log("EVENT: " + JSON.stringify(event, null, 2));
+  if (typeof event !== 'undefined') {
+    console.log('EVENT: ' + JSON.stringify(event, null, 2));
   }
 
-  if (type === "BotJoinGroup") {
-    console.log("zgroup: " + JSON.stringify(group, null, 2));
+  if (type === 'BotJoinGroup') {
+    console.log('zgroup: ' + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
       text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
-  if (type === "Message4Bot") {
-    if (mentionId === "680681005") {
+  if (type === 'Message4Bot') {
+    if (mentionId === '680681005') {
       arrayBool = true;
 
       let reminder = new Reminder();
       // Check to ee if reminder is in the past
-      if (moment() < moment(resTimeString, "MM/DD/YY hh:mm a")) {
+      if (moment() < moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         reminder.timeCreated = moment();
         reminder.id = uuidv4();
-        reminder.notificationTime = moment(resTimeString, "MM/DD/YY hh:mm a");
+        reminder.notificationTime = moment(resTimeString, 'MM/DD/YY hh:mm a');
         reminder.reminderText = resMessageString;
         reminder.creator = fullUserName;
         reminder.duration = moment
           .duration(reminder.notificationTime.diff(reminder.timeCreated))
-          .as("milliseconds");
+          .as('milliseconds');
 
         let duration = moment.duration(
           reminder.notificationTime.diff(reminder.timeCreated)
@@ -107,7 +106,7 @@ const handle = async (event) => {
           allReminders.sort((a, b) => a.notificationTime - b.notificationTime);
 
           let jsonData = JSON.stringify(allReminders, null, 2);
-          fs.writeFile("json/reminders.json", jsonData, function (err) {
+          fs.writeFile('json/reminders.json', jsonData, function (err) {
             if (err) {
               console.log(err);
             }
@@ -127,7 +126,7 @@ const handle = async (event) => {
 
     // ANCHOR Set timeout
     if (allReminders.length > 0) {
-      console.log("Length before setTimeout: " + allReminders.length);
+      console.log('Length before setTimeout: ' + allReminders.length);
       setTimeout(() => {
         bot.sendMessage(group.id, {
           text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
@@ -137,7 +136,7 @@ const handle = async (event) => {
   }
 
   args = [];
-  mentionId = "";
+  mentionId = '';
 };
 
 const app = createApp(handle);
@@ -151,7 +150,7 @@ setInterval(() => {
       console.log(allReminders[0].reminderText);
       allReminders.shift();
       let jsonData = JSON.stringify(allReminders, null, 2);
-      fs.writeFile("json/reminders.json", jsonData, function (err) {
+      fs.writeFile('json/reminders.json', jsonData, function (err) {
         if (err) {
           console.log(err);
         }
