@@ -75,7 +75,7 @@ const handle = async (event) => {
   if (type === "BotJoinGroup") {
     console.log("zgroup: " + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
-      text: `Thanks for adding me to your group!`,
+      text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n example: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
