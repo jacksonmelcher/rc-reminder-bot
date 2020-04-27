@@ -27,10 +27,20 @@ const handle = async (event) => {
     // console.log(args.indexOf("-t"));
     // }
     //FIXME Add message to bot if there are no arguments
-
-    if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+    if (args.toString() === 'help' || args.toString() === '-h') {
       await bot.sendMessage(group.id, {
-        text: 'Please add a message and a time.',
+        text:
+          'To use me type:\n' +
+          '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
+          'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
+      });
+    } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+      await bot.sendMessage(group.id, {
+        text: '🚨 Please add a message and a time. 🚨',
+      });
+    } else if (resTimeString === '' || resMessageString === '') {
+      await bot.sendMessage(group.id, {
+        text: `Please enter a valid time. ex: **MM/DD/YYY hh:mm ap/pm**`,
       });
     } else {
       // Check to see which argument is first
@@ -86,11 +96,14 @@ const handle = async (event) => {
   if (type === 'BotJoinGroup') {
     // console.log('zgroup: ' + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
-      text: `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
+      text:
+        `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders.\n` +
+        `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
   if (type === 'Message4Bot') {
+    // if (mentionId === '680681005' && text)
     if (mentionId === '680681005') {
       arrayBool = true;
 
@@ -128,15 +141,11 @@ const handle = async (event) => {
         arrayBool = false;
 
         await bot.sendMessage(group.id, {
-          text: `I will send you a reminder in ${duration.humanize()}`,
+          text: `Reminder set ⏰, I will send you a reminder in **${duration.humanize()}**`,
         });
       } else if (moment() >= moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         await bot.sendMessage(group.id, {
           text: `The time you gave me already happened`,
-        });
-      } else if (resTimeString === '' || resMessageString === '') {
-        await bot.sendMessage(group.id, {
-          text: `Please enter a valid time. (MM/DD/YYY hh:mm ap/pm)`,
         });
       }
     }
