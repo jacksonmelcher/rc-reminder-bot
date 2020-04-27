@@ -187,10 +187,9 @@ setInterval(() => {
           console.log(err);
         }
       });
-    } else {
     }
   }
-}, 800);
+}, 10000);
 
 setInterval(
   async () =>
