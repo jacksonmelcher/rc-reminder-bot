@@ -27,16 +27,23 @@ const handle = async (event) => {
     // console.log(args.indexOf("-t"));
     // }
     //FIXME Add message to bot if there are no arguments
-    if (args.toString() === 'help' || args.toString() === '-h') {
+    if (
+      args.toString() === 'help' ||
+      args.toString() === '-h' ||
+      args.toString() === '-help'
+    ) {
       await bot.sendMessage(group.id, {
         text:
+          '🆘\n' +
           'To use me type:\n' +
           '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
           'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
       });
     } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
       await bot.sendMessage(group.id, {
-        text: '🚨 Please add a message and a time. 🚨',
+        text:
+          '🚨 Please add a message and a time. 🚨\n' +
+          'For help 🆘 type **@Reminder help** for an example and a list of commands.',
       });
     } else if (resTimeString === '' || resMessageString === '') {
       await bot.sendMessage(group.id, {
@@ -97,8 +104,10 @@ const handle = async (event) => {
     // console.log('zgroup: ' + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
       text:
-        `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders.\n` +
-        `To use me type **@Remind -t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\nExample: @Remind -t 4/15/2020 5:30 pm -m Call mom`,
+        `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders ⏰.\n` +
+        'To use me type:\n\n' +
+        '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
+        'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
