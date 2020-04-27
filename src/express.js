@@ -23,10 +23,7 @@ const handle = async (event) => {
   // ANCHOR Command line args handling
   if (typeof text !== 'undefined') {
     args = text.split(' ');
-    // if (args[0] === "") {
-    // console.log(args.indexOf("-t"));
-    // }
-    //FIXME Add message to bot if there are no arguments
+
     if (
       args.toString() === 'help' ||
       args.toString() === '-h' ||
