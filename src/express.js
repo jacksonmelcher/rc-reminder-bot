@@ -27,30 +27,27 @@ const handle = async (event) => {
     // console.log(args.indexOf("-t"));
     // }
     //FIXME Add message to bot if there are no arguments
-    console.log('INDEX OF T: ' + args.indexOf('-t'));
-    console.log('INDEX OF M: ' + args.indexOf('-m'));
+
     if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
       await bot.sendMessage(group.id, {
         text: 'Please add a message and a time.',
       });
     } else {
-      console.log('Time: ');
       for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
         console.log(args[i]);
         resMessageArray.push(args[i]);
       }
-      console.log('Message: ');
+
       for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
         console.log(args[i]);
         resTimeArray.push(args[i]);
       }
+      // FIXME: Hardcoded time so i cna debug without having to send message everytime
+      // resTimeString = moment().add(12, "seconds");
+      // resMessageString = "/task test";
+      resTimeString = resTimeArray.toString().replace(/,/g, ' ');
+      resMessageString = resMessageArray.toString().replace(/,/g, ' ');
     }
-
-    // FIXME: Hardcoded time so i cna debug without having to send message everytime
-    // resTimeString = moment().add(12, "seconds");
-    // resMessageString = "/task test";
-    resTimeString = resTimeArray.toString().replace(/,/g, ' ');
-    resMessageString = resMessageArray.toString().replace(/,/g, ' ');
   }
   if (typeof message !== 'undefined') {
     if (typeof message.mentions !== 'undefined') {
@@ -86,6 +83,8 @@ const handle = async (event) => {
 
       let reminder = new Reminder();
       // Check to ee if reminder is in the past
+      console.log(resMessageString + ' -- ' + resTimeString);
+      // if(resTimeString === 'Invalid Date' |||)
       if (moment() < moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         reminder.timeCreated = moment();
         reminder.id = uuidv4();
@@ -119,6 +118,10 @@ const handle = async (event) => {
       } else if (moment() >= moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         await bot.sendMessage(group.id, {
           text: `The time you gave me already happened`,
+        });
+      } else if (resTimeString === '' || resMessageString === '') {
+        await bot.sendMessage(group.id, {
+          text: `Please enter a valid time. (MM/DD/YYY hh:mm ap/pm)`,
         });
       }
     }
