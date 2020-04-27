@@ -33,20 +33,33 @@ const handle = async (event) => {
         text: 'Please add a message and a time.',
       });
     } else {
-      for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
-        console.log(args[i]);
-        resMessageArray.push(args[i]);
-      }
+      // Check to see which argument is first
+      if (args.indexOf('-t') > args.indexOf('-m')) {
+        console.log('Message came first.');
+        for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
+          resMessageArray.push(args[i]);
+        }
 
-      for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
-        console.log(args[i]);
-        resTimeArray.push(args[i]);
+        for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
+          resTimeArray.push(args[i]);
+        }
+        resTimeString = resTimeArray.toString().replace(/,/g, ' ');
+        resMessageString = resMessageArray.toString().replace(/,/g, ' ');
+        console.log(resMessageString + ' -- ' + resTimeString);
+      } else {
+        console.log('Time came first.');
+        for (let i = args.indexOf('-t') + 1; i < args.indexOf('-m'); i++) {
+          resMessageArray.push(args[i]);
+        }
+
+        for (let i = args.indexOf('-m') + 1; i < args.length; i++) {
+          resTimeArray.push(args[i]);
+        }
+
+        resMessageString = resTimeArray.toString().replace(/,/g, ' ');
+        resTimeString = resMessageArray.toString().replace(/,/g, ' ');
+        console.log(resMessageString + ' -- ' + resTimeString);
       }
-      // FIXME: Hardcoded time so i cna debug without having to send message everytime
-      // resTimeString = moment().add(12, "seconds");
-      // resMessageString = "/task test";
-      resTimeString = resTimeArray.toString().replace(/,/g, ' ');
-      resMessageString = resMessageArray.toString().replace(/,/g, ' ');
     }
   }
   if (typeof message !== 'undefined') {
@@ -83,7 +96,9 @@ const handle = async (event) => {
 
       let reminder = new Reminder();
       // Check to ee if reminder is in the past
-      console.log(resMessageString + ' -- ' + resTimeString);
+      console.log(
+        'In message statement' + resMessageString + ' -- ' + resTimeString
+      );
       // if(resTimeString === 'Invalid Date' |||)
       if (moment() < moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         reminder.timeCreated = moment();
