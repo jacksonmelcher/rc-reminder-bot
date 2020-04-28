@@ -155,11 +155,13 @@ const handle = async (event) => {
         await bot.sendMessage(group.id, {
           text: `The time you gave me already happened`,
         });
-      } else {
-        await bot.sendMessage(group.id, {
-          text: `🚨Please send a the time in a valid format. **MM/DD/YY hh:mm am/pm**🚨`,
-        });
       }
+      // FIXME
+      // else {
+      //   await bot.sendMessage(group.id, {
+      //     text: `🚨Please send a the time in a valid format. **MM/DD/YY hh:mm am/pm**🚨`,
+      //   });
+      // }
     }
 
     // ANCHOR Set timeout
