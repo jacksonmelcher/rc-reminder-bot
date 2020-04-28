@@ -23,6 +23,7 @@ const handle = async (event) => {
   // ANCHOR Command line args handling
   if (typeof text !== 'undefined') {
     args = text.split(' ');
+    console.log('ARGS: ', args);
 
     if (
       args.toString() === 'help' ||
@@ -37,14 +38,12 @@ const handle = async (event) => {
           'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
       });
     } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+      console.log('No keywords found');
+
       await bot.sendMessage(group.id, {
         text:
           '🚨 Please add a message and a time. 🚨\n' +
           'For help 🆘 type **@Reminder help** for an example and a list of commands.',
-      });
-    } else if (resTimeString === '' || resMessageString === '') {
-      await bot.sendMessage(group.id, {
-        text: `Please enter a valid time. ex: **MM/DD/YYY hh:mm ap/pm**`,
       });
     } else {
       // Check to see which argument is first
@@ -104,7 +103,10 @@ const handle = async (event) => {
         `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders ⏰.\n` +
         'To use me type:\n\n' +
         '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
-        'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
+        'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom' +
+        '\n\nThis bot was made and is maintained by the RC on RC team. The code can be found' +
+        ' [here](https://github.com/jacksonmelcher/Glip-Announcements). If you run into ' +
+        'any bugs or have feature requests please open an issue on Github or DM Jackson Melcher directly.',
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
@@ -116,7 +118,7 @@ const handle = async (event) => {
       let reminder = new Reminder();
       // Check to ee if reminder is in the past
       console.log(
-        'In message statement' + resMessageString + ' -- ' + resTimeString
+        'In message statement: ' + resMessageString + ' -- ' + resTimeString
       );
       // if(resTimeString === 'Invalid Date' |||)
       if (moment() < moment(resTimeString, 'MM/DD/YY hh:mm a')) {
@@ -152,6 +154,10 @@ const handle = async (event) => {
       } else if (moment() >= moment(resTimeString, 'MM/DD/YY hh:mm a')) {
         await bot.sendMessage(group.id, {
           text: `The time you gave me already happened`,
+        });
+      } else {
+        await bot.sendMessage(group.id, {
+          text: `🚨Please send a the time in a valid format. **MM/DD/YY hh:mm am/pm**🚨`,
         });
       }
     }
