@@ -37,6 +37,19 @@ const handle = async (event) => {
           '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
           'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
       });
+    } else if (
+      args.toString() === 'issue' ||
+      args.toString() === '-i' ||
+      args.toString() === '-issue'
+    ) {
+      await bot.sendMessage(group.id, {
+        text:
+          '⛑\n' +
+          '\n\nIf you run into ' +
+          'any bugs or have feature requests please DM Jackson Melcher directly. Alternatively if ' +
+          'you are familiar with Github and have an account you can skip the middle man and open an ' +
+          'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
+      });
     } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
       console.log('No keywords found');
 
@@ -103,10 +116,10 @@ const handle = async (event) => {
         `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders ⏰.\n` +
         'To use me type:\n\n' +
         '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
-        'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom' +
+        'Example: **@Remind -t 4/15/2020 5:30 pm -m Call mom**' +
+        '\n\nOther valid commands include **help** (for help) and **issue**(to report an issue/bug).' +
         '\n\nThis bot was made and is maintained by the RC on RC team. The code can be found' +
-        ' [here](https://github.com/jacksonmelcher/Glip-Announcements). If you run into ' +
-        'any bugs or have feature requests please open an issue on Github or DM Jackson Melcher directly.',
+        ' **[here](https://github.com/jacksonmelcher/Glip-Announcements)**.',
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
