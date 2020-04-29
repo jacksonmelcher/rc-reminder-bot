@@ -48,10 +48,7 @@ const handle = async (event) => {
     ) {
       await bot.sendMessage(group.id, {
         text:
-          '⛑\n' +
-          '\n\nIf you run into ' +
-          'any bugs or have feature requests please DM Jackson Melcher directly. Alternatively if ' +
-          'you are familiar with Github and have an account you can skip the middle man and open an ' +
+          'To report a bug please DM Jackson Melcher. Alternativly, if you have a Github you can open an ' +
           'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
       });
     } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
@@ -118,14 +115,44 @@ const handle = async (event) => {
   if (type === 'BotJoinGroup') {
     // console.log('zgroup: ' + JSON.stringify(group, null, 2));
     await bot.sendMessage(group.id, {
-      text:
-        `Hi! I am a reminder bot 🤖, I can be used to set scheduled reminders ⏰.\n` +
-        'To use me type:\n\n' +
-        '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
-        'Example: **@Remind -t 4/15/2020 5:30 pm -m Call mom**' +
-        '\n\nOther valid commands include **help** (for help) and **issue**(to report an issue/bug).' +
-        '\n\nThis bot was made and is maintained by the RC on RC team. The code can be found' +
-        ' **[here](https://github.com/jacksonmelcher/Glip-Announcements)**.',
+      attachments: [
+        {
+          type: 'Card',
+
+          author: {
+            name: 'Reminder Bot',
+            // uri: 'https://example.com/author_link',
+            // iconUri: 'https://example.com/author_icon.png',
+          },
+          title: 'Instructions',
+          text:
+            'Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified ' +
+            'time. To use me you can send me a direct message or add me to a team. I am the first iteration' +
+            ' and lack features. As time passes and with your feedback, I will be updated with new features.',
+
+          fields: [
+            {
+              title: 'Create a reminder',
+              value:
+                '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
+              style: 'Long',
+            },
+            {
+              title: 'For help',
+              value: '@Remind **help**',
+              style: 'Short',
+            },
+            {
+              title: 'To submit a bug/issue',
+              value: '@Remind **issue**',
+              style: 'Short',
+            },
+          ],
+          footnote: {
+            text: 'Created and maintained by RC on RC',
+          },
+        },
+      ],
     });
   }
   // ANCHOR Direct message handling. Does not support mentions to other teams
