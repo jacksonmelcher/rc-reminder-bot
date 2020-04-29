@@ -19,9 +19,13 @@ const handle = async (event) => {
   let resTimeArray = [];
   let resTimeString = '';
   let fullUserName = '';
+  // let dummyText = `-m do 25 pushups -t ${moment()
+  //   .add(1, 'minute')
+  //   .format('MM/DD/YYY hh:mm a')}`;
 
   // ANCHOR Command line args handling
   if (typeof text !== 'undefined') {
+    // args = dummyText.split(' ');
     args = text.split(' ');
     console.log('ARGS: ', args);
 
@@ -69,6 +73,8 @@ const handle = async (event) => {
         for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
           resTimeArray.push(args[i]);
         }
+        // FIXME hardcoded time
+        // resTimeString = moment().add(1, 'minute').format('MM/DD/YYY hh:mm');
         resTimeString = resTimeArray.toString().replace(/,/g, ' ');
         resMessageString = resMessageArray.toString().replace(/,/g, ' ');
         console.log(resMessageString + ' -- ' + resTimeString);
@@ -160,6 +166,7 @@ const handle = async (event) => {
           });
         }
         arrayBool = false;
+        let footnoteTime = moment().format('MMMM Do YYYY, h:mm:ss a');
 
         await bot.sendMessage(group.id, {
           text: `Reminder set ⏰, I will send you a reminder in **${duration.humanize()}**`,
@@ -182,7 +189,16 @@ const handle = async (event) => {
       console.log('Length before setTimeout: ' + allReminders.length);
       setTimeout(() => {
         bot.sendMessage(group.id, {
-          text: `You have a reminder:\n **${resMessageString}** that was made by ${fullUserName}`,
+          attachments: [
+            {
+              type: 'Card',
+              title: 'Reminder',
+              text: `**${resMessageString}**`,
+              footnote: {
+                text: `Reminder created by ${fullUserName}`,
+              },
+            },
+          ],
         });
       }, allReminders[0].duration);
     }
