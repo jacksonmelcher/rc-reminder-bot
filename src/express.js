@@ -23,140 +23,142 @@ const handle = async (event) => {
   //   .add(1, 'minute')
   //   .format('MM/DD/YYY hh:mm a')}`;
 
-  // ANCHOR Command line args handling
-  if (typeof text !== 'undefined') {
-    // args = dummyText.split(' ');
-    args = text.split(' ');
-    console.log('ARGS: ', args);
-
-    if (
-      args.toString() === 'help' ||
-      args.toString() === '-h' ||
-      args.toString() === '-help'
-    ) {
-      await bot.sendMessage(group.id, {
-        text:
-          '🆘\n' +
-          'To use me type:\n' +
-          '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
-          'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
-      });
-    } else if (
-      args.toString() === 'issue' ||
-      args.toString() === '-i' ||
-      args.toString() === '-issue'
-    ) {
-      await bot.sendMessage(group.id, {
-        text:
-          'To report a bug please DM Jackson Melcher. Alternativly, if you have a Github you can open an ' +
-          'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
-      });
-    } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
-      console.log('No keywords found');
-
-      await bot.sendMessage(group.id, {
-        text:
-          '🚨 Please add a message and a time. 🚨\n' +
-          'For help 🆘 type **@Reminder help** for an example and a list of commands.',
-      });
-    } else {
-      // Check to see which argument is first
-      if (args.indexOf('-t') > args.indexOf('-m')) {
-        console.log('Message came first.');
-        for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
-          resMessageArray.push(args[i]);
-        }
-
-        for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
-          resTimeArray.push(args[i]);
-        }
-        // FIXME hardcoded time
-        // resTimeString = moment().add(1, 'minute').format('MM/DD/YYY hh:mm');
-        resTimeString = resTimeArray.toString().replace(/,/g, ' ');
-        resMessageString = resMessageArray.toString().replace(/,/g, ' ');
-        console.log(resMessageString + ' -- ' + resTimeString);
-      } else {
-        console.log('Time came first.');
-        for (let i = args.indexOf('-t') + 1; i < args.indexOf('-m'); i++) {
-          resMessageArray.push(args[i]);
-        }
-
-        for (let i = args.indexOf('-m') + 1; i < args.length; i++) {
-          resTimeArray.push(args[i]);
-        }
-
-        resMessageString = resTimeArray.toString().replace(/,/g, ' ');
-        resTimeString = resMessageArray.toString().replace(/,/g, ' ');
-        console.log(resMessageString + ' -- ' + resTimeString);
-      }
-    }
-  }
-  if (typeof message !== 'undefined') {
-    if (typeof message.mentions !== 'undefined') {
-      try {
-        mentionId = message.mentions[0].id;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-  // Get creators name
-  if (typeof bot !== 'undefined' && event !== 'undefined') {
-    try {
-      const user = await bot.getUser(event.userId);
-      const { name } = user.rc;
-      fullUserName = name;
-    } catch (error) {
-      console.log('GET USER ERROR: ' + error + ' name: ' + fullUserName);
-    }
-  }
-  // ANCHOR group Joined
-
-  if (type === 'BotJoinGroup') {
-    // console.log('zgroup: ' + JSON.stringify(group, null, 2));
-    await bot.sendMessage(group.id, {
-      attachments: [
-        {
-          type: 'Card',
-
-          author: {
-            name: 'Reminder Bot',
-            // uri: 'https://example.com/author_link',
-            // iconUri: 'https://example.com/author_icon.png',
-          },
-          title: 'Instructions',
-          text:
-            'Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified ' +
-            'time. To use me you can send me a direct message or add me to a team. I am the first iteration' +
-            ' and lack features. As time passes and with your feedback, I will be updated with new features.',
-
-          fields: [
-            {
-              title: 'Create a reminder',
-              value:
-                '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
-              style: 'Long',
-            },
-            {
-              title: 'For help',
-              value: '@Remind **help**',
-              style: 'Short',
-            },
-            {
-              title: 'To submit a bug/issue',
-              value: '@Remind **issue**',
-              style: 'Short',
-            },
-          ],
-          footnote: {
-            text: 'Created and maintained by RC on RC',
-          },
-        },
-      ],
-    });
-  }
   // ANCHOR Direct message handling. Does not support mentions to other teams
   if (type === 'Message4Bot') {
+    // ANCHOR Command line args handling
+    if (typeof text !== 'undefined') {
+      // args = dummyText.split(' ');
+      args = text.split(' ');
+      console.log('ARGS: ', args);
+
+      if (
+        args.toString() === 'help' ||
+        args.toString() === '-h' ||
+        args.toString() === '-help'
+      ) {
+        await bot.sendMessage(group.id, {
+          text:
+            '🆘\n' +
+            'To use me type:\n' +
+            '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message\n\n' +
+            'Example: @Remind -t 4/15/2020 5:30 pm -m Call mom',
+        });
+      } else if (
+        args.toString() === 'issue' ||
+        args.toString() === '-i' ||
+        args.toString() === '-issue' ||
+        args.toString() === '-I'
+      ) {
+        await bot.sendMessage(group.id, {
+          text:
+            'To report a bug please DM Jackson Melcher. Alternatively, if you have a Github you can open an ' +
+            'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
+        });
+      } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+        console.log('No keywords found');
+
+        await bot.sendMessage(group.id, {
+          text:
+            '🚨 Please add a message and a time. 🚨\n' +
+            'For help 🆘 type **@Reminder help** for an example and a list of commands.',
+        });
+      } else {
+        // Check to see which argument is first
+        if (args.indexOf('-t') > args.indexOf('-m')) {
+          console.log('Message came first.');
+          for (let i = args.indexOf('-m') + 1; i < args.indexOf('-t'); i++) {
+            resMessageArray.push(args[i]);
+          }
+
+          for (let i = args.indexOf('-t') + 1; i < args.length; i++) {
+            resTimeArray.push(args[i]);
+          }
+          // FIXME hardcoded time
+          // resTimeString = moment().add(1, 'minute').format('MM/DD/YYY hh:mm');
+          resTimeString = resTimeArray.toString().replace(/,/g, ' ');
+          resMessageString = resMessageArray.toString().replace(/,/g, ' ');
+          console.log(resMessageString + ' -- ' + resTimeString);
+        } else {
+          console.log('Time came first.');
+          for (let i = args.indexOf('-t') + 1; i < args.indexOf('-m'); i++) {
+            resMessageArray.push(args[i]);
+          }
+
+          for (let i = args.indexOf('-m') + 1; i < args.length; i++) {
+            resTimeArray.push(args[i]);
+          }
+
+          resMessageString = resTimeArray.toString().replace(/,/g, ' ');
+          resTimeString = resMessageArray.toString().replace(/,/g, ' ');
+          console.log(resMessageString + ' -- ' + resTimeString);
+        }
+      }
+    }
+    if (typeof message !== 'undefined') {
+      if (typeof message.mentions !== 'undefined') {
+        try {
+          mentionId = message.mentions[0].id;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    // Get creators name
+    if (typeof bot !== 'undefined' && event !== 'undefined') {
+      try {
+        const user = await bot.getUser(event.userId);
+        const { name } = user.rc;
+        fullUserName = name;
+      } catch (error) {
+        console.log('GET USER ERROR: ' + error + ' name: ' + fullUserName);
+      }
+    }
+    // ANCHOR group Joined
+
+    if (type === 'BotJoinGroup') {
+      // console.log('zgroup: ' + JSON.stringify(group, null, 2));
+      await bot.sendMessage(group.id, {
+        attachments: [
+          {
+            type: 'Card',
+
+            author: {
+              name: 'Reminder Bot',
+              // uri: 'https://example.com/author_link',
+              // iconUri: 'https://example.com/author_icon.png',
+            },
+            title: 'Instructions',
+            text:
+              'Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified ' +
+              'time. To use me you can send me a direct message or add me to a team. I am the first iteration' +
+              ' and lack features. As time passes and with your feedback, I will be updated with new features.',
+
+            fields: [
+              {
+                title: 'Create a reminder',
+                value:
+                  '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
+                style: 'Long',
+              },
+              {
+                title: 'For help',
+                value: '@Remind **help**',
+                style: 'Short',
+              },
+              {
+                title: 'To submit a bug/issue',
+                value: '@Remind **issue**',
+                style: 'Short',
+              },
+            ],
+            footnote: {
+              text: 'Created and maintained by RC on RC',
+            },
+          },
+        ],
+      });
+    }
+
     // if (mentionId === '680681005' && text)
     if (mentionId === '680681005') {
       arrayBool = true;
