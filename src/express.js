@@ -23,6 +23,10 @@ const handle = async (event) => {
   //   .add(1, 'minute')
   //   .format('MM/DD/YYY hh:mm a')}`;
 
+  console.log(
+    '=============EVENT==================m' + JSON.stringify(event, null, 2)
+  );
+
   // ANCHOR Direct message handling. Does not support mentions to other teams
   if (type === 'Message4Bot') {
     // ANCHOR Command line args handling
@@ -159,51 +163,6 @@ const handle = async (event) => {
         console.log('GET USER ERROR: ' + error + ' name: ' + fullUserName);
       }
     }
-    // ANCHOR group Joined
-
-    if (type === 'BotJoinGroup') {
-      // console.log('zgroup: ' + JSON.stringify(group, null, 2));
-      await bot.sendMessage(group.id, {
-        attachments: [
-          {
-            type: 'Card',
-
-            author: {
-              name: 'Reminder Bot',
-              // uri: 'https://example.com/author_link',
-              // iconUri: 'https://example.com/author_icon.png',
-            },
-            title: 'Instructions',
-            text:
-              'Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified ' +
-              'time. To use me you can send me a direct message or add me to a team. I am the first iteration' +
-              ' and lack features. As time passes and with your feedback, I will be updated with new features.',
-
-            fields: [
-              {
-                title: 'Create a reminder',
-                value:
-                  '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
-                style: 'Long',
-              },
-              {
-                title: 'For help',
-                value: '@Remind **help**',
-                style: 'Short',
-              },
-              {
-                title: 'To submit a bug/issue',
-                value: '@Remind **issue**',
-                style: 'Short',
-              },
-            ],
-            footnote: {
-              text: 'Created and maintained by RC on RC',
-            },
-          },
-        ],
-      });
-    }
 
     // if (mentionId === '680681005' && text)
     if (mentionId === '680681005') {
@@ -276,6 +235,51 @@ const handle = async (event) => {
         });
       }, allReminders[0].duration);
     }
+  }
+  // ANCHOR group Joined
+  console.log('=========================TYPE=================\n' + type);
+  if (type === 'BotJoinGroup') {
+    console.log('GROUP JOINED: ' + JSON.stringify(group, null, 2));
+    await bot.sendMessage(group.id, {
+      attachments: [
+        {
+          type: 'Card',
+
+          author: {
+            name: 'Reminder Bot',
+            // uri: 'https://example.com/author_link',
+            // iconUri: 'https://example.com/author_icon.png',
+          },
+          title: 'Instructions',
+          text:
+            'Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified ' +
+            'time. To use me you can send me a direct message or add me to a team. I am the first iteration' +
+            ' and lack features. As time passes and with your feedback, I will be updated with new features.',
+
+          fields: [
+            {
+              title: 'Create a reminder',
+              value:
+                '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
+              style: 'Long',
+            },
+            {
+              title: 'For help',
+              value: '@Remind **help**',
+              style: 'Short',
+            },
+            {
+              title: 'To submit a bug/issue',
+              value: '@Remind **issue**',
+              style: 'Short',
+            },
+          ],
+          footnote: {
+            text: 'Created and maintained by RC on RC',
+          },
+        },
+      ],
+    });
   }
 
   args = [];
