@@ -192,7 +192,6 @@ const handle = async (event) => {
           attachments: [
             {
               type: 'Card',
-              title: 'Reminder',
               text: `**${resMessageString}**`,
               footnote: {
                 text: `Reminder created by ${fullUserName}`,
