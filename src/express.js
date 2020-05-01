@@ -37,7 +37,7 @@ const handle = async (event) => {
         if (typeof text !== "undefined") {
             // args = dummyText.split(' ');
             args = text.split(" ");
-            console.log("ARGS: ", args);
+            // console.log("ARGS: ", args);
 
             // if (
             //   args.toString() === 'help' ||
