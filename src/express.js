@@ -24,7 +24,7 @@ const handle = async (event) => {
   //   .add(1, 'minute')
   //   .format('MM/DD/YYY hh:mm a')}`;
 
-  await handleArgs(event);
+  await handleArgs(event, true);
 
   console.log(
     '==================EVENT==================' + JSON.stringify(event, null, 2)
