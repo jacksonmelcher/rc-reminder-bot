@@ -22,66 +22,66 @@ https://stackoverflow.com/questions/36803497/call-nodejs-function-at-a-specific-
 import moment from 'moment';
 
 class Reminder {
-  constructor() {
-    this._id = null;
-    this._creator = null;
-    this._timeCreated = null;
-    this._notificationTime = null;
-    this._reminderText = null;
-    this._reminded = false;
-    this._duration = null;
-  }
-
-  /**
-   * @returns {any}
-   */
-  get creator() {
-    return this._creator;
-  }
-  get id() {
-    return this._id;
-  }
-  get timeCreated() {
-    return this._timeCreated;
-  }
-  get notificationTime() {
-    return this._notificationTime;
-  }
-  get reminderText() {
-    return this._reminderText;
-  }
-  get duration() {
-    return this._duration;
-  }
-  get reminded() {
-    return this._reminded;
-  }
-
-  set id(updatedId) {
-    this._id = updatedId;
-  }
-  set creator(updatedCreator) {
-    this._creator = updatedCreator;
-  }
-  set timeCreated(updatedTimeCreated) {
-    this._timeCreated = updatedTimeCreated;
-  }
-  set reminderText(updatedReminderText) {
-    this._reminderText = updatedReminderText;
-  }
-  set notificationTime(updatedNotificationtime) {
-    if (moment() < updatedNotificationtime) {
-      this._notificationTime = updatedNotificationtime;
-    } else {
-      this._notificationTime = 'PAST';
+    constructor() {
+        this._id = null;
+        this._creator = null;
+        this._timeCreated = null;
+        this._notificationTime = null;
+        this._reminderText = null;
+        this._reminded = false;
+        this._duration = null;
     }
-  }
-  set duration(updatedDuration) {
-    this._duration = updatedDuration;
-  }
-  set reminded(updatedReminded) {
-    this._reminded = updatedReminded;
-  }
+
+    /**
+     * @returns {any}
+     */
+    get creator() {
+        return this._creator;
+    }
+    get id() {
+        return this._id;
+    }
+    get timeCreated() {
+        return this._timeCreated;
+    }
+    get notificationTime() {
+        return this._notificationTime;
+    }
+    get reminderText() {
+        return this._reminderText;
+    }
+    get duration() {
+        return this._duration;
+    }
+    get reminded() {
+        return this._reminded;
+    }
+
+    set id(updatedId) {
+        this._id = updatedId;
+    }
+    set creator(updatedCreator) {
+        this._creator = updatedCreator;
+    }
+    set timeCreated(updatedTimeCreated) {
+        this._timeCreated = updatedTimeCreated;
+    }
+    set reminderText(updatedReminderText) {
+        this._reminderText = updatedReminderText;
+    }
+    set notificationTime(updatedNotificationtime) {
+        if (moment() < updatedNotificationtime) {
+            this._notificationTime = updatedNotificationtime;
+        } else {
+            this._notificationTime = 'PAST';
+        }
+    }
+    set duration(updatedDuration) {
+        this._duration = updatedDuration;
+    }
+    set reminded(updatedReminded) {
+        this._reminded = updatedReminded;
+    }
 }
 
 export default Reminder;
