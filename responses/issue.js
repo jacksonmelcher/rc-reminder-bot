@@ -1,4 +1,4 @@
-const issueText = {
+export const issueText = {
   attachments: [
     {
       type: 'Card',
@@ -12,5 +12,3 @@ const issueText = {
     },
   ],
 };
-
-export default issueText;
