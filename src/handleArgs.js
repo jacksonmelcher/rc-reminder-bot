@@ -1,4 +1,5 @@
 import { issueText, helpText, noArgsText } from "../responses/index";
+import { parse } from "./parse";
 
 let reminderArray = [];
 const red = "\x1b[42m%s\x1b[0m";
@@ -43,56 +44,16 @@ const handleArgs = async (event, print, test) => {
                 }
                 return issueText;
             } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
+                if (print === true) {
+                    console.log(red, "NO COMMANDS FOUND");
+                }
                 if (test !== true) {
                     await bot.sendMessage(group.id, noArgsText);
                 }
                 return noArgsText;
-            } else if (args.indexOf("-t") > args.indexOf("-m")) {
-                for (
-                    let i = args.indexOf("-m") + 1;
-                    i < args.indexOf("-t");
-                    i++
-                ) {
-                    resMessageArray.push(args[i]);
-                }
-
-                for (let i = args.indexOf("-t") + 1; i < args.length; i++) {
-                    resTimeArray.push(args[i]);
-                }
-                resTimeString = resTimeArray.toString().replace(/,/g, " ");
-                resMessageString = resMessageArray
-                    .toString()
-                    .replace(/,/g, " ");
-                if (print === true) {
-                    console.log(red, "Message came first.");
-                    console.log(
-                        cyan,
-                        resMessageString + " -- " + resTimeString
-                    );
-                }
-            } else {
-                //FIXME make the res mesage stuff make sense
-                for (
-                    let i = args.indexOf("-t") + 1;
-                    i < args.indexOf("-m");
-                    i++
-                ) {
-                    resMessageArray.push(args[i]);
-                }
-
-                for (let i = args.indexOf("-m") + 1; i < args.length; i++) {
-                    resTimeArray.push(args[i]);
-                }
-
-                resMessageString = resTimeArray.toString().replace(/,/g, " ");
-                resTimeString = resMessageArray.toString().replace(/,/g, " ");
-                if (print === true) {
-                    console.log(red, "Time came first.");
-                    console.log(
-                        cyan,
-                        resMessageString + " -- " + resTimeString
-                    );
-                }
+            } else if (args.includes("-t") && args.includes("-m")) {
+                const message = parse(args);
+                console.log(message);
             }
 
             break;
