@@ -38,67 +38,69 @@ const handle = async (event) => {
       args = text.split(' ');
       console.log('ARGS: ', args);
 
-      if (
-        args.toString() === 'help' ||
-        args.toString() === '-h' ||
-        args.toString() === '-help'
-      ) {
-        console.log('User asked for help');
-        await bot.sendMessage(group.id, {
-          attachments: [
-            {
-              type: 'Card',
-              title: 'Help 🆘',
-              text: 'Here is a list of available commands and an example:',
-              fields: [
-                {
-                  title: 'Create a reminder',
-                  value:
-                    '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
-                  style: 'Long',
-                },
-                {
-                  title: 'For help',
-                  value: '@Remind **help**',
-                  style: 'Short',
-                },
-                {
-                  title: 'To submit a bug/issue',
-                  value: '@Remind **issue**',
-                  style: 'Short',
-                },
-              ],
-              footnote: {
-                text: 'Created and maintained by RC on RC',
-              },
-            },
-          ],
-        });
-      } else if (
-        args.toString() === 'issue' ||
-        args.toString() === '-i' ||
-        args.toString() === '-issue' ||
-        args.toString() === '-I'
-      ) {
-        console.log('User has an issue');
-        await bot.sendMessage(group.id, {
-          // text:
-          //   'To report a bug please DM Jackson Melcher. Alternatively, if you have a Github you can open an ' +
-          //   'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
-          attachments: [
-            {
-              type: 'Card',
-              title: 'Issue 🚧',
-              text:
-                'To report a bug please DM Jackson Melcher. Alternatively, if you have a Github you can open an ' +
-                'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
-              footnote: {
-                text: 'Created and maintained by RC on RC',
-              },
-            },
-          ],
-        });
-      } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+      // if (
+      //   args.toString() === 'help' ||
+      //   args.toString() === '-h' ||
+      //   args.toString() === '-help'
+      // ) {
+      //   console.log('User asked for help');
+      //   await bot.sendMessage(group.id, {
+      //     attachments: [
+      //       {
+      //         type: 'Card',
+      //         title: 'Help 🆘',
+      //         text: 'Here is a list of available commands and an example:',
+      //         fields: [
+      //           {
+      //             title: 'Create a reminder',
+      //             value:
+      //               '@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message',
+      //             style: 'Long',
+      //           },
+      //           {
+      //             title: 'For help',
+      //             value: '@Remind **help**',
+      //             style: 'Short',
+      //           },
+      //           {
+      //             title: 'To submit a bug/issue',
+      //             value: '@Remind **issue**',
+      //             style: 'Short',
+      //           },
+      //         ],
+      //         footnote: {
+      //           text: 'Created and maintained by RC on RC',
+      //         },
+      //       },
+      //     ],
+      //   });
+      // } else
+      // if (
+      //   args.toString() === 'issue' ||
+      //   args.toString() === '-i' ||
+      //   args.toString() === '-issue' ||
+      //   args.toString() === '-I'
+      // ) {
+      //   console.log('User has an issue');
+      //   await bot.sendMessage(group.id, {
+      //     // text:
+      //     //   'To report a bug please DM Jackson Melcher. Alternatively, if you have a Github you can open an ' +
+      //     //   'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
+      //     attachments: [
+      //       {
+      //         type: 'Card',
+      //         title: 'Issue 🚧',
+      //         text:
+      //           'To report a bug please DM Jackson Melcher. Alternatively, if you have a Github you can open an ' +
+      //           'issue **[here](https://github.com/jacksonmelcher/Glip-Announcements/issues)**',
+      //         footnote: {
+      //           text: 'Created and maintained by RC on RC',
+      //         },
+      //       },
+      //     ],
+      //   });
+      // } else
+      if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
         //──── No text added ─────────────────────────────────────────────────────────────────────
         console.log('No keywords found');
 
