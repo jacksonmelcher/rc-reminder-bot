@@ -5,6 +5,7 @@ import Reminder from '../models/Reminder';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
+import handleArgs from './handleArgs';
 
 let allReminders = [];
 
@@ -23,8 +24,10 @@ const handle = async (event) => {
   //   .add(1, 'minute')
   //   .format('MM/DD/YYY hh:mm a')}`;
 
+  await handleArgs(event);
+
   console.log(
-    '=============EVENT==================m' + JSON.stringify(event, null, 2)
+    '==================EVENT==================' + JSON.stringify(event, null, 2)
   );
 
   // ANCHOR Direct message handling. Does not support mentions to other teams
