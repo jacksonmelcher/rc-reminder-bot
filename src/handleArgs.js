@@ -1,11 +1,16 @@
-import { issueText, helpText } from '../responses/index';
-const handleArgs = async (event, print) => {
+import { issueText, helpText, noArgsText } from '../responses/index';
+
+const handleArgs = async (event, print, test) => {
   const { text, bot, type, group } = event;
+
+  let args = [];
   if (typeof event !== 'undefined' && print === true) {
     console.log('----------------In handleArgs--------------------');
     console.log(event);
   }
-
+  if (typeof text !== 'undefined') {
+    args = text.split(' ');
+  }
   switch (type) {
     //========================================================================================
     /*                                                                                      *
@@ -13,24 +18,31 @@ const handleArgs = async (event, print) => {
      *                                                                                      */
     //========================================================================================
     case 'Message4Bot':
-      //──── HELP ──────────────────────────────────────────────────────────────────────────────
       if (text === '-h' || text === 'help' || text === '-help') {
         if (print === true) {
           console.log('USER CALLED HELP');
         }
-
-        // await bot.sendMessage(group.id, helpText);
+        if (test !== true) {
+          await bot.sendMessage(group.id, helpText);
+        }
         return helpText;
-      }
-      //──── ISSUE ─────────────────────────────────────────────────────────────────────────────
-      if (text === '-i' || text === '-issue' || text === 'issue') {
+      } else if (text === '-i' || text === '-issue' || text === 'issue') {
         if (print === true) {
           console.log('USER CALLED ISSUE');
         }
+        if (test !== true) {
+          await bot.sendMessage(group.id, issueText);
+        }
 
-        // await bot.sendMessage(group.id, issueText);
         return issueText;
+      } else if (args.indexOf('-t') === -1 || args.indexOf('-m') === -1) {
+        if (test !== true) {
+          await bot.sendMessage(group.id, noArgsText);
+        }
+
+        return noArgsText;
       }
+
       break;
 
     //========================================================================================
