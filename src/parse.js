@@ -13,8 +13,11 @@ export const parse = (args) => {
         for (let i = args.indexOf("-t") + 1; i < args.length; i++) {
             resTimeArray.push(args[i]);
         }
-        message.text = resTimeArray.toString().replace(/,/g, " ");
-        message.time = resMessageArray.toString().replace(/,/g, " ");
+        message.time = resTimeArray.toString().replace(/,/g, " ");
+        message.text = resMessageArray.toString().replace(/,/g, " ");
+        // console.log("Message came first");
+
+        // console.log(message);
     } else if (args.indexOf("-t") < args.indexOf("-m")) {
         // FIXME make the res mesage stuff make sense
         for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
@@ -25,9 +28,13 @@ export const parse = (args) => {
         }
         message.time = resTimeArray.toString().replace(/,/g, " ");
         message.text = resMessageArray.toString().replace(/,/g, " ");
+        // console.log("Time came first");
+
+        // console.log(message);
     } else {
         message.time = "error";
         message.text = "error";
     }
+
     return message;
 };
