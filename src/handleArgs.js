@@ -1,4 +1,9 @@
-import { issueText, helpText, noArgsText } from "../responses/index";
+import {
+    issueText,
+    helpText,
+    noArgsText,
+    joinedGroup,
+} from "../responses/index";
 import { parse } from "./parse";
 
 let reminderArray = [];
@@ -10,7 +15,7 @@ const handleArgs = async (event, print, test) => {
     let args = [];
 
     if (typeof event !== "undefined" && print === true) {
-        console.log("----------------In handleArgs--------------------");
+        console.log(red, "----------------In handleArgs--------------------");
         // console.log(event);
     }
     if (typeof text !== "undefined") {
@@ -51,10 +56,10 @@ const handleArgs = async (event, print, test) => {
          *                                                                                      */
         //========================================================================================
         case "BotJoinGroup":
-            await bot.sendMessage(group.id, {
-                text: "group joined",
-            });
-            break;
+            if (test !== true) {
+                await bot.sendMessage(group.id, joinedGroup);
+            }
+            return joinedGroup;
     }
     return reminderArray;
 };
