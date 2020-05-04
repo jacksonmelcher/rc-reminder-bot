@@ -1,25 +1,38 @@
 import { parse } from "../src/parse";
+import moment from "moment";
 
-test("Should handle message then time", () => {
+const event = {
+    group: {
+        id: "696969",
+    },
+};
+
+test("Should handle message then time", async () => {
     const text = "-m message first -t 5/1/20 7:00pm";
     const args = text.split(" ");
     const message = {
         text: "message first",
-        time: "5/1/20 7:00pm",
+        timeCreated: moment(),
+        reminderTime: moment("5/1/20 7:00pm", "MM/DD/YY hh:mm a"),
+        creator: "Jackson Melcher",
+        groupId: "696969",
     };
-    const returned = parse(args);
+    const returned = await parse(args, event);
 
     expect(returned).toMatchObject(message);
 });
 
-test("Should handle message then time", () => {
+test("Should handle message then time", async () => {
     const text = "-t 5/1/20 7:00pm -m time first";
     const args = text.split(" ");
     const message = {
-        text: "time first",
-        time: "5/1/20 7:00pm",
+        text: "message first",
+        timeCreated: moment(),
+        reminderTime: moment("5/1/20 7:00pm", "MM/DD/YY hh:mm a"),
+        creator: "Jackson Melcher",
+        groupId: "696969",
     };
-    const returned = parse(args);
+    const returned = await parse(args, event);
 
     expect(returned).toMatchObject(message);
 });
