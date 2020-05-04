@@ -24,7 +24,8 @@ const handle = async (event) => {
     //   .add(1, 'minute')
     //   .format('MM/DD/YYY hh:mm a')}`;
 
-    await handleArgs(event, true, false);
+    let allReminders = await handleArgs(event, true, false);
+    console.log("Length: " + allReminders.length);
 
     // console.log(
     //     "==================EVENT==================" +
