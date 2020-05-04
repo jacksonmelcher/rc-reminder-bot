@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const parse = (args) => {
     let message = {
         text: "",
@@ -15,11 +17,7 @@ export const parse = (args) => {
         }
         message.time = resTimeArray.toString().replace(/,/g, " ");
         message.text = resMessageArray.toString().replace(/,/g, " ");
-        // console.log("Message came first");
-
-        // console.log(message);
     } else if (args.indexOf("-t") < args.indexOf("-m")) {
-        // FIXME make the res mesage stuff make sense
         for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
             resTimeArray.push(args[i]);
         }
@@ -28,9 +26,6 @@ export const parse = (args) => {
         }
         message.time = resTimeArray.toString().replace(/,/g, " ");
         message.text = resMessageArray.toString().replace(/,/g, " ");
-        // console.log("Time came first");
-
-        // console.log(message);
     } else {
         message.time = "error";
         message.text = "error";
