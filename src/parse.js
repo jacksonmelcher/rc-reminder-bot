@@ -2,11 +2,11 @@ import moment from "moment";
 
 export const parse = async (args, event) => {
     let message = {
-        text: "",
-        timeCreated: "",
-        reminderTime: "",
-        creator: "",
-        groupId: "",
+        text: null,
+        timeCreated: null,
+        reminderTime: null,
+        creator: null,
+        groupId: null,
     };
     let resTimeArray = [];
     let resMessageArray = [];
@@ -47,6 +47,17 @@ export const parse = async (args, event) => {
             console.log("GET USER ERROR: " + error + " name: " + fullUserName);
         }
     }
+    if (
+        moment() >=
+        moment(
+            resTimeArray.toString().replace(/,/g, " "),
+            "MM/DD/YY hh:mm a",
+            "MM/DD/YY hh:mm a"
+        )
+    ) {
+        return false;
+    }
+
     message.creator = username;
     message.reminderTime = moment(
         resTimeArray.toString().replace(/,/g, " "),
