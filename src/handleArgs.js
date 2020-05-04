@@ -3,6 +3,7 @@ import {
     helpText,
     noArgsText,
     joinedGroup,
+    timeAlreadyHappened,
 } from "../responses/index";
 import { parse } from "./parse";
 
@@ -45,20 +46,26 @@ const handleArgs = async (event, print, test) => {
                 return noArgsText;
             } else if (args.includes("-t") && args.includes("-m")) {
                 const message = await parse(args, event);
-                reminderArray.push(message);
-                console.log(cyan, "Creator: " + message.creator);
-                console.log(
-                    cyan,
-                    "Reminder Time: " +
-                        message.reminderTime.format("MM/DD/YY hh:mm a")
-                );
-                console.log(
-                    cyan,
-                    "Time created: " +
-                        message.timeCreated.format("MM/DD/YY hh:mm a")
-                );
-                console.log(cyan, "Message: " + message.text);
-                console.log(cyan, "GroupID: " + message.groupId);
+                if (message === false) {
+                    if (test !== true) {
+                        await bot.sendMessage(group.id, timeAlreadyHappened);
+                    }
+                } else {
+                    reminderArray.push(message);
+                    console.log(cyan, "Creator: " + message.creator);
+                    console.log(
+                        cyan,
+                        "Reminder Time: " +
+                            message.reminderTime.format("MM/DD/YY hh:mm a")
+                    );
+                    console.log(
+                        cyan,
+                        "Time created: " +
+                            message.timeCreated.format("MM/DD/YY hh:mm a")
+                    );
+                    console.log(cyan, "Message: " + message.text);
+                    console.log(cyan, "GroupID: " + message.groupId);
+                }
             }
 
             break;
