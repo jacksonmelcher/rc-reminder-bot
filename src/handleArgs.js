@@ -74,7 +74,7 @@ const handleArgs = async (event, print, test) => {
             }
             return joinedGroup;
     }
-    reminderArray.sort((a, b) => a.reminderTime - b.reminderTime);
+
     return reminderArray;
 };
 
