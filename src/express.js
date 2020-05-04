@@ -256,50 +256,50 @@ const handle = async (event) => {
         }
     }
     // ANCHOR group Joined
-    console.log("=========================TYPE=================\n" + type);
-    if (type === "BotJoinGroup") {
-        console.log("GROUP JOINED: " + JSON.stringify(group, null, 2));
-        await bot.sendMessage(group.id, {
-            attachments: [
-                {
-                    type: "Card",
+    // console.log("=========================TYPE=================\n" + type);
+    // if (type === "BotJoinGroup") {
+    //     console.log("GROUP JOINED: " + JSON.stringify(group, null, 2));
+    //     await bot.sendMessage(group.id, {
+    //         attachments: [
+    //             {
+    //                 type: "Card",
 
-                    author: {
-                        name: "Reminder Bot",
-                        // uri: 'https://example.com/author_link',
-                        // iconUri: 'https://example.com/author_icon.png',
-                    },
-                    title: "Instructions",
-                    text:
-                        "Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified " +
-                        "time. To use me you can send me a direct message or add me to a team. I am the first iteration" +
-                        " and lack features. As time passes and with your feedback, I will be updated with new features.",
+    //                 author: {
+    //                     name: "Reminder Bot",
+    //                     // uri: 'https://example.com/author_link',
+    //                     // iconUri: 'https://example.com/author_icon.png',
+    //                 },
+    //                 title: "Instructions",
+    //                 text:
+    //                     "Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified " +
+    //                     "time. To use me you can send me a direct message or add me to a team. I am the first iteration" +
+    //                     " and lack features. As time passes and with your feedback, I will be updated with new features.",
 
-                    fields: [
-                        {
-                            title: "Create a reminder",
-                            value:
-                                "@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message",
-                            style: "Long",
-                        },
-                        {
-                            title: "For help",
-                            value: "@Remind **help**",
-                            style: "Short",
-                        },
-                        {
-                            title: "To submit a bug/issue",
-                            value: "@Remind **issue**",
-                            style: "Short",
-                        },
-                    ],
-                    footnote: {
-                        text: "Created and maintained by RC on RC",
-                    },
-                },
-            ],
-        });
-    }
+    //                 fields: [
+    //                     {
+    //                         title: "Create a reminder",
+    //                         value:
+    //                             "@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message",
+    //                         style: "Long",
+    //                     },
+    //                     {
+    //                         title: "For help",
+    //                         value: "@Remind **help**",
+    //                         style: "Short",
+    //                     },
+    //                     {
+    //                         title: "To submit a bug/issue",
+    //                         value: "@Remind **issue**",
+    //                         style: "Short",
+    //                     },
+    //                 ],
+    //                 footnote: {
+    //                     text: "Created and maintained by RC on RC",
+    //                 },
+    //             },
+    //         ],
+    //     });
+    // }
 
     args = [];
     mentionId = "";
