@@ -5,7 +5,7 @@ import {
     joinedGroup,
     timeAlreadyHappened,
 } from "../responses/index";
-import { parse } from "./parse";
+import { createReminder } from "./createReminder";
 
 let reminderArray = [];
 const red = "\x1b[42m%s\x1b[0m";
@@ -45,7 +45,7 @@ const handleArgs = async (event, print, test) => {
                 }
                 return noArgsText;
             } else if (args.includes("-t") && args.includes("-m")) {
-                const message = await parse(args, event);
+                const message = await createReminder(args, event, test);
                 if (message === false) {
                     if (test !== true) {
                         await bot.sendMessage(group.id, timeAlreadyHappened);
@@ -53,18 +53,11 @@ const handleArgs = async (event, print, test) => {
                 } else {
                     reminderArray.push(message);
                     console.log(cyan, "Creator: " + message.creator);
-                    console.log(
-                        cyan,
-                        "Reminder Time: " +
-                            message.reminderTime.format("MM/DD/YY hh:mm a")
-                    );
-                    console.log(
-                        cyan,
-                        "Time created: " +
-                            message.timeCreated.format("MM/DD/YY hh:mm a")
-                    );
+                    console.log(cyan, "Reminder Time: " + message.reminderTime);
+                    console.log(cyan, "Time created: " + message.timeCreated);
                     console.log(cyan, "Message: " + message.text);
                     console.log(cyan, "GroupID: " + message.groupId);
+                    console.log(cyan, "Duration: " + message.duration);
                 }
             }
 
@@ -81,6 +74,7 @@ const handleArgs = async (event, print, test) => {
             }
             return joinedGroup;
     }
+    reminderArray.sort((a, b) => a.reminderTime - b.reminderTime);
     return reminderArray;
 };
 
