@@ -1,3 +1,4 @@
-export { issueText } from './issue';
-export { helpText } from './help';
-export { noArgsText } from './noArgs';
+export { issueText } from "./issue";
+export { helpText } from "./help";
+export { noArgsText } from "./noArgs";
+export { joinedGroup } from "./joinedGroup";
