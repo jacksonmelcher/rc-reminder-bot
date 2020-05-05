@@ -6,6 +6,9 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import handleArgs from "./handleArgs";
 // import reminderJson from "../json/reminders.json";
+const yellow = "\x1b[33m%s\x1b[0m";
+const cyan = "\x1b[36m%s\x1b[0m";
+const red = "\x1b[42m%s\x1b[0m";
 
 let allReminders = [];
 let newReminders = [];
@@ -15,28 +18,27 @@ let arrayBool = false;
 
 const handle = async (event) => {
     const { type, text, group, bot, message } = event;
+    let reminderMessage;
+    let reminderTime;
+    let timeCreated;
+    let creator;
+    let groupId;
+    let duration;
 
-    let resMessageString = "";
-
-    let fullUserName = "";
-
-    const yellow = "\x1b[33m%s\x1b[0m";
-    const cyan = "\x1b[36m%s\x1b[0m";
     // allReminders = JSON.parse(reminderJson);
     // console.log(allReminders);
     // console.log(typeof reminderJson);
 
-    let newReminders = await handleArgs(event, true, false);
+    newReminders = await handleArgs(event, true, false);
     newReminders.sort((a, b) => a.reminderTime - b.reminderTime);
     // allReminders = allReminders.concat(newReminders);
     // allReminders.sort((a, b) => a.reminderTime - b.reminderTime);
-    // console.log("Length: " + newReminders.length);
+    console.log(red, "Length: " + newReminders.length);
 
     arrayBool = true;
 
     // let reminder = new Reminder();
     // Check to ee if reminder is in the past
-    console.log(yellow, "In express");
 
     // if (newReminders.length > 0) {
     //     for (let i in newReminders) {
@@ -72,42 +74,53 @@ const handle = async (event) => {
 
     // ANCHOR Set timeout
     if (newReminders.length > 0) {
-        console.log(yellow, newReminders[0]);
-        setTimeout(() => {
-            bot.sendMessage(newReminders[0].groupId, {
-                attachments: [
-                    {
-                        type: "Card",
-                        text: `**${newReminders[0].text}**`,
-                        footnote: {
-                            text: `Reminder created by ${newReminders[0].creator}`,
-                        },
-                    },
-                ],
-            });
-        }, newReminders[0].duration);
+        reminderMessage = newReminders[0].text;
+        reminderTime = newReminders[0].reminderTime;
+        timeCreated = newReminders[0].timeCreated;
+        creator = newReminders[0].creator;
+        groupId = newReminders[0].groupId;
+        duration = newReminders[0].duration.as("milliseconds");
+        console.log(yellow, reminderMessage);
+        console.log(yellow, reminderTime);
+        console.log(yellow, timeCreated);
+        console.log(yellow, creator);
+        console.log(yellow, groupId);
+        console.log(yellow, duration);
+
+        if (moment() >= reminderTime) {
+            console.log(red, "NOTIFICATION TIME");
+        }
+
+        // setTimeout(async () => {
+        //     try {
+        //         // if (typeof bot !== "undefined") {
+        //         await bot.sendMessage(group.id, {
+        //             attachments: [
+        //                 {
+        //                     type: "Card",
+        //                     text: `**${newReminders[0].text}**`,
+        //                     footnote: {
+        //                         text: `Reminder created by ${newReminders[0].creator}`,
+        //                     },
+        //                 },
+        //             ],
+        //         });
+        //         // }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // }, newReminders[0].duration.as("milliseconds"));
     }
+    setInterval(() => {
+        console.log("Interval");
+    }, 850);
 };
+console.log("Length before interval: " + newReminders.length);
+// // ANCHOR Array monitor and manipulation
 
 const app = createApp(handle);
 
 app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
-
-// ANCHOR Array monitor and manipulation
-setInterval(() => {
-    if (newReminders.length > 0) {
-        if (moment() >= newReminders[0].reminderTime) {
-            console.log(newReminders[0].reminderText);
-            newReminders.shift();
-            let jsonData = JSON.stringify(newReminders, null, 2);
-            fs.writeFile("json/reminders.json", jsonData, function (err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        }
-    }
-}, 2000);
 
 setInterval(
     async () =>
