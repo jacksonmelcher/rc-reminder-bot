@@ -51,6 +51,9 @@ const handleArgs = async (event, print, test) => {
                         await bot.sendMessage(group.id, timeAlreadyHappened);
                     }
                 } else {
+                    await bot.sendMessage(group.id, {
+                        text: `Reminder set ⏰, I will send you a reminder in **${message.duration.humanize()}**`,
+                    });
                     reminderArray.push(message);
                     console.log(cyan, "Creator: " + message.creator);
                     console.log(cyan, "Reminder Time: " + message.reminderTime);
