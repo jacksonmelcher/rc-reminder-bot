@@ -69,9 +69,9 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
         );
     }
     message.groupId = group.id;
-    message.duration = moment
-        .duration(message.reminderTime.diff(moment.timeCreated))
-        .as("milliseconds");
+    message.duration = moment.duration(
+        message.reminderTime.diff(moment.timeCreated)
+    );
 
     return message;
 };
