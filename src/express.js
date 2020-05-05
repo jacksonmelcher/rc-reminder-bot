@@ -87,10 +87,6 @@ const handle = async (event) => {
         console.log(yellow, groupId);
         console.log(yellow, duration);
 
-        if (moment() >= reminderTime) {
-            console.log(red, "NOTIFICATION TIME");
-        }
-
         // setTimeout(async () => {
         //     try {
         //         // if (typeof bot !== "undefined") {
@@ -111,12 +107,46 @@ const handle = async (event) => {
         //     }
         // }, newReminders[0].duration.as("milliseconds"));
     }
-    setInterval(() => {
-        console.log("Interval");
-    }, 850);
+    // if()
+    // moment() newReminders[0].duration.as("milliseconds")
+    setTimeout(async () => {
+        if (typeof bot !== "undefined") {
+            await bot.sendMessage(groupId, {
+                attachments: [
+                    {
+                        type: "Card",
+                        text: `**${reminderMessage}**`,
+                        footnote: {
+                            text: `Reminder created by ${creator}`,
+                        },
+                    },
+                ],
+            });
+        }
+    }, duration);
 };
-console.log("Length before interval: " + newReminders.length);
+
 // // ANCHOR Array monitor and manipulation
+setInterval(() => {
+    if (newReminders.length > 0) {
+        console.log("Length: " + newReminders.length);
+        console.log(
+            "Reminder Time: " +
+                newReminders[0].reminderTime.format("MM/DD/YYYY hh:mm")
+        );
+        console.log("Current Time: " + moment().format("MM/DD/YYYY hh:mm"));
+        if (moment() >= newReminders[0].reminderTime) {
+            console.log(newReminders[0].text);
+            newReminders.shift();
+            let jsonData = JSON.stringify(newReminders, null, 2);
+            fs.writeFile("json/reminders.json", jsonData, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
+    }
+}, 800);
 
 const app = createApp(handle);
 
