@@ -1,11 +1,11 @@
 import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
-import Reminder from "../models/Reminder";
+
 import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
+
 import fs from "fs";
 import handleArgs from "./handleArgs";
-// import reminderJson from "../json/reminders.json";
+
 const yellow = "\x1b[33m%s\x1b[0m";
 const cyan = "\x1b[36m%s\x1b[0m";
 const red = "\x1b[42m%s\x1b[0m";
@@ -14,10 +14,9 @@ let allReminders = [];
 let newReminders = [];
 
 let arrayBool = false;
-// allReminders = JSON.parse(reminderJson);
 
 const handle = async (event) => {
-    const { type, text, group, bot, message } = event;
+    const { bot } = event;
     let reminderMessage;
     let reminderTime;
     let timeCreated;
@@ -26,7 +25,7 @@ const handle = async (event) => {
     let duration;
 
     // allReminders = JSON.parse(reminderJson);
-    // console.log(allReminders);
+    console.log(yellow, JSON.stringify(event, null, 2));
     // console.log(typeof reminderJson);
 
     newReminders = await handleArgs(event, true, false);
@@ -55,12 +54,12 @@ const handle = async (event) => {
         creator = newReminders[0].creator;
         groupId = newReminders[0].groupId;
         duration = newReminders[0].duration.as("milliseconds");
-        console.log(yellow, reminderMessage);
-        console.log(yellow, reminderTime);
-        console.log(yellow, timeCreated);
-        console.log(yellow, creator);
-        console.log(yellow, groupId);
-        console.log(yellow, duration);
+        // console.log(yellow, reminderMessage);
+        // console.log(yellow, reminderTime);
+        // console.log(yellow, timeCreated);
+        // console.log(yellow, creator);
+        // console.log(yellow, groupId);
+        // console.log(yellow, duration);
     }
 
     setTimeout(async () => {
