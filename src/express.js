@@ -25,14 +25,14 @@ const handle = async (event) => {
     let duration;
 
     // allReminders = JSON.parse(reminderJson);
-    console.log(yellow, JSON.stringify(event, null, 2));
+    // console.log(yellow, JSON.stringify(event, null, 2));
     // console.log(typeof reminderJson);
 
     newReminders = await handleArgs(event, true, false);
     newReminders.sort((a, b) => a.reminderTime - b.reminderTime);
     // allReminders = allReminders.concat(newReminders);
     // allReminders.sort((a, b) => a.reminderTime - b.reminderTime);
-    console.log(red, "Length: " + newReminders.length);
+    // console.log(red, "Length: " + newReminders.length);
 
     arrayBool = true;
 
