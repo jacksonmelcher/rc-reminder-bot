@@ -37,31 +37,6 @@ const handle = async (event) => {
 
     arrayBool = true;
 
-    // let reminder = new Reminder();
-    // Check to ee if reminder is in the past
-
-    // if (newReminders.length > 0) {
-    //     for (let i in newReminders) {
-    //         console.log("{");
-    //         console.log(yellow, "Creator: " + newReminders[i].creator);
-    //         console.log(yellow, "CreatorID: " + newReminders[i].creatorId);
-    //         console.log(
-    //             yellow,
-    //             "Reminder Time: " +
-    //                 newReminders[i].reminderTime.format("MM/DD/YY hh:mm a")
-    //         );
-    //         console.log(
-    //             yellow,
-    //             "Time created: " +
-    //                 newReminders[i].timeCreated.format("MM/DD/YY hh:mm a")
-    //         );
-    //         console.log(yellow, "Message: " + newReminders[i].text);
-    //         console.log(yellow, "GroupID: " + newReminders[i].groupId);
-    //         console.log(yellow, "Duration: " + newReminders[i].duration);
-    //         console.log("}");
-    //     }
-    // }
-
     if (arrayBool === true) {
         let jsonData = JSON.stringify(newReminders, null, 2);
         fs.writeFile("json/reminders.json", jsonData, (err) => {
@@ -86,29 +61,8 @@ const handle = async (event) => {
         console.log(yellow, creator);
         console.log(yellow, groupId);
         console.log(yellow, duration);
-
-        // setTimeout(async () => {
-        //     try {
-        //         // if (typeof bot !== "undefined") {
-        //         await bot.sendMessage(group.id, {
-        //             attachments: [
-        //                 {
-        //                     type: "Card",
-        //                     text: `**${newReminders[0].text}**`,
-        //                     footnote: {
-        //                         text: `Reminder created by ${newReminders[0].creator}`,
-        //                     },
-        //                 },
-        //             ],
-        //         });
-        //         // }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }, newReminders[0].duration.as("milliseconds"));
     }
-    // if()
-    // moment() newReminders[0].duration.as("milliseconds")
+
     setTimeout(async () => {
         if (typeof bot !== "undefined") {
             await bot.sendMessage(groupId, {
