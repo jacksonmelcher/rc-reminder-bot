@@ -39,8 +39,6 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
         } catch (error) {
             console.log("GET USER ERROR: " + error + " name: " + username);
         }
-    } else {
-        username = "Jackson Melcher";
     }
     if (
         moment() >=
@@ -52,6 +50,13 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
     ) {
         return false;
     }
+    console.log(
+        moment(
+            resTimeArray.toString().replace(/,/g, " "),
+            "MM/DD/YY hh:mm a",
+            "MM/DD/YY hh:mm a"
+        )
+    );
 
     message.creator = username;
     message.creatorId = userId;
