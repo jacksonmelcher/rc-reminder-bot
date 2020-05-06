@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export const createReminder = async (args, { bot, group, userId }, test) => {
+    console.log("ARGS" + args);
     let message = {
         text: null,
         timeCreated: null,
@@ -58,17 +59,18 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
 
     message.text = resMessageArray.toString().replace(/,/g, " ");
 
-    if (test === true) {
-        message.timeCreated = "2020-05-04T22:00:23.426Z";
-        message.reminderTime = "2020-05-04T23:20:00.000Z";
-    } else {
-        message.timeCreated = moment();
-        message.reminderTime = moment(
-            resTimeArray.toString().replace(/,/g, " "),
-            "MM/DD/YY hh:mm a"
-        );
-    }
+    message.timeCreated = "2020-05-04T22:00:23.426Z";
+    message.reminderTime = "2020-05-04T23:20:00.000Z";
+
+    message.timeCreated = moment();
+    message.reminderTime = moment(
+        resTimeArray.toString().replace(/,/g, " "),
+        "MM/DD/YY hh:mm a"
+    );
+
     message.groupId = group.id;
+
+    console.log("REMINDER TIME:" + message.reminderTime);
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
