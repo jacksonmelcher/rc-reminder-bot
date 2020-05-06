@@ -1,7 +1,6 @@
 import moment from "moment";
 
 let time = moment().add(10, "minutes").format("MM/DD/YY hh:mm a");
-console.log(time.toString());
 
 export const testEvent = {
     type: "Message4Bot",

@@ -30,9 +30,6 @@ const handle = async (event) => {
 
     newReminders = await handleArgs(event, true, false);
     newReminders.sort((a, b) => a.reminderTime - b.reminderTime);
-    // allReminders = allReminders.concat(newReminders);
-    // allReminders.sort((a, b) => a.reminderTime - b.reminderTime);
-    // console.log(red, "Length: " + newReminders.length);
 
     arrayBool = true;
 
@@ -54,12 +51,6 @@ const handle = async (event) => {
         creator = newReminders[0].creator;
         groupId = newReminders[0].groupId;
         duration = newReminders[0].duration.as("milliseconds");
-        // console.log(yellow, reminderMessage);
-        // console.log(yellow, reminderTime);
-        // console.log(yellow, timeCreated);
-        // console.log(yellow, creator);
-        // console.log(yellow, groupId);
-        // console.log(yellow, duration);
     }
 
     setTimeout(async () => {
