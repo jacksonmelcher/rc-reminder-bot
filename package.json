@@ -27,8 +27,7 @@
         "jshint": "^2.11.0",
         "moment": "^2.24.0",
         "ringcentral-chatbot": "^1.2.5",
-        "sqlite3": "^4.1.1",
-        "uuid": "^7.0.3"
+        "sqlite3": "^4.1.1"
     },
     "standard": {
         "ignore": [
