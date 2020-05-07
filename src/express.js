@@ -2,7 +2,7 @@ import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
 import moment from "moment";
 import fs from "fs";
-import handleArgs from "./handleArgs";
+import { eventHandler } from "./eventHandler";
 
 const yellow = "\x1b[33m%s\x1b[0m";
 const cyan = "\x1b[36m%s\x1b[0m";
@@ -24,13 +24,9 @@ const handle = async (event) => {
     let newReminders = JSON.parse(
         fs.readFileSync("json/completed-reminders.json", "utf8")
     );
-    // console.log(obj[0]);
 
-    // allReminders = JSON.parse(reminderJson);
-    // console.log(yellow, JSON.stringify(event, null, 2));
-    // console.log(typeof reminderJson);
     try {
-        newReminders = await handleArgs(event, true, false);
+        newReminders = await eventHandler(event, true, false);
         if (newReminders.length > 0) {
             newReminders.sort((a, b) => a.reminderTime - b.reminderTime);
         }
