@@ -22,9 +22,9 @@ const handle = async (event) => {
     let groupId;
     let duration;
 
-    let newReminders = JSON.parse(
-        fs.readFileSync("json/completed-reminders.json", "utf8")
-    );
+    // let newReminders = JSON.parse(
+    //     fs.readFileSync("json/completed-reminders.json", "utf8")
+    // );
 
     try {
         newReminders = await eventHandler(event, true, false);
@@ -75,7 +75,7 @@ const handle = async (event) => {
 };
 
 // // ANCHOR Array monitor and manipulation
-setInterval(() => remind(), 2000);
+// setInterval(() => remind(), 2000);
 
 const app = createApp(handle);
 
