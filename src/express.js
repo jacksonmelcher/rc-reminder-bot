@@ -21,7 +21,7 @@ const handle = async (event) => {
     let creator;
     let groupId;
     let duration;
-
+    // bot.ensureWebhook();
     // let newReminders = JSON.parse(
     //     fs.readFileSync("json/completed-reminders.json", "utf8")
     // );
