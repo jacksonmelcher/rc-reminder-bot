@@ -13,6 +13,7 @@ let newReminders = [];
 let arrayBool = false;
 
 const handle = async (event) => {
+    //test
     const { bot } = event;
     let reminderMessage;
     let reminderTime;
