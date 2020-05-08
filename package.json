@@ -1,15 +1,15 @@
 {
-    "name": "glip-announcements",
+    "name": "rc-reminder-bot",
     "version": "1.0.0",
-    "description": "Announcement bot for Glip",
+    "description": "Announcement/Reminder bot for RC",
     "main": "express.js",
-    "repository": "https://github.com/jacksonmelcher/Glip-Announcements.git",
+    "repository": "https://github.com/jacksonmelcher/rc-reminder-bot.git",
     "author": "Jackson Melcher <jackson.melcher@ringcentral.com>",
     "license": "MIT",
     "scripts": {
         "dev": "nodemon -r @babel/register -r dotenv/config src/express.js",
         "test": "jest --watch",
-        "ngrok": "npx ngrok http  3000",
+        "ngrok": "npx ngrok http 3000",
         "start": "node -r @babel/register -r dotenv/config src/express.js"
     },
     "devDependencies": {
