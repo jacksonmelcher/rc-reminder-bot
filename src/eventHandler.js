@@ -24,7 +24,7 @@ export const eventHandler = async (event) => {
 
         case "BotJoinGroup":
     }
-    // // console.log(reminderArray);
+
     return reminderArray;
 };
 
@@ -65,13 +65,13 @@ const handleMessage4Bot = async (event) => {
             name: "Remind",
             botId: bot.id,
             groupId: group.id,
-            userId: message.creatorId,
+            userId: creator,
             data: {
-                text: message.text,
-                timeCreated: message.timeCreated,
-                creator: message.creator,
-                reminderTime: message.reminderTime,
-                duration: message.duration,
+                text,
+                timeCreated,
+                creator,
+                reminderTime,
+                duration,
             },
         });
         console.log(

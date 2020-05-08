@@ -3,6 +3,7 @@ import createApp from "ringcentral-chatbot/dist/apps";
 import moment from "moment";
 import fs from "fs";
 import { eventHandler } from "./eventHandler";
+import remind from "./remind";
 
 const yellow = "\x1b[33m%s\x1b[0m";
 const cyan = "\x1b[36m%s\x1b[0m";
@@ -74,26 +75,7 @@ const handle = async (event) => {
 };
 
 // // ANCHOR Array monitor and manipulation
-setInterval(() => {
-    if (newReminders.length > 0) {
-        console.log("Length: " + newReminders.length);
-        console.log(
-            "Reminder Time: " +
-                newReminders[0].reminderTime.format("MM/DD/YYYY hh:mm")
-        );
-        console.log("Current Time: " + moment().format("MM/DD/YYYY hh:mm"));
-        if (moment() >= newReminders[0].reminderTime) {
-            console.log(newReminders[0].text);
-            newReminders.shift();
-            let jsonData = JSON.stringify(newReminders, null, 2);
-            fs.writeFile("json/reminders.json", jsonData, function (err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        }
-    }
-}, 800);
+setInterval(() => remind(), 2000);
 
 const app = createApp(handle);
 
@@ -115,3 +97,22 @@ setInterval(
 );
 
 export default handle;
+
+// if (newReminders.length > 0) {
+//     console.log("Length: " + newReminders.length);
+//     console.log(
+//         "Reminder Time: " +
+//             newReminders[0].reminderTime.format("MM/DD/YYYY hh:mm")
+//     );
+//     console.log("Current Time: " + moment().format("MM/DD/YYYY hh:mm"));
+//     if (moment() >= newReminders[0].reminderTime) {
+//         console.log(newReminders[0].text);
+//         newReminders.shift();
+//         let jsonData = JSON.stringify(newReminders, null, 2);
+//         fs.writeFile("json/reminders.json", jsonData, function (err) {
+//             if (err) {
+//                 console.log(err);
+//             }
+//         });
+//     }
+// }
