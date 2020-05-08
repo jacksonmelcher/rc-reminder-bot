@@ -22,9 +22,9 @@ const handle = async (event) => {
     let groupId;
     let duration;
 
-    let newReminders = JSON.parse(
-        fs.readFileSync("json/completed-reminders.json", "utf8")
-    );
+    // let newReminders = JSON.parse(
+    //     fs.readFileSync("json/completed-reminders.json", "utf8")
+    // );
     // console.log(obj[0]);
 
     // allReminders = JSON.parse(reminderJson);
