@@ -8,6 +8,7 @@ import {
 import { createReminder } from "./createReminder";
 import { Service, Bot } from "ringcentral-chatbot/dist/models";
 import handle from "./express";
+import moment from "moment";
 
 let reminderArray = [];
 const red = "\x1b[42m%s\x1b[0m";
@@ -47,6 +48,9 @@ const handleMessage4Bot = async (event) => {
         await bot.sendMessage(group.id, issueText);
 
         return issueText;
+    } else if (text === "clear") {
+        const res = await removeAll();
+        await bot.sendMessage(group.id, res);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
 
@@ -90,6 +94,36 @@ const handleMessage4Bot = async (event) => {
 
             reminderArray.push(message);
         }
+    }
+};
+
+const remove = async (args, group) => {
+    let id = args.split(/\s+/)[0];
+    if (id.startsWith("#")) {
+        id = id.substring(1);
+    }
+    const service = await Service.findByPk(id);
+    if (service === null) {
+        return { text: `Cannot find cron job #${id}` };
+    }
+    if (service.groupId === group.id) {
+        await service.destroy();
+        return { text: `Cron job #${id} deleted` };
+    } else {
+        return { text: `You don't have perission to delete #${id}` };
+    }
+};
+
+const removeAll = async () => {
+    const service = await Service.findAll({ where: { name: "Remind" } });
+    if (service === null) {
+        return { text: "Array empty" };
+    } else {
+        for (let i = 0; i < service.length; i++) {
+            console.log("SERVICE: " + service[i].groupId);
+            await service[i].destroy();
+        }
+        return { text: "cleared" };
     }
 };
 
