@@ -13,7 +13,7 @@ const red = "\x1b[42m%s\x1b[0m";
 const cyan = "\x1b[36m%s\x1b[0m";
 
 export const eventHandler = async (event) => {
-    const { text, bot, type, group } = event;
+    const { type } = event;
 
     switch (type) {
         case "Message4Bot":
@@ -82,10 +82,7 @@ const handleMessage4Bot = async (event) => {
                     duration,
                 },
             });
-            console.log(
-                red,
-                `Service: ${service.id} - ${service.data.creator} - ${service.groupId} - ${service.data.text} `
-            );
+
             await bot.sendMessage(group.id, {
                 text: `Reminder set ⏰, I will send you a reminder in **${message.duration.humanize()}**`,
             });
@@ -99,9 +96,6 @@ const removeAll = async (id) => {
     const service = await Service.findAll({
         where: { name: "Remind", userId: id },
     });
-    // console.log(service[0]);
-    console.log("ID: " + id);
-    console.log("ID NEEDED: " + service[0].userId);
 
     if (service.length === 0) {
         return { text: "Array empty" };
@@ -110,7 +104,7 @@ const removeAll = async (id) => {
             console.log("SERVICE: " + service[i].userId);
             await service[i].destroy();
         }
-        return { text: "cleared" };
+        return { text: "Cleared" };
     }
 };
 
