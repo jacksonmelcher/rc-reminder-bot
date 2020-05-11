@@ -54,8 +54,6 @@ export const createReminder = async (args, { bot, group, userId }) => {
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = "2020-05-04T22:00:23.426Z";
-    message.reminderTime = "2020-05-04T23:20:00.000Z";
     message.timeCreated = moment();
     message.reminderTime = moment(
         resTimeArray.toString().replace(/,/g, " "),
