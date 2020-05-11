@@ -1,4 +1,5 @@
 import { Service, Bot } from "ringcentral-chatbot/dist/models";
+
 import moment from "moment";
 
 const remind = async () => {
@@ -16,6 +17,7 @@ const remind = async () => {
             let groupId = sorted[0].groupId;
             let text = sorted[0].data.text;
             let botId = sorted[0].botId;
+            let creator = sorted[0].data.creator;
 
             let tempService = await Service.findByPk(id);
             console.log("Sending Message");
@@ -23,7 +25,15 @@ const remind = async () => {
             const bot = await Bot.findByPk(botId);
             try {
                 await bot.sendMessage(groupId, {
-                    text: text,
+                    attachments: [
+                        {
+                            type: "Card",
+                            text: `**${text}**`,
+                            footnote: {
+                                text: `Reminder created by ${creator}`,
+                            },
+                        },
+                    ],
                 });
             } catch (error) {
                 console.log(error);
