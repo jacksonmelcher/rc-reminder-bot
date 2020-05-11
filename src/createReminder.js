@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const createReminder = async (args, { bot, group, userId }, test) => {
+export const createReminder = async (args, { bot, group, userId }) => {
     let message = {
         text: null,
         timeCreated: null,
@@ -31,7 +31,7 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
     } else {
         message = null;
     }
-    if (typeof bot !== "undefined" && test === false) {
+    if (typeof bot !== "undefined") {
         try {
             const user = await bot.getUser(userId);
             const { name } = user.rc;
@@ -50,19 +50,10 @@ export const createReminder = async (args, { bot, group, userId }, test) => {
     ) {
         return false;
     }
-    console.log(
-        moment(
-            resTimeArray.toString().replace(/,/g, " "),
-            "MM/DD/YY hh:mm a",
-            "MM/DD/YY hh:mm a"
-        )
-    );
 
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = "2020-05-04T22:00:23.426Z";
-    message.reminderTime = "2020-05-04T23:20:00.000Z";
     message.timeCreated = moment();
     message.reminderTime = moment(
         resTimeArray.toString().replace(/,/g, " "),
