@@ -2,8 +2,8 @@ import { put } from "axios";
 import createApp from "ringcentral-chatbot/dist/apps";
 // import moment from "moment";
 // import fs from "fs";
-// import { eventHandler } from "./eventHandler";
-// import remind from "./remind";
+import { eventHandler } from "./eventHandler";
+import remind from "./remind";
 
 // const yellow = "\x1b[33m%s\x1b[0m";
 // const cyan = "\x1b[36m%s\x1b[0m";
@@ -22,21 +22,11 @@ const handle = async (event) => {
     let duration;
 
     const { text, bot, type, group } = event;
-    console.log(event);
-    switch (type) {
-        case "Message4Bot":
-            await bot.sendMessage(group.id, {
-                text: "PLEASE WORK",
-            });
 
-            break;
-
-        case "BotJoinGroup":
-    }
     // let newReminders = JSON.parse(
     //     fs.readFileSync("json/completed-reminders.json", "utf8")
     // );
-    // await eventHandler(event);
+    await eventHandler(event);
     // try {
 
     //     if (newReminders.length > 0) {
@@ -86,7 +76,7 @@ const handle = async (event) => {
 };
 
 // ANCHOR Array monitor and manipulation
-// setInterval(() => remind(), 2000);
+setInterval(() => remind(), 2000);
 
 const app = createApp(handle);
 
@@ -104,7 +94,7 @@ setInterval(
                 },
             }
         ),
-    64000
+    24 * 60 * 60 * 1000
 );
 
 // export default handle;
