@@ -9,7 +9,7 @@ This is currently in production and will only work locally.
 ### Clone Repo
 
 ```
-git clone https://github.com/jacksonmelcher/Glip-Announcements.git
+git clone https://github.com/jacksonmelcher/rc-reminder-bot.git
 ```
 
 ### Install dependencies
