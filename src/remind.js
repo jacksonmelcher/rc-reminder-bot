@@ -56,18 +56,6 @@ const remind = async () => {
     console.log("=========================================");
     for (const s of sorted) {
         console.log(moment(s.data.reminderTime).format("MM/DD/YY hh:mm a"));
-        // console.log(
-        //     "reminder time: " +
-        //         s.data.reminderTime +
-        //         " " +
-        //         typeof s.data.reminderTime
-        // );
-        // console.log(
-        //     "time created: " +
-        //         moment(s.data.timeCreated).format("MM/DD/YY hh:mm a") +
-        //         " " +
-        //         typeof s.data.timeCreated
-        // );
     }
 };
 

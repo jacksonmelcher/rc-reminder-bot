@@ -7,8 +7,6 @@ import {
 } from "../responses/index";
 import { createReminder } from "./createReminder";
 import { Service, Bot } from "ringcentral-chatbot/dist/models";
-import handle from "./express";
-import moment from "moment";
 
 let reminderArray = [];
 const red = "\x1b[42m%s\x1b[0m";
@@ -30,7 +28,7 @@ export const eventHandler = async (event) => {
 };
 
 const handleMessage4Bot = async (event) => {
-    const { text, group, bot } = event;
+    const { text, group, bot, userId } = event;
     let args = [];
 
     if (typeof text !== "undefined") {
@@ -49,7 +47,7 @@ const handleMessage4Bot = async (event) => {
 
         return issueText;
     } else if (text === "clear") {
-        const res = await removeAll();
+        const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
@@ -63,31 +61,31 @@ const handleMessage4Bot = async (event) => {
         let text = message.text;
         let timeCreated = message.timeCreated;
         let creator = message.creator;
+        let creatorId = message.creatorId;
         let reminderTime = message.reminderTime;
         let duration = message.duration;
-        const service = await Service.create({
-            name: "Remind",
-            botId: bot.id,
-            groupId: group.id,
-            userId: creator,
-            data: {
-                text,
-                timeCreated,
-                creator,
-                reminderTime,
-                duration,
-            },
-        });
-        console.log(
-            red,
-            `Service: ${service.id} - ${service.data.creator} - ${service.groupId} - ${service.data.text} `
-        );
         if (message === false) {
             console.log("TIME ALREADY HAPPENED");
-            // if (test !== true) {
-            //     await bot.sendMessage(group.id, timeAlreadyHappened);
-            // }
+            await bot.sendMessage(group.id, timeAlreadyHappened);
+            return;
         } else {
+            const service = await Service.create({
+                name: "Remind",
+                botId: bot.id,
+                groupId: group.id,
+                userId: creatorId,
+                data: {
+                    text,
+                    timeCreated,
+                    creator,
+                    reminderTime,
+                    duration,
+                },
+            });
+            console.log(
+                red,
+                `Service: ${service.id} - ${service.data.creator} - ${service.groupId} - ${service.data.text} `
+            );
             await bot.sendMessage(group.id, {
                 text: `Reminder set ⏰, I will send you a reminder in **${message.duration.humanize()}**`,
             });
@@ -97,30 +95,19 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const remove = async (args, group) => {
-    let id = args.split(/\s+/)[0];
-    if (id.startsWith("#")) {
-        id = id.substring(1);
-    }
-    const service = await Service.findByPk(id);
-    if (service === null) {
-        return { text: `Cannot find cron job #${id}` };
-    }
-    if (service.groupId === group.id) {
-        await service.destroy();
-        return { text: `Cron job #${id} deleted` };
-    } else {
-        return { text: `You don't have perission to delete #${id}` };
-    }
-};
+const removeAll = async (id) => {
+    const service = await Service.findAll({
+        where: { name: "Remind", userId: id },
+    });
+    // console.log(service[0]);
+    console.log("ID: " + id);
+    console.log("ID NEEDED: " + service[0].userId);
 
-const removeAll = async () => {
-    const service = await Service.findAll({ where: { name: "Remind" } });
-    if (service === null) {
+    if (service.length === 0) {
         return { text: "Array empty" };
     } else {
         for (let i = 0; i < service.length; i++) {
-            console.log("SERVICE: " + service[i].groupId);
+            console.log("SERVICE: " + service[i].userId);
             await service[i].destroy();
         }
         return { text: "cleared" };
