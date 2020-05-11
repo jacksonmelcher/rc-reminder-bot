@@ -10,8 +10,37 @@ const remind = async () => {
         sorted = services.sort(
             (a, b) => moment(a.data.reminderTime) - moment(b.data.reminderTime)
         );
+
+        if (moment() >= moment(sorted[0].data.reminderTime)) {
+            let id = sorted[0].id;
+            let groupId = sorted[0].groupId;
+            let text = sorted[0].data.text;
+            let botId = sorted[0].botId;
+
+            let tempService = await Service.findByPk(id);
+            console.log("Sending Message");
+
+            const bot = await Bot.findByPk(botId);
+            try {
+                await bot.sendMessage(groupId, {
+                    text: text,
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            console.log(text);
+
+            sorted.shift();
+            console.log("removed from sorted");
+            await tempService.destroy();
+            console.log("Deleted from database");
+
+            services = await Service.findAll({ where: { name: "Remind" } });
+        }
     } else {
         console.log("empty");
+        return;
     }
 
     console.log("=========================================");
