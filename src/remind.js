@@ -39,8 +39,6 @@ const remind = async () => {
                 console.log(error);
             }
 
-            console.log(text);
-
             sorted.shift();
 
             await tempService.destroy();
