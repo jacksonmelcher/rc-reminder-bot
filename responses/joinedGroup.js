@@ -34,6 +34,11 @@ export const joinedGroup = {
                     value: "@Remind **clear**",
                     style: "Short",
                 },
+                {
+                    title: "List all active reminders",
+                    value: "@Remind **list**",
+                    style: "Short",
+                },
             ],
             footnote: {
                 text: "Created and maintained by RC on RC",
