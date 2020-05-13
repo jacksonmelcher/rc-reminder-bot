@@ -1,5 +1,6 @@
 import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
+import moment from "moment";
 
 import {
     issueText,
@@ -36,14 +37,14 @@ const handleMessage4Bot = async (event) => {
 
         return helpText;
     } else if (text === "-i" || text === "-issue" || text === "issue") {
-        console.log("USER HAS ISSUE");
-
         await bot.sendMessage(group.id, issueText);
 
         return issueText;
     } else if (text === "clear") {
         const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
+    } else if (text === "-l" || text === "-list" || text === "list") {
+        await list(event);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
 
@@ -98,6 +99,49 @@ const removeAll = async (id) => {
             await service[i].destroy();
         }
         return { text: "Cleared" };
+    }
+};
+
+const list = async ({ bot, userId, group }) => {
+    const services = await Service.findAll({
+        where: { name: "Remind", userId: userId },
+    });
+    let tempArr = [];
+    let tempField = {
+        title: null,
+        value: null,
+        style: null,
+    };
+
+    if (services.length === 0) {
+        await bot.sendMessage(group.id, { text: "No reminders" });
+    } else {
+        let sorted = services.sort(
+            (a, b) => moment(a.data.reminderTime) - moment(b.data.reminderTime)
+        );
+        for (const s of sorted) {
+            tempField = {
+                title: moment(s.data.reminderTime).format(
+                    "MMMM Do YYYY, h:mm a"
+                ),
+                value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
+                style: "Long",
+            };
+            tempArr.push(tempField);
+        }
+
+        await bot.sendMessage(group.id, {
+            attachments: [
+                {
+                    type: "Card",
+                    text: "**__Current Reminders__**",
+                    fields: tempArr,
+                    footnote: {
+                        text: "Created and maintained by RC on RC",
+                    },
+                },
+            ],
+        });
     }
 };
 
