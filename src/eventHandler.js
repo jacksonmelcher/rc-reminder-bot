@@ -37,15 +37,13 @@ const handleMessage4Bot = async (event) => {
 
         return helpText;
     } else if (text === "-i" || text === "-issue" || text === "issue") {
-        console.log("USER HAS ISSUE");
-
         await bot.sendMessage(group.id, issueText);
 
         return issueText;
     } else if (text === "clear") {
         const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
-    } else if (text === "-l") {
+    } else if (text === "-l" || text === "-list" || text === "list") {
         await list(event);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
@@ -136,7 +134,6 @@ const list = async ({ bot, userId, group }) => {
             attachments: [
                 {
                     type: "Card",
-
                     text: "**__Current Reminders__**",
                     fields: tempArr,
                     footnote: {
