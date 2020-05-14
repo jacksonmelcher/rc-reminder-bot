@@ -41,7 +41,7 @@ const handleMessage4Bot = async (event) => {
 
         return issueText;
     } else if (text === "clear") {
-        const res = await removeAll(event);
+        const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
     } else if (text === "-l" || text === "-list" || text === "list") {
         await list(event);
@@ -93,7 +93,7 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const removeAll = async ({ userId }) => {
+const removeAll = async ({userId}) => {
     const service = await Service.findAll({
         where: { name: "Remind", userId: userId },
     });
@@ -123,8 +123,6 @@ const remove = async (args, { bot, group, userId }) => {
             text: "Could not find Reminder with that ID",
         });
     } else {
-        console.log(services[0].data.text);
-
         let text = services[0].data.text;
         await services[0].destroy();
         return { text: `${text}  -  deleted.` };
