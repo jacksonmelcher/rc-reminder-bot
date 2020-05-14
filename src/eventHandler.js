@@ -45,6 +45,13 @@ const handleMessage4Bot = async (event) => {
         await bot.sendMessage(group.id, res);
     } else if (text === "-l" || text === "-list" || text === "list") {
         await list(event);
+    } else if (
+        text.includes("-r") ||
+        text.includes("-remove") ||
+        text.includes("remove")
+    ) {
+        let text = await remove(args, event);
+        await bot.sendMessage(group.id, text);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
 
