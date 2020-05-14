@@ -102,6 +102,21 @@ const removeAll = async (id) => {
     }
 };
 
+const remove = async (args, { bot, group, userId }) => {
+    console.log("ARGS", args[1]);
+    const services = await Service.findAll({
+        where: { name: "Remind", userId: userId, id: args[1] },
+    });
+    if (services.length === 0) {
+        await bot.sendMessage(group.id, {
+            text: "Could not find Reminder with that ID",
+        });
+    } else {
+        let text = services[0].data.text;
+        await services[0].destroy();
+        return { text: `${text}  -  deleted.` };
+    }
+};
 const list = async ({ bot, userId, group }) => {
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId },
