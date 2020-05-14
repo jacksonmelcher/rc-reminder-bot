@@ -124,11 +124,7 @@ const remove = async (args, { bot, group, userId }) => {
 
         let text = services[0].data.text;
         await services[0].destroy();
-        return { text: `Reminder: ${text} deleted.` };
-    }
-
-    for (const s of services) {
-        console.log(s.data);
+        return { text: `${text}  -  deleted.` };
     }
 };
 const list = async ({ bot, userId, group }) => {
