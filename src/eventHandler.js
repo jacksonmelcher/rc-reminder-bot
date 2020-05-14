@@ -50,7 +50,6 @@ const handleMessage4Bot = async (event) => {
         text.includes("-remove") ||
         text.includes("remove")
     ) {
-        console.log(args);
         let text = await remove(args, event);
         await bot.sendMessage(group.id, text);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
