@@ -41,18 +41,10 @@ const handleMessage4Bot = async (event) => {
 
         return issueText;
     } else if (text === "clear") {
-        const res = await removeAll(event);
+        const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
     } else if (text === "-l" || text === "-list" || text === "list") {
         await list(event);
-    } else if (
-        text.includes("-r") ||
-        text.includes("-remove") ||
-        text.includes("remove")
-    ) {
-        console.log(args);
-        let text = await remove(args, event);
-        await bot.sendMessage(group.id, text);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
         console.log("NO -t OR -m");
 
@@ -94,9 +86,9 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const removeAll = async ({ userId }) => {
+const removeAll = async (id) => {
     const service = await Service.findAll({
-        where: { name: "Remind", userId: user },
+        where: { name: "Remind", userId: id },
     });
 
     if (service.length === 0) {
@@ -110,27 +102,6 @@ const removeAll = async ({ userId }) => {
     }
 };
 
-const remove = async (args, { bot, group, userId }) => {
-    console.log("ARGS", args[1]);
-    const services = await Service.findAll({
-        where: { name: "Remind", userId: userId, id: args[1] },
-    });
-    if (services.length === 0) {
-        await bot.sendMessage(group.id, {
-            text: "Could not find Reminder with that ID",
-        });
-    } else {
-        console.log(services[0].data.text);
-
-        let text = services[0].data.text;
-        await services[0].destroy();
-        return { text: `Reminder: ${text} deleted.` };
-    }
-
-    for (const s of services) {
-        console.log(s.data);
-    }
-};
 const list = async ({ bot, userId, group }) => {
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId },
