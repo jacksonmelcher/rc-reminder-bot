@@ -59,7 +59,6 @@ const handleMessage4Bot = async (event) => {
 
         return noArgsText;
     } else if (args.includes("-t") && args.includes("-m")) {
-        console.log("THINGS ARE WORKING");
         const message = await createReminder(args, event);
         let text = message.text;
         let timeCreated = message.timeCreated;
@@ -93,7 +92,7 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const removeAll = async ({userId}) => {
+const removeAll = async ({ userId }) => {
     const service = await Service.findAll({
         where: { name: "Remind", userId: userId },
     });
