@@ -95,7 +95,7 @@ const handleMessage4Bot = async (event) => {
 
 const removeAll = async ({ userId }) => {
     const service = await Service.findAll({
-        where: { name: "Remind", userId: user },
+        where: { name: "Remind", userId: userId },
     });
 
     if (service.length === 0) {
@@ -110,7 +110,11 @@ const removeAll = async ({ userId }) => {
 };
 
 const remove = async (args, { bot, group, userId }) => {
-    console.log("ARGS", args[1]);
+    if (args[1] === undefined) {
+        return {
+            text: "Please add an ID number.Type **@Remind -l** to view ID's",
+        };
+    }
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId, id: args[1] },
     });
