@@ -33,7 +33,7 @@ const handleMessage4Bot = async (event) => {
     if (text === "-h" || text === "help" || text === "-help") {
         console.log("USER ASKED FOR HELP");
 
-        await bot.sendMessage(group.id, helpText);
+        await bot.sendMessage(group.id, joinedGroup);
 
         return helpText;
     } else if (text === "-i" || text === "-issue" || text === "issue") {
