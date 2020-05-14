@@ -33,7 +33,7 @@ const handleMessage4Bot = async (event) => {
     if (text === "-h" || text === "help" || text === "-help") {
         console.log("USER ASKED FOR HELP");
 
-        await bot.sendMessage(group.id, helpText);
+        await bot.sendMessage(group.id, joinedGroup);
 
         return helpText;
     } else if (text === "-i" || text === "-issue" || text === "issue") {
@@ -93,9 +93,9 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const removeAll = async (id) => {
+const removeAll = async ({userId}) => {
     const service = await Service.findAll({
-        where: { name: "Remind", userId: id },
+        where: { name: "Remind", userId: userId },
     });
 
     if (service.length === 0) {
@@ -110,7 +110,11 @@ const removeAll = async (id) => {
 };
 
 const remove = async (args, { bot, group, userId }) => {
-    console.log("ARGS", args[1]);
+    if (args[1] === undefined) {
+        return {
+            text: "Please add an ID number.Type **@Remind -l** to view ID's",
+        };
+    }
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId, id: args[1] },
     });

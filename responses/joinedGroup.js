@@ -21,22 +21,22 @@ export const joinedGroup = {
                 },
                 {
                     title: "For help",
-                    value: "@Remind **help**",
+                    value: "@Remind **help** or @Remind **-h**",
                     style: "Short",
                 },
                 {
                     title: "To submit a bug/issue",
-                    value: "@Remind **issue**",
+                    value: "@Remind **issue** or @Remind **-i**",
                     style: "Short",
                 },
                 {
-                    title: "Clear your existing reminders",
-                    value: "@Remind **clear**",
+                    title: "Clear **__ALL__** your existing reminders",
+                    value: "@Remind **clear** or @Remind **-c**",
                     style: "Short",
                 },
                 {
                     title: "List all active reminders",
-                    value: "@Remind **list**",
+                    value: "@Remind **list** or @Remind **-l**",
                     style: "Short",
                 },
             ],
