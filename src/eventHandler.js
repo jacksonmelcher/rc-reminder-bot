@@ -12,7 +12,6 @@ import {
 
 export const eventHandler = async (event) => {
     const { type } = event;
-
     switch (type) {
         case "Message4Bot":
             await handleMessage4Bot(event);
