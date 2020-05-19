@@ -2,7 +2,7 @@
     "name": "rc-reminder-bot",
     "version": "1.0.0",
     "description": "Announcement/Reminder bot for RC",
-    "main": "express.js",
+    "main": "dist/express.js",
     "repository": "https://github.com/jacksonmelcher/rc-reminder-bot.git",
     "author": "Jackson Melcher <jackson.melcher@ringcentral.com>",
     "license": "MIT",
@@ -10,9 +10,8 @@
         "dev": "nodemon -r @babel/register -r dotenv/config src/express.js",
         "test": "jest --watch",
         "ngrok": "npx ngrok http 3000",
-        "start": "node -r @babel/register src/express.js",
         "build": "babel src -d dist",
-        "sever": "node dist/express.js"
+        "start": "node dist/express.js"
     },
     "devDependencies": {
         "dotenv": "^8.2.0",
@@ -32,7 +31,8 @@
         "sqlite3": "^4.1.1"
     },
     "engines": {
-        "node": "12.16.1"
+        "node": "12.16.1",
+        "yarn": "1.22.4"
     },
     "standard": {
         "ignore": [
