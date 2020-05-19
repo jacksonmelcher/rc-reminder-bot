@@ -8,7 +8,7 @@ import {
     noArgsText,
     joinedGroup,
     timeAlreadyHappened,
-} from "../responses/index";
+} from "./responses/index";
 
 export const eventHandler = async (event) => {
     const { type } = event;
