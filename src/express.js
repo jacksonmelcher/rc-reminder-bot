@@ -11,7 +11,6 @@ const handle = async (event) => {
 setInterval(() => remind(), 5000);
 
 const app = createApp(handle);
-console.log("RIGHT AFTER CREAT APP");
 
 app.listen(process.env.RINGCENTRAL_CHATBOT_EXPRESS_PORT);
 
