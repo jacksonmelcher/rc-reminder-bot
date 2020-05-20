@@ -9,6 +9,7 @@ const handle = async (event) => {
 };
 
 setInterval(() => remind(), 5000);
+console.log("Test");
 
 const app = createApp(handle);
 
