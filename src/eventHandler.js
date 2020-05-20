@@ -66,7 +66,6 @@ const handleMessage4Bot = async (event) => {
         let reminderTime = message.reminderTime;
         let duration = message.duration;
         if (message === false) {
-            console.log("TIME ALREADY HAPPENED");
             await bot.sendMessage(group.id, timeAlreadyHappened);
             return;
         } else {
