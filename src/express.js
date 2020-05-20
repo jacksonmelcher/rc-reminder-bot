@@ -8,8 +8,7 @@ const handle = async (event) => {
     await eventHandler(event);
 };
 
-setInterval(() => remind(), 5000);
-console.log("Test");
+// setInterval(() => remind(), 5000);
 
 const app = createApp(handle);
 

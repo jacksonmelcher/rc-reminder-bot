@@ -5,7 +5,7 @@ import moment from "moment";
 const remind = async () => {
     let services = [];
     let sorted = [];
-    // services = await Service.findAll({ where: { name: "Remind" } });
+    services = await Service.findAll({ where: { name: "Remind" } });
 
     if (services.length > 0) {
         sorted = services.sort(
