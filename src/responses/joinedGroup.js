@@ -30,7 +30,7 @@ export const joinedGroup = {
                     style: "Short",
                 },
                 {
-                    title: "Clear **__ALL__** your existing reminders",
+                    title: "Clear ALL your existing reminders",
                     value: "@Remind **clear** or @Remind **-c**",
                     style: "Short",
                 },

@@ -8,11 +8,10 @@ import {
     noArgsText,
     joinedGroup,
     timeAlreadyHappened,
-} from "../responses/index";
+} from "./responses/index";
 
 export const eventHandler = async (event) => {
     const { type } = event;
-
     switch (type) {
         case "Message4Bot":
             await handleMessage4Bot(event);
@@ -59,7 +58,6 @@ const handleMessage4Bot = async (event) => {
 
         return noArgsText;
     } else if (args.includes("-t") && args.includes("-m")) {
-        console.log("THINGS ARE WORKING");
         const message = await createReminder(args, event);
         let text = message.text;
         let timeCreated = message.timeCreated;
@@ -68,7 +66,6 @@ const handleMessage4Bot = async (event) => {
         let reminderTime = message.reminderTime;
         let duration = message.duration;
         if (message === false) {
-            console.log("TIME ALREADY HAPPENED");
             await bot.sendMessage(group.id, timeAlreadyHappened);
             return;
         } else {
@@ -93,7 +90,7 @@ const handleMessage4Bot = async (event) => {
     }
 };
 
-const removeAll = async ({userId}) => {
+const removeAll = async ({ userId }) => {
     const service = await Service.findAll({
         where: { name: "Remind", userId: userId },
     });
