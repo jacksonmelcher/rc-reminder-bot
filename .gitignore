@@ -12,6 +12,8 @@ db.sqlite
 # JSON
 json/*
 
+# VSCODE
+.vscode/
 
 # random
 random/*
