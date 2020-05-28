@@ -118,3 +118,4 @@ dist
 sum.js
 sum.test.js
 .vscode/launch.json
+src/test.js
