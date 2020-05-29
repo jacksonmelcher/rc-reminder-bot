@@ -58,6 +58,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
         );
         console.log("Current time: " + moment().format("MM/DD/YY hh:mm a"));
         console.log("LOCAL: " + moment.locale());
+        console.log("Guessed timezone: " + moment.tz.guess());
 
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
