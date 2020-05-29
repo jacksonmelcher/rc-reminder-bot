@@ -39,6 +39,8 @@ export const createReminder = async (args, { bot, group, userId }) => {
     if (typeof bot !== "undefined") {
         try {
             const user = await bot.getUser(userId);
+            console.log("============USER============");
+            console.log(user);
             const { name } = user.rc;
             username = name;
         } catch (error) {
