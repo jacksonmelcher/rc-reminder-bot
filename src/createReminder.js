@@ -15,6 +15,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
     let username = "";
 
     if (args.indexOf("-t") > args.indexOf("-m")) {
+        console.log("Message came first");
         for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
             resMessageArray.push(args[i]);
         }
@@ -22,6 +23,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
             resTimeArray.push(args[i]);
         }
     } else if (args.indexOf("-t") < args.indexOf("-m")) {
+        console.log("Time came first");
         for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
             resTimeArray.push(args[i]);
         }
@@ -29,6 +31,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
             resMessageArray.push(args[i]);
         }
     } else {
+        console.log("Something weird happened and message is null");
         message = null;
     }
     if (typeof bot !== "undefined") {
@@ -48,6 +51,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
             "MM/DD/YY hh:mm a"
         )
     ) {
+        console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
 
@@ -63,6 +67,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
-
+    console.log("Message being returned");
+    console.log(message);
     return message;
 };
