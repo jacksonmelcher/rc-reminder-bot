@@ -36,19 +36,23 @@ const handleMessage4Bot = async (event) => {
 
         return helpText;
     } else if (text === "-i" || text === "-issue" || text === "issue") {
+        console.log("USER ISSUE");
         await bot.sendMessage(group.id, issueText);
 
         return issueText;
     } else if (text === "clear") {
+        console.log("CALLED CLEAR");
         const res = await removeAll(userId);
         await bot.sendMessage(group.id, res);
     } else if (text === "-l" || text === "-list" || text === "list") {
+        console.log("CALLED LIST");
         await list(event);
     } else if (
         text.includes("-r") ||
         text.includes("-remove") ||
         text.includes("remove")
     ) {
+        console.log("CALLED REMOVE");
         let text = await remove(args, event);
         await bot.sendMessage(group.id, text);
     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
@@ -58,6 +62,7 @@ const handleMessage4Bot = async (event) => {
 
         return noArgsText;
     } else if (args.includes("-t") && args.includes("-m")) {
+        console.log("Calling CreateReminder()");
         const message = await createReminder(args, event);
         let text = message.text;
         let timeCreated = message.timeCreated;
@@ -66,6 +71,8 @@ const handleMessage4Bot = async (event) => {
         let reminderTime = message.reminderTime;
         let duration = message.duration;
         if (message === false) {
+            console.log("message was returned as false");
+
             await bot.sendMessage(group.id, timeAlreadyHappened);
             return;
         } else {
@@ -82,6 +89,9 @@ const handleMessage4Bot = async (event) => {
                     duration,
                 },
             });
+            console.log("SERVICE OBJECT:");
+
+            console.log(service.data);
 
             await bot.sendMessage(group.id, {
                 text: `Reminder set ⏰, I will send you a reminder in **${service.data.duration.humanize()}**`,
