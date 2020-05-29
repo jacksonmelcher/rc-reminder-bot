@@ -57,6 +57,8 @@ export const createReminder = async (args, { bot, group, userId }) => {
             "Time received: " + resTimeArray.toString().replace(/,/g, " ")
         );
         console.log("Current time: " + moment().format("MM/DD/YY hh:mm a"));
+        console.log("LOCAL: " + moment.locale());
+
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
