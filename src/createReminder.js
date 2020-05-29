@@ -13,7 +13,9 @@ export const createReminder = async (args, { bot, group, userId }) => {
     let resTimeArray = [];
     let resMessageArray = [];
     let username = "";
+    console.log("===============ARGS===============");
 
+    console.log(args);
     if (args.indexOf("-t") > args.indexOf("-m")) {
         console.log("Message came first");
         for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
@@ -51,6 +53,10 @@ export const createReminder = async (args, { bot, group, userId }) => {
             "MM/DD/YY hh:mm a"
         )
     ) {
+        console.log(
+            "Time received: " + resTimeArray.toString().replace(/,/g, " ")
+        );
+        console.log("Current time: " + moment().format("MM/DD/YY hh:mm a"));
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
