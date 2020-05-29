@@ -39,8 +39,8 @@ export const createReminder = async (args, { bot, group, userId }) => {
     if (typeof bot !== "undefined") {
         try {
             const user = await bot.getUser(userId);
-            console.log("============USER============");
-            console.log(user);
+            console.log("============TimeZone============");
+            console.log(user.timezone);
             const { name } = user.rc;
             username = name;
         } catch (error) {
@@ -59,7 +59,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
             "Time received: " + resTimeArray.toString().replace(/,/g, " ")
         );
         console.log("Current time: " + moment().format("MM/DD/YY hh:mm a"));
-        console.log("LOCAL: " + moment.locale());
+
         console.log("Guessed timezone: " + moment.tz.guess());
 
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
