@@ -58,7 +58,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
         console.log(
             "Time received: " + resTimeArray.toString().replace(/,/g, " ")
         );
-        console.log("Current time: " + moment().format("MM/DD/YY hh:mm a"));
+        console.log("Current time: " + moment().format("MM/DD/YY hh:mm a z"));
 
         console.log("Guessed timezone: " + moment.tz.guess());
 
