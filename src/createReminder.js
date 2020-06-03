@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 
 export const createReminder = async (
     args,
@@ -12,7 +12,7 @@ export const createReminder = async (
         groupId: null,
         duration: null,
         creatorId: null,
-        offset: null,
+        timezone: null,
     };
     let resTimeArray = [];
     let resMessageArray = [];
@@ -53,7 +53,7 @@ export const createReminder = async (
         try {
             const user = await bot.getUser(userId);
             console.log("============TimeZone============");
-            const { regionalSettings } = user.rc;
+            const { userTimezone } = user.rc.regionalSettings.timezone.name;
             console.log(regionalSettings);
             const { name } = user.rc;
             username = name;
@@ -62,7 +62,7 @@ export const createReminder = async (
         }
     }
     if (
-        moment() >=
+        moment.tz("US/Pacific") >=
         moment(
             resTimeArray.toString().replace(/,/g, " "),
             "MM/DD/YY hh:mm a",
@@ -94,6 +94,7 @@ export const createReminder = async (
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
+    message.timezone = userTimezone;
     console.log("Message being returned");
     console.log(message);
     return message;
