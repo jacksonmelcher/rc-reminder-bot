@@ -91,7 +91,7 @@ export const createReminder = async (
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
-    message.timezone = userTimezone;
+    // message.timezone = userTimezone;
     console.log("Message being returned");
     console.log(message);
     return message;
