@@ -1,6 +1,9 @@
 import moment from "moment";
 
-export const createReminder = async (args, { bot, group, userId }) => {
+export const createReminder = async (
+    args,
+    { bot, group, userId, creationTime }
+) => {
     let message = {
         text: null,
         timeCreated: null,
@@ -9,6 +12,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
         groupId: null,
         duration: null,
         creatorId: null,
+        offset: null,
     };
     let resTimeArray = [];
     let resMessageArray = [];
@@ -67,6 +71,14 @@ export const createReminder = async (args, { bot, group, userId }) => {
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
+
+    let duration = moment.duration(
+        moment(timeCreated, moment.ISO_8601).diff(moment())
+    );
+    console.log(
+        "========================== DURATION ========================="
+    );
+    console.log(duration);
 
     message.creator = username;
     message.creatorId = userId;

@@ -11,14 +11,13 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
-    console.log("========================== EVENT =====================");
+    console.log("========================== EVENT ===========================");
     console.log(event);
     const { type } = event;
     switch (type) {
         case "Message4Bot":
             await handleMessage4Bot(event);
             break;
-
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
     }
