@@ -21,14 +21,6 @@ export const createReminder = async (
 
     console.log(args);
 
-    let duration = moment.duration(
-        moment(creationTime, moment.ISO_8601).diff(moment())
-    );
-    console.log(
-        "========================== DURATION ========================="
-    );
-    console.log(duration.as("hours"));
-
     if (args.indexOf("-t") > args.indexOf("-m")) {
         console.log("Message came first");
         for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
@@ -53,7 +45,7 @@ export const createReminder = async (
         try {
             const user = await bot.getUser(userId);
             console.log("============TimeZone============");
-            const { userTimezone } = user.rc.regionalSettings.timezone.name;
+            const userTimezone = user.rc.regionalSettings.timezone.name;
             console.log(userTimezone);
             const { name } = user.rc;
             username = name;
