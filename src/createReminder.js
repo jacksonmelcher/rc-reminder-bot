@@ -54,10 +54,10 @@ export const createReminder = async (
     }
     if (
         moment.tz("US/Pacific") >=
-        moment(
+        moment.tz(
             resTimeArray.toString().replace(/,/g, " "),
             "MM/DD/YY hh:mm a",
-            "MM/DD/YY hh:mm a"
+            "US/Pacific"
         )
     ) {
         console.log(
