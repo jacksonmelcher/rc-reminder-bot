@@ -71,6 +71,7 @@ const handleMessage4Bot = async (event) => {
         let creatorId = message.creatorId;
         let reminderTime = message.reminderTime;
         let duration = message.duration;
+        let timezone = message.timezone;
         if (message === false) {
             console.log("message was returned as false");
 
@@ -88,6 +89,7 @@ const handleMessage4Bot = async (event) => {
                     creator,
                     reminderTime,
                     duration,
+                    timezone,
                 },
             });
             console.log("SERVICE OBJECT:");
