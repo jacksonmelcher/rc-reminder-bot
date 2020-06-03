@@ -22,7 +22,7 @@ export const createReminder = async (
     console.log(args);
 
     let duration = moment.duration(
-        moment(timeCreated, moment.ISO_8601).diff(moment())
+        moment(creationTime, moment.ISO_8601).diff(moment())
     );
     console.log(
         "========================== DURATION ========================="
