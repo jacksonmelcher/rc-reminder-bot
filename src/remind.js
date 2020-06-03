@@ -1,6 +1,6 @@
 import { Service, Bot } from "ringcentral-chatbot/dist/models";
 
-import moment from "moment";
+import moment from "moment-timezone";
 
 const remind = async () => {
     let services = [];
@@ -20,7 +20,7 @@ const remind = async () => {
             let creator = sorted[0].data.creator;
 
             let tempService = await Service.findByPk(id);
-            console.log("Sending Message");
+            console.log("Sending Message from reminder loop");
 
             const bot = await Bot.findByPk(botId);
             try {

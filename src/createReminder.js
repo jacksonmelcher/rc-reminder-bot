@@ -17,6 +17,7 @@ export const createReminder = async (
     let resTimeArray = [];
     let resMessageArray = [];
     let username = "";
+    let userTZ = "";
     console.log("===============ARGS===============");
     console.log(args);
 
@@ -42,11 +43,12 @@ export const createReminder = async (
     }
     if (typeof bot !== "undefined") {
         try {
-            const user = await bot.getUser(userId);
+            let user = await bot.getUser(userId);
             console.log("============TimeZone============");
-            const userTimezone = user.rc.regionalSettings.timezone.name;
-            console.log(userTimezone);
-            const { name } = user.rc;
+            let userTimezone = user.rc.regionalSettings.timezone.name;
+            userTZ = userTimezone;
+            console.log(userTZ);
+            let { name } = user.rc;
             username = name;
         } catch (error) {
             console.log("GET USER ERROR: " + error + " name: " + username);
@@ -82,16 +84,17 @@ export const createReminder = async (
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = moment();
-    message.reminderTime = moment(
+    message.timeCreated = moment.tz("US/Pacific");
+    message.reminderTime = moment.tz(
         resTimeArray.toString().replace(/,/g, " "),
-        "MM/DD/YY hh:mm a"
+        "MM/DD/YY hh:mm a",
+        "US/Pacific"
     );
     message.groupId = group.id;
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
-    // message.timezone = userTimezone;
+    message.timezone = userTZ;
     console.log("Message being returned");
     console.log(message);
     return message;
