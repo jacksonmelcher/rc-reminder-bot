@@ -27,7 +27,7 @@ export const createReminder = async (
     console.log(
         "========================== DURATION ========================="
     );
-    console.log(duration);
+    console.log(duration.as("hours"));
 
     if (args.indexOf("-t") > args.indexOf("-m")) {
         console.log("Message came first");
