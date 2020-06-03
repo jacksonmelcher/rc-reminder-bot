@@ -18,7 +18,6 @@ export const createReminder = async (
     let resMessageArray = [];
     let username = "";
     console.log("===============ARGS===============");
-
     console.log(args);
 
     if (args.indexOf("-t") > args.indexOf("-m")) {
@@ -62,7 +61,12 @@ export const createReminder = async (
         )
     ) {
         console.log(
-            "Time received: " + resTimeArray.toString().replace(/,/g, " ")
+            "Time received: " +
+                moment(
+                    resTimeArray.toString().replace(/,/g, " "),
+                    "MM/DD/YY hh:mm a",
+                    "MM/DD/YY hh:mm a"
+                ).format("MM/DD/YY hh:mm a")
         );
         console.log(
             "Current time: " +
