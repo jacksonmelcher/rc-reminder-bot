@@ -53,7 +53,8 @@ export const createReminder = async (
         try {
             const user = await bot.getUser(userId);
             console.log("============TimeZone============");
-            console.log(user.rc.timezone);
+            const { regionalSettings } = user.rc;
+            console.log(regionalSettings);
             const { name } = user.rc;
             username = name;
         } catch (error) {
