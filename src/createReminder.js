@@ -54,7 +54,7 @@ export const createReminder = async (
             const user = await bot.getUser(userId);
             console.log("============TimeZone============");
             const { userTimezone } = user.rc.regionalSettings.timezone.name;
-            console.log(regionalSettings);
+            console.log(userTimezone);
             const { name } = user.rc;
             username = name;
         } catch (error) {
@@ -73,7 +73,8 @@ export const createReminder = async (
             "Time received: " + resTimeArray.toString().replace(/,/g, " ")
         );
         console.log(
-            "Current time: " + moment().format("MM/DD/YY hh:mm a [GMT]ZZ")
+            "Current time: " +
+                moment.tz("US/Pacific").format("MM/DD/YY hh:mm a")
         );
 
         console.log("Guessed timezone: " + moment.tz.guess());
