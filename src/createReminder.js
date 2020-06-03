@@ -20,6 +20,15 @@ export const createReminder = async (
     console.log("===============ARGS===============");
 
     console.log(args);
+
+    let duration = moment.duration(
+        moment(timeCreated, moment.ISO_8601).diff(moment())
+    );
+    console.log(
+        "========================== DURATION ========================="
+    );
+    console.log(duration);
+
     if (args.indexOf("-t") > args.indexOf("-m")) {
         console.log("Message came first");
         for (let i = args.indexOf("-m") + 1; i < args.indexOf("-t"); i++) {
@@ -71,14 +80,6 @@ export const createReminder = async (
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
-
-    let duration = moment.duration(
-        moment(timeCreated, moment.ISO_8601).diff(moment())
-    );
-    console.log(
-        "========================== DURATION ========================="
-    );
-    console.log(duration);
 
     message.creator = username;
     message.creatorId = userId;
