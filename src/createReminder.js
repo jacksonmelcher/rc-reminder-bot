@@ -1,10 +1,7 @@
 import moment from "moment-timezone";
 import mmnt from "moment";
 
-export const createReminder = async (
-    args,
-    { bot, group, userId, creationTime }
-) => {
+export const createReminder = async (args, { bot, group, userId }) => {
     let message = {
         text: null,
         timeCreated: null,

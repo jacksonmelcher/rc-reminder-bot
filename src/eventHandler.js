@@ -143,6 +143,15 @@ const list = async ({ bot, userId, group }) => {
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId },
     });
+    try {
+        let user = await bot.getUser(userId);
+
+        let userTimezone = user.rc.regionalSettings.timezone.name;
+        userTZ = userTimezone;
+    } catch (error) {
+        await bot.sendMessage9(group.id, { text: error });
+    }
+
     let tempArr = [];
     let tempField = {
         title: null,
@@ -158,9 +167,9 @@ const list = async ({ bot, userId, group }) => {
         );
         for (const s of sorted) {
             tempField = {
-                title: moment(s.data.reminderTime).format(
-                    "MMMM Do YYYY, h:mm a"
-                ),
+                title: moment
+                    .tz(s.data.reminderTime, userTZ)
+                    .format("MMMM Do YYYY, h:mm a"),
                 value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
                 style: "Long",
             };
