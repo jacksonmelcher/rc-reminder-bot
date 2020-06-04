@@ -56,11 +56,11 @@ export const createReminder = async (
         }
     }
     if (
-        moment.tz("US/Pacific") >=
+        moment.tz(userTZ) >=
         moment.tz(
             resTimeArray.toString().replace(/,/g, " "),
             "MM/DD/YY hh:mm a",
-            "US/Pacific"
+            userTZ
         )
     ) {
         console.log(
@@ -72,8 +72,7 @@ export const createReminder = async (
                 ).format("MM/DD/YY hh:mm a")
         );
         console.log(
-            "Current time: " +
-                moment.tz("US/Pacific").format("MM/DD/YY hh:mm a")
+            "Current time: " + moment.tz(userTZ).format("MM/DD/YY hh:mm a")
         );
 
         console.log("Guessed timezone: " + moment.tz.guess());
@@ -85,11 +84,11 @@ export const createReminder = async (
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = moment.tz("US/Pacific");
+    message.timeCreated = moment.tz(userTZ);
     message.reminderTime = moment.tz(
         resTimeArray.toString().replace(/,/g, " "),
         "MM/DD/YY hh:mm a",
-        "US/Pacific"
+        userTZ
     );
     message.groupId = group.id;
     message.duration = mmnt.duration(
