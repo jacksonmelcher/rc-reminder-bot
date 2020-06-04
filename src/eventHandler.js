@@ -97,11 +97,12 @@ const handleMessage4Bot = async (event) => {
             console.log(service.data);
 
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, I will send you a reminder in **${service.data.duration.humanize()}**`,
+                text: `Reminder set ⏰, I will send you a reminder in `,
             });
         }
     }
 };
+// **${service.data.duration.humanize()}*
 
 const removeAll = async ({ userId }) => {
     const service = await Service.findAll({
