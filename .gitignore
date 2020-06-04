@@ -115,7 +115,5 @@ dist
 # TernJS port file
 .tern-port
 
-sum.js
-sum.test.js
-.vscode/launch.json
-src/test.js
+
+.vscode/

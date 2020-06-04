@@ -1,4 +1,5 @@
-import moment from "moment";
+import moment from "moment-timezone";
+// import mmnt from "moment";
 
 export const createReminder = async (args, { bot, group, userId }) => {
     let message = {
@@ -9,10 +10,14 @@ export const createReminder = async (args, { bot, group, userId }) => {
         groupId: null,
         duration: null,
         creatorId: null,
+        timezone: null,
     };
     let resTimeArray = [];
     let resMessageArray = [];
     let username = "";
+    let userTZ = "";
+    console.log("===============ARGS===============");
+    console.log(args);
 
     if (args.indexOf("-t") > args.indexOf("-m")) {
         console.log("Message came first");
@@ -36,21 +41,39 @@ export const createReminder = async (args, { bot, group, userId }) => {
     }
     if (typeof bot !== "undefined") {
         try {
-            const user = await bot.getUser(userId);
-            const { name } = user.rc;
+            let user = await bot.getUser(userId);
+            console.log("============TimeZone============");
+            let userTimezone = user.rc.regionalSettings.timezone.name;
+            userTZ = userTimezone;
+            console.log(userTZ);
+            let { name } = user.rc;
             username = name;
         } catch (error) {
             console.log("GET USER ERROR: " + error + " name: " + username);
         }
     }
     if (
-        moment() >=
-        moment(
+        moment.tz(userTZ) >=
+        moment.tz(
             resTimeArray.toString().replace(/,/g, " "),
             "MM/DD/YY hh:mm a",
-            "MM/DD/YY hh:mm a"
+            userTZ
         )
     ) {
+        console.log(
+            "Time received: " +
+                moment(
+                    resTimeArray.toString().replace(/,/g, " "),
+                    "MM/DD/YY hh:mm a",
+                    "MM/DD/YY hh:mm a"
+                ).format("MM/DD/YY hh:mm a")
+        );
+        console.log(
+            "Current time: " + moment.tz(userTZ).format("MM/DD/YY hh:mm a")
+        );
+
+        console.log("Guessed timezone: " + moment.tz.guess());
+
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
@@ -58,16 +81,30 @@ export const createReminder = async (args, { bot, group, userId }) => {
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = moment();
-    message.reminderTime = moment(
+    message.timeCreated = moment.tz(userTZ);
+    message.reminderTime = moment.tz(
         resTimeArray.toString().replace(/,/g, " "),
-        "MM/DD/YY hh:mm a"
+        "MM/DD/YY hh:mm a",
+        userTZ
     );
     message.groupId = group.id;
     message.duration = moment.duration(
         message.reminderTime.diff(moment.timeCreated)
     );
+    message.timezone = userTZ;
     console.log("Message being returned");
-    console.log(message);
+    console.log("Creator: " + message.creator);
+    console.log("CreatorID:" + message.creatorId);
+    console.log("Text: " + message.text);
+    console.log(
+        "Time Created: " + message.timeCreated.format("MM/DD/YY hh:mm a")
+    );
+    console.log(
+        "Reminder time: " + message.reminderTime.format("MM/DD/YY hh:mm a")
+    );
+    console.log("Duration: " + message.duration);
+    console.log("Timezone: " + message.timezone);
+    console.log("Creator:" + message.creator);
+
     return message;
 };

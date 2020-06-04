@@ -1,6 +1,7 @@
 import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
-import moment from "moment";
+import moment from "moment-timezone";
+import mnmt from "moment";
 
 import {
     issueText,
@@ -11,12 +12,13 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
+    // console.log("========================== EVENT ===========================");
+    // console.log(event);
     const { type } = event;
     switch (type) {
         case "Message4Bot":
             await handleMessage4Bot(event);
             break;
-
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
     }
@@ -70,6 +72,7 @@ const handleMessage4Bot = async (event) => {
         let creatorId = message.creatorId;
         let reminderTime = message.reminderTime;
         let duration = message.duration;
+        let timezone = message.timezone;
         if (message === false) {
             console.log("message was returned as false");
 
@@ -87,14 +90,16 @@ const handleMessage4Bot = async (event) => {
                     creator,
                     reminderTime,
                     duration,
+                    timezone,
                 },
             });
             console.log("SERVICE OBJECT:");
 
-            console.log(service.data);
+            // console.log(service.data);
+            // console.log("HUMANIZED: " + service.data.duration.humanize());
 
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, I will send you a reminder in **${service.data.duration.humanize()}**`,
+                text: `Reminder set ⏰`,
             });
         }
     }
@@ -139,6 +144,7 @@ const list = async ({ bot, userId, group }) => {
     const services = await Service.findAll({
         where: { name: "Remind", userId: userId },
     });
+
     let tempArr = [];
     let tempField = {
         title: null,
@@ -154,9 +160,9 @@ const list = async ({ bot, userId, group }) => {
         );
         for (const s of sorted) {
             tempField = {
-                title: moment(s.data.reminderTime).format(
-                    "MMMM Do YYYY, h:mm a"
-                ),
+                title: moment
+                    .tz(s.data.reminderTime, s.data.timezone)
+                    .format("MMMM Do YYYY, h:mm a"),
                 value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
                 style: "Long",
             };
