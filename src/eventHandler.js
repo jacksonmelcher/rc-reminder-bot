@@ -71,7 +71,7 @@ const handleMessage4Bot = async (event) => {
         let creator = message.creator;
         let creatorId = message.creatorId;
         let reminderTime = message.reminderTime;
-        let duration = moment.duration(message.duration);
+        let duration = message.duration;
         let timezone = message.timezone;
         if (message === false) {
             console.log("message was returned as false");
@@ -95,11 +95,11 @@ const handleMessage4Bot = async (event) => {
             });
             console.log("SERVICE OBJECT:");
 
-            console.log(service.data);
-            console.log("HUMANIZED: " + service.data.duration.humanize());
+            // console.log(service.data);
+            // console.log("HUMANIZED: " + service.data.duration.humanize());
 
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, I will send you a reminder in  `,
+                text: `Reminder set ⏰`,
             });
         }
     }
