@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import mmnt from "moment";
+// import mmnt from "moment";
 
 export const createReminder = async (args, { bot, group, userId }) => {
     let message = {
@@ -88,8 +88,8 @@ export const createReminder = async (args, { bot, group, userId }) => {
         userTZ
     );
     message.groupId = group.id;
-    message.duration = mmnt.duration(
-        message.reminderTime.diff(mmnt.timeCreated)
+    message.duration = moment.duration(
+        message.reminderTime.diff(moment.timeCreated)
     );
     message.timezone = userTZ;
     console.log("Message being returned");
