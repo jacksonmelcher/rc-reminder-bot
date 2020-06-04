@@ -96,6 +96,18 @@ export const createReminder = async (
     );
     message.timezone = userTZ;
     console.log("Message being returned");
-    console.log(message);
+    console.log("Creator: " + message.creator);
+    console.log("CreatorID:" + message.creatorId);
+    console.log("Text: " + message.text);
+    console.log(
+        "Time Created: " + message.timeCreated.format("MM/DD/YY hh:mm a")
+    );
+    console.log(
+        "Reminder time: " + message.reminderTime.format("MM/DD/YY hh:mm a")
+    );
+    console.log("Duration: " + message.duration.as("minutes"));
+    console.log("Timezone: " + message.timezone);
+    console.log("Creator:" + message.creator);
+
     return message;
 };
