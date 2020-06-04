@@ -149,7 +149,7 @@ const list = async ({ bot, userId, group }) => {
         let userTimezone = user.rc.regionalSettings.timezone.name;
         userTZ = userTimezone;
     } catch (error) {
-        await bot.sendMessage9(group.id, { text: error });
+        await bot.sendMessage(group.id, { text: error });
     }
 
     let tempArr = [];
