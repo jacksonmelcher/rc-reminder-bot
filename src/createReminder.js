@@ -55,11 +55,11 @@ export const createReminder = async (
         }
     }
     if (
-        moment.tz("US/Pacific") >=
+        moment.tz(moment.tz.guess()) >=
         moment.tz(
             resTimeArray.toString().replace(/,/g, " "),
             "MM/DD/YY hh:mm a",
-            "US/Pacific"
+            moment.tz.guess()
         )
     ) {
         console.log(
@@ -84,11 +84,11 @@ export const createReminder = async (
     message.creator = username;
     message.creatorId = userId;
     message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = moment.tz("US/Pacific");
+    message.timeCreated = moment.tz(moment.tz.guess());
     message.reminderTime = moment.tz(
         resTimeArray.toString().replace(/,/g, " "),
         "MM/DD/YY hh:mm a",
-        "US/Pacific"
+        moment.tz.guess()
     );
     message.groupId = group.id;
     message.duration = moment.duration(
