@@ -64,15 +64,15 @@ export const createReminder = async (
     ) {
         console.log(
             "Time received: " +
-                moment(
+                moment.tz(
                     resTimeArray.toString().replace(/,/g, " "),
                     "MM/DD/YY hh:mm a",
-                    "MM/DD/YY hh:mm a"
-                ).format("MM/DD/YY hh:mm a")
+                    moment.tz.guess().format("MM/DD/YY hh:mm a")
+                )
         );
         console.log(
             "Current time: " +
-                moment.tz("US/Pacific").format("MM/DD/YY hh:mm a")
+                moment.tz(moment.tz.guess()).format("MM/DD/YY hh:mm a")
         );
 
         console.log("Guessed timezone: " + moment.tz.guess());
