@@ -1,6 +1,7 @@
 import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
 import moment from "moment-timezone";
+import mnmt from "moment";
 
 import {
     issueText,
@@ -95,14 +96,14 @@ const handleMessage4Bot = async (event) => {
             console.log("SERVICE OBJECT:");
 
             console.log(service.data);
+            console.log("HUMANIZED: " + service.data.duration.humanize());
 
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, I will send you a reminder in `,
+                text: `Reminder set ⏰, I will send you a reminder in  `,
             });
         }
     }
 };
-// **${service.data.duration.humanize()}*
 
 const removeAll = async ({ userId }) => {
     const service = await Service.findAll({
