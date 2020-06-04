@@ -102,7 +102,7 @@ export const createReminder = async (args, { bot, group, userId }) => {
     console.log(
         "Reminder time: " + message.reminderTime.format("MM/DD/YY hh:mm a")
     );
-    console.log("Duration: " + message.duration.as("minutes"));
+    console.log("Duration: " + message.duration);
     console.log("Timezone: " + message.timezone);
     console.log("Creator:" + message.creator);
 
