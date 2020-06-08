@@ -11,21 +11,27 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
-    console.log("++++++++++++++++++++++++HERE+++++++++++++++++++++++++");
-    // console.log("========================== EVENT ===========================");
-    // console.log(event);
-    const { type } = event;
-    console.log(event);
+    const { type, message, bot, group } = event;
+    // console.log(message.mentions);
+    // if (typeof bot !== "undefined" && typeof group.id !== "undefined") {
+    //     const groupInfo = await bot.getGroup(group.id);
+    //     console.log(groupInfo);
+    // }
     switch (type) {
         case "Message4Bot":
-            await handleMessage4Bot(event);
+            if (message.mentions.length > 1) {
+                await handleTeamMessage4Bot(event);
+            } else {
+                await handlePersonalMessage4Bot(event);
+            }
             break;
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
+            break;
     }
 };
 
-const handleMessage4Bot = async (event) => {
+const handlePersonalMessage4Bot = async (event) => {
     const { text, group, bot, userId } = event;
     let args = [];
 
@@ -97,13 +103,17 @@ const handleMessage4Bot = async (event) => {
             console.log("SERVICE OBJECT:");
 
             // console.log(service.data);
-            // console.log("HUMANIZED: " + service.data.duration.humanize());
+            console.log("HUMANIZED: " + service.data.duration.humanize());
 
             await bot.sendMessage(group.id, {
                 text: `Reminder set ⏰`,
             });
         }
     }
+};
+
+const handleTeamMessage4Bot = async ({ group, bot }) => {
+    await bot.sendMessage(group.id, { text: "You mentioned a team" });
 };
 
 const removeAll = async ({ userId }) => {
@@ -115,7 +125,7 @@ const removeAll = async ({ userId }) => {
         return { text: "Array empty" };
     } else {
         for (let i = 0; i < service.length; i++) {
-            console.log("SERVICE: " + service[i].userId);
+            // console.log("SERVICE: " + service[i].userId);
             await service[i].destroy();
         }
         return { text: "Cleared" };
