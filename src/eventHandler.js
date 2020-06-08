@@ -1,7 +1,6 @@
 import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
 import moment from "moment-timezone";
-import mnmt from "moment";
 
 import {
     issueText,
@@ -12,9 +11,11 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
+    console.log("++++++++++++++++++++++++HERE+++++++++++++++++++++++++");
     // console.log("========================== EVENT ===========================");
     // console.log(event);
     const { type } = event;
+    console.log(event);
     switch (type) {
         case "Message4Bot":
             await handleMessage4Bot(event);
@@ -163,6 +164,7 @@ const list = async ({ bot, userId, group }) => {
                 title: moment
                     .tz(s.data.reminderTime, s.data.timezone)
                     .format("MMMM Do YYYY, h:mm a"),
+
                 value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
                 style: "Long",
             };

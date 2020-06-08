@@ -5,6 +5,8 @@ import { eventHandler } from "./eventHandler";
 import remind from "./remind";
 
 const handle = async (event) => {
+    console.log(event);
+
     await eventHandler(event);
 };
 
