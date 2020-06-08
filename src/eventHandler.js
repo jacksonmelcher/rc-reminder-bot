@@ -14,10 +14,17 @@ import {
 export const eventHandler = async (event) => {
     // console.log("========================== EVENT ===========================");
     // console.log(event);
-    const { type } = event;
+    const { type, message, bot } = event;
     switch (type) {
         case "Message4Bot":
-            await handleMessage4Bot(event);
+            if (message.mentions.length > 1) {
+                const newTeam = message.mentions[1];
+                await bot.sendMessage(newTeam.id, {
+                    text: "REMINDER BOT CROSS TEAM TEST",
+                });
+            } else {
+                await handleMessage4Bot(event);
+            }
             break;
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
