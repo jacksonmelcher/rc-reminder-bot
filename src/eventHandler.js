@@ -112,8 +112,13 @@ const handlePersonalMessage4Bot = async (event) => {
     }
 };
 
-const handleTeamMessage4Bot = async ({ group, bot }) => {
-    await bot.sendMessage(group.id, { text: "You mentioned a team" });
+const handleTeamMessage4Bot = async ({ group, bot, message }) => {
+    const newTeam = message.mentions[1];
+    console.log(newTeam);
+
+    await bot.sendMessage(newTeam.id, {
+        text: "HEY TEAM",
+    });
 };
 
 const removeAll = async ({ userId }) => {
