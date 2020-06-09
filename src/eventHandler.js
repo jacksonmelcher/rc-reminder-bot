@@ -113,12 +113,25 @@ const handlePersonalMessage4Bot = async (event) => {
 };
 
 const handleTeamMessage4Bot = async ({ group, bot, message }) => {
-    const newTeam = message.mentions[1];
-    console.log(newTeam);
+    let mentions = [...message.mentions.slice(1)];
 
-    await bot.sendMessage(newTeam.id, {
-        text: "HEY TEAM",
-    });
+    console.log(mentions);
+    // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
+
+    for (const m of mentions) {
+        try {
+            await bot.sendMessage(m.id, { text: "HEY FROM REMINDER" });
+        } catch (error) {
+            await bot.sendMessage(group.id, {
+                text: `${error.data.message}: ${m.name}`,
+            });
+            console.log(error);
+        }
+    }
+
+    // await bot.sendMessage(newTeam.id, {
+    //     text: "HEY TEAM",
+    // });
 };
 
 const removeAll = async ({ userId }) => {
