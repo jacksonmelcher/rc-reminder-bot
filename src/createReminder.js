@@ -1,7 +1,8 @@
 import moment from "moment-timezone";
 // import mmnt from "moment";
 
-export const createReminder = async (args, { bot, group, userId }) => {
+export const createReminder = async ({ text, bot, group, userId }) => {
+    let args = text.split(" ");
     let message = {
         text: null,
         timeCreated: null,
