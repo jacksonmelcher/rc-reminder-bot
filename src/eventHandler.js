@@ -12,21 +12,14 @@ import {
 
 export const eventHandler = async (event) => {
     const { type, message, bot, group } = event;
-    // console.log(message.mentions);
-    // if (typeof bot !== "undefined" && typeof group.id !== "undefined") {
-    //     const groupInfo = await bot.getGroup(group.id);
-    //     console.log(groupInfo);
-    // }
 
     switch (type) {
         case "Message4Bot":
-            if (message.mentions.length > 1) {
-                // const teamMentions = curateMentions(message.mentions);
-
-                await handleTeamMessage4Bot(event);
-            } else {
-                await handlePersonalMessage4Bot(event);
-            }
+            // if (message.mentions.length > 1) {
+            await handleTeamMessage4Bot(event);
+            // } else {
+            // await handlePersonalMessage4Bot(event);
+            // }
             break;
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
@@ -111,13 +104,7 @@ const handlePersonalMessage4Bot = async (event) => {
     // }
 };
 
-const handleTeamMessage4Bot = async (event, teamMentions) => {
-    // let mentions = message.mentions;
-    // let args = [];
-    // if (typeof text !== "undefined") {
-    //     args = text.split(" ");
-    // }
-    // console.log(args);
+const handleTeamMessage4Bot = async (event) => {
     const { bot, group } = event;
 
     // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
@@ -163,19 +150,6 @@ const handleTeamMessage4Bot = async (event, teamMentions) => {
             });
         }
     }
-    // for (const m of mentions) {
-    //     if (m.type === "Team") {
-    //         try {
-    //             console.log(m);
-    //             await bot.sendMessage(m.id, { text: "HEY FROM REMINDER" });
-    //         } catch (error) {
-    //             await bot.sendMessage(group.id, {
-    //                 text: `${error.data.message}: ${m.name}`,
-    //             });
-    //             console.log(error);
-    //         }
-    //     }
-    // }
 };
 const determineResponse = async (event) => {
     const { text, group, bot } = event;

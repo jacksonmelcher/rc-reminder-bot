@@ -18,27 +18,47 @@ const remind = async () => {
             let text = sorted[0].data.reminderText;
             let botId = sorted[0].botId;
             let creator = sorted[0].data.creator;
+            let mentions = sorted[0].data.teamMentions;
 
             let tempService = await Service.findByPk(id);
             console.log("Sending Message from reminder loop");
 
             const bot = await Bot.findByPk(botId);
-
-            try {
-                await bot.sendMessage(groupId, {
-                    attachments: [
-                        {
-                            type: "Card",
-                            text: `**${text}**`,
-                            footnote: {
-                                text: `Reminder created by ${creator}`,
+            if (mentions.length > 0) {
+                for (const m of mentions) {
+                    if (m.type === "Team") {
+                        try {
+                            console.log(m);
+                            await bot.sendMessage(m.id, {
+                                text: "HEY FROM REMINDER",
+                            });
+                        } catch (error) {
+                            await bot.sendMessage(group.id, {
+                                text: `${error.data.message}: ${m.name}`,
+                            });
+                            console.log(error);
+                        }
+                    }
+                }
+            } else
+                try {
+                    await bot.sendMessage(groupId, {
+                        attachments: [
+                            {
+                                type: "Card",
+                                text: `**${text}**`,
+                                footnote: {
+                                    text: `Reminder created by ${creator}`,
+                                },
                             },
-                        },
-                    ],
-                });
-            } catch (error) {
-                console.log(error);
-            }
+                        ],
+                    });
+                } catch (error) {
+                    console.log(error);
+                    await bot.sendMessage(group.id, {
+                        text: "There was a problem creating the reminder",
+                    });
+                }
 
             sorted.shift();
 
