@@ -15,7 +15,7 @@ const remind = async () => {
         if (moment() >= moment(sorted[0].data.reminderTime)) {
             let id = sorted[0].id;
             let groupId = sorted[0].groupId;
-            let text = sorted[0].data.text;
+            let text = sorted[0].data.reminderText;
             let botId = sorted[0].botId;
             let creator = sorted[0].data.creator;
 
@@ -23,6 +23,7 @@ const remind = async () => {
             console.log("Sending Message from reminder loop");
 
             const bot = await Bot.findByPk(botId);
+
             try {
                 await bot.sendMessage(groupId, {
                     attachments: [
