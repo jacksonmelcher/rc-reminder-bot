@@ -30,10 +30,18 @@ const remind = async () => {
                         try {
                             console.log(m);
                             await bot.sendMessage(m.id, {
-                                text: "HEY FROM REMINDER",
+                                attachments: [
+                                    {
+                                        type: "Card",
+                                        text: `**${text}**`,
+                                        footnote: {
+                                            text: `Reminder created by ${creator}`,
+                                        },
+                                    },
+                                ],
                             });
                         } catch (error) {
-                            await bot.sendMessage(group.id, {
+                            await bot.sendMessage(groupId, {
                                 text: `${error.data.message}: ${m.name}`,
                             });
                             console.log(error);
@@ -55,7 +63,7 @@ const remind = async () => {
                     });
                 } catch (error) {
                     console.log(error);
-                    await bot.sendMessage(group.id, {
+                    await bot.sendMessage(groupID, {
                         text: "There was a problem creating the reminder",
                     });
                 }
