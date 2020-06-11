@@ -21,9 +21,9 @@ export const eventHandler = async (event) => {
     switch (type) {
         case "Message4Bot":
             if (message.mentions.length > 1) {
-                const teamMentions = curateMentions(message.mentions);
+                // const teamMentions = curateMentions(message.mentions);
 
-                await handleTeamMessage4Bot(event, teamMentions);
+                await handleTeamMessage4Bot(event);
             } else {
                 await handlePersonalMessage4Bot(event);
             }
@@ -33,112 +33,135 @@ export const eventHandler = async (event) => {
             break;
     }
 };
-const curateMentions = (mentions) => {
-    let temp = [];
-    for (let m in mentions) {
-        if (mentions[m].type === "Team") {
-            temp.push(mentions[m]);
-        }
-    }
 
-    return temp;
-};
-const handlePersonalMessage4Bot = async (event, teamMentions) => {
-    const { text, group, bot, userId } = event;
+const handlePersonalMessage4Bot = async (event) => {
+    const { text, group, bot } = event;
 
     const mode = await determineResponse(event);
     if (mode) {
+        console.log("Calling CreateReminder()");
         const message = await createReminder(event);
-        console.log(message);
+        let reminderText = message.text;
+        let timeCreated = message.timeCreated;
+        let creator = message.creator;
+        let creatorId = message.creatorId;
+        let reminderTime = message.reminderTime;
+        let duration = message.duration;
+        let timezone = message.timezone;
+        if (message === false) {
+            console.log("message was returned as false");
+
+            await bot.sendMessage(group.id, timeAlreadyHappened);
+        } else {
+            const service = await Service.create({
+                name: "Remind",
+                botId: bot.id,
+                groupId: group.id,
+                userId: creatorId,
+                data: {
+                    reminderText,
+                    timeCreated,
+                    creator,
+                    reminderTime,
+                    duration,
+                    timezone,
+                },
+            });
+            console.log("SERVICE OBJECT:");
+
+            console.log(service.data);
+            console.log("HUMANIZED: " + service.data.duration.humanize());
+
+            await bot.sendMessage(group.id, {
+                text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
+            });
+        }
+
+        //     console.log(args);
+
+        //     if (text === "-h" || text === "help" || text === "-help") {
+        //         console.log("USER ASKED FOR HELP");
+
+        //         await bot.sendMessage(group.id, joinedGroup);
+        //     } else if (text === "-i" || text === "-issue" || text === "issue") {
+        //         console.log("USER ISSUE");
+        //         await bot.sendMessage(group.id, issueText);
+        //     } else if (text === "clear") {
+        //         console.log("CALLED CLEAR");
+        //         const res = await removeAll(userId);
+        //         await bot.sendMessage(group.id, res);
+        //     } else if (text === "-l" || text === "-list" || text === "list") {
+        //         console.log("CALLED LIST");
+        //         await list(event);
+        //     } else if (
+        //         args[0] === "-r" ||
+        //         args[0] === "-remove" ||
+        //         args[0] === "remove"
+        //     ) {
+        //         console.log("CALLED REMOVE");
+        //         let text = await remove(args, event);
+        //         await bot.sendMessage(group.id, text);
+        //     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
+        //         console.log("NO -t OR -m");
+
+        //         await bot.sendMessage(group.id, noArgsText);
+        //     } else if (args.includes("-t") && args.includes("-m")) {
     }
-    // let args = [];
-
-    // if (typeof text !== "undefined") {
-    //     args = text.split(" ");
-    //     console.log(args);
-
-    //     if (text === "-h" || text === "help" || text === "-help") {
-    //         console.log("USER ASKED FOR HELP");
-
-    //         await bot.sendMessage(group.id, joinedGroup);
-    //     } else if (text === "-i" || text === "-issue" || text === "issue") {
-    //         console.log("USER ISSUE");
-    //         await bot.sendMessage(group.id, issueText);
-    //     } else if (text === "clear") {
-    //         console.log("CALLED CLEAR");
-    //         const res = await removeAll(userId);
-    //         await bot.sendMessage(group.id, res);
-    //     } else if (text === "-l" || text === "-list" || text === "list") {
-    //         console.log("CALLED LIST");
-    //         await list(event);
-    //     } else if (
-    //         args[0] === "-r" ||
-    //         args[0] === "-remove" ||
-    //         args[0] === "remove"
-    //     ) {
-    //         console.log("CALLED REMOVE");
-    //         let text = await remove(args, event);
-    //         await bot.sendMessage(group.id, text);
-    //     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
-    //         console.log("NO -t OR -m");
-
-    //         await bot.sendMessage(group.id, noArgsText);
-    //     } else if (args.includes("-t") && args.includes("-m")) {
-    //         console.log("Calling CreateReminder()");
-    //         const message = await createReminder(args, event);
-    //         let text = message.text;
-    //         let timeCreated = message.timeCreated;
-    //         let creator = message.creator;
-    //         let creatorId = message.creatorId;
-    //         let reminderTime = message.reminderTime;
-    //         let duration = message.duration;
-    //         let timezone = message.timezone;
-    //         if (message === false) {
-    //             console.log("message was returned as false");
-
-    //             await bot.sendMessage(group.id, timeAlreadyHappened);
-    //         } else {
-    //             const service = await Service.create({
-    //                 name: "Remind",
-    //                 botId: bot.id,
-    //                 groupId: group.id,
-    //                 userId: creatorId,
-    //                 data: {
-    //                     text,
-    //                     timeCreated,
-    //                     creator,
-    //                     reminderTime,
-    //                     duration,
-    //                     timezone,
-    //                 },
-    //             });
-    //             console.log("SERVICE OBJECT:");
-
-    //             // console.log(service.data);
-    //             console.log("HUMANIZED: " + service.data.duration.humanize());
-
-    //             await bot.sendMessage(group.id, {
-    //                 text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
-    //             });
-    //         }
     //     }
     // }
 };
 
-const handleTeamMessage4Bot = async (event) => {
+const handleTeamMessage4Bot = async (event, teamMentions) => {
     // let mentions = message.mentions;
     // let args = [];
     // if (typeof text !== "undefined") {
     //     args = text.split(" ");
     // }
     // console.log(args);
+    const { bot, group } = event;
 
     // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
 
     const mode = await determineResponse(event);
     if (mode) {
         const message = await createReminder(event);
-        console.log(message);
+        if (!message) {
+            await bot.sendMessage(group.id, {
+                text: "Time has already happened",
+            });
+        } else {
+            let reminderText = message.text;
+            let timeCreated = message.timeCreated;
+            let creator = message.creator;
+            let creatorId = message.creatorId;
+            let reminderTime = message.reminderTime;
+            let duration = message.duration;
+            let timezone = message.timezone;
+            let teamMentions = message.teamMentions;
+            const service = await Service.create({
+                name: "Remind",
+                botId: bot.id,
+                groupId: group.id,
+                userId: creatorId,
+                data: {
+                    reminderText,
+                    timeCreated,
+                    creator,
+                    reminderTime,
+                    duration,
+                    timezone,
+                    teamMentions,
+                },
+            });
+            console.log("SERVICE OBJECT:");
+
+            console.log(service.data);
+            console.log("HUMANIZED: " + service.data.duration.humanize());
+
+            await bot.sendMessage(group.id, {
+                text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
+            });
+        }
     }
     // for (const m of mentions) {
     //     if (m.type === "Team") {
@@ -168,7 +191,7 @@ const determineResponse = async (event) => {
             await bot.sendMessage(group.id, issueText);
         } else if (text === "clear") {
             console.log("CALLED CLEAR");
-            await clear();
+            await removeAll(event);
         } else if (text === "-l" || text === "-list" || text === "list") {
             console.log("CALLED LIST");
             await list(event);
@@ -253,7 +276,7 @@ const list = async ({ bot, userId, group }) => {
                     .tz(s.data.reminderTime, s.data.timezone)
                     .format("MMMM Do YYYY, h:mm a"),
 
-                value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
+                value: `*${s.data.reminderText}* \n**ID:** ${s.id.toString()}`,
                 style: "Long",
             };
             tempArr.push(tempField);
