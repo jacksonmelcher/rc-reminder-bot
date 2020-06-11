@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
 // import mmnt from "moment";
 
-export const createReminder = async ({ text, bot, group, userId }) => {
+export const createReminder = async ({ text, bot, group, userId, message }) => {
     let args = text.split(" ");
-    let message = {
+    let reminder = {
         text: null,
         timeCreated: null,
         reminderTime: null,
@@ -12,6 +12,7 @@ export const createReminder = async ({ text, bot, group, userId }) => {
         duration: null,
         creatorId: null,
         timezone: null,
+        teamMentions: [],
     };
     let resTimeArray = [];
     let resMessageArray = [];
@@ -28,6 +29,7 @@ export const createReminder = async ({ text, bot, group, userId }) => {
         for (let i = args.indexOf("-t") + 1; i < args.length; i++) {
             resTimeArray.push(args[i]);
         }
+        console.log(resMessageArray);
     } else if (args.indexOf("-t") < args.indexOf("-m")) {
         console.log("Time came first");
         for (let i = args.indexOf("-t") + 1; i < args.indexOf("-m"); i++) {
@@ -38,7 +40,7 @@ export const createReminder = async ({ text, bot, group, userId }) => {
         }
     } else {
         console.log("Something weird happened and message is null");
-        message = null;
+        reminder = null;
     }
     if (typeof bot !== "undefined") {
         try {
@@ -78,34 +80,52 @@ export const createReminder = async ({ text, bot, group, userId }) => {
         console.log("THE CURRENT TIME IS PAST THE TIME RECEIVED");
         return false;
     }
+    const mentions = curateMentions(message.mentions);
+    console.log("Mentions");
 
-    message.creator = username;
-    message.creatorId = userId;
-    message.text = resMessageArray.toString().replace(/,/g, " ");
-    message.timeCreated = moment.tz(userTZ);
-    message.reminderTime = moment.tz(
+    console.log(mentions);
+    reminder.teamMentions = mentions;
+    reminder.creator = username;
+    reminder.creatorId = userId;
+    reminder.text = resMessageArray.toString().replace(/,/g, " ");
+    reminder.timeCreated = moment.tz(userTZ);
+    reminder.reminderTime = moment.tz(
         resTimeArray.toString().replace(/,/g, " "),
         "MM/DD/YY hh:mm a",
         userTZ
     );
-    message.groupId = group.id;
-    message.duration = moment.duration(
-        message.reminderTime.diff(moment.timeCreated)
+    reminder.groupId = group.id;
+    reminder.duration = moment.duration(
+        reminder.reminderTime.diff(moment.timeCreated)
     );
-    message.timezone = userTZ;
+    reminder.timezone = userTZ;
     console.log("Message being returned");
-    console.log("Creator: " + message.creator);
-    console.log("CreatorID:" + message.creatorId);
-    console.log("Text: " + message.text);
-    console.log(
-        "Time Created: " + message.timeCreated.format("MM/DD/YY hh:mm a")
-    );
-    console.log(
-        "Reminder time: " + message.reminderTime.format("MM/DD/YY hh:mm a")
-    );
-    console.log("Duration: " + message.duration);
-    console.log("Timezone: " + message.timezone);
-    console.log("Creator:" + message.creator);
+    console.log("Team Mentions: " + reminder.teamMentions);
+    console.log("Creator: " + reminder.creator);
+    console.log("CreatorID: " + reminder.creatorId);
+    console.log("GroupID: " + reminder.groupId);
 
-    return message;
+    console.log("Text: " + reminder.text);
+    console.log(
+        "Time Created: " + reminder.timeCreated.format("MM/DD/YY hh:mm a")
+    );
+    console.log(
+        "Reminder time: " + reminder.reminderTime.format("MM/DD/YY hh:mm a")
+    );
+    console.log("Duration: " + reminder.duration);
+    console.log("Timezone: " + reminder.timezone);
+    console.log("Creator: " + reminder.creator);
+
+    return reminder;
+};
+
+const curateMentions = (mentions) => {
+    let temp = [];
+    for (let m in mentions) {
+        if (mentions[m].type === "Team") {
+            temp.push(mentions[m]);
+        }
+    }
+
+    return temp;
 };
