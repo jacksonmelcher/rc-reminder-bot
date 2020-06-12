@@ -16,8 +16,21 @@ export const joinedGroup = {
                 {
                     title: "Create a reminder",
                     value:
-                        "@Remind **-t** MM/DD/YYYY hh:mm am/pm **-m** Your reminder message",
+                        "@Remind **-m** Your reminder message **-t** MM/DD/YYYY hh:mm am/pm",
                     style: "Long",
+                },
+                {
+                    title: "Create a reminder for teams",
+                    value:
+                        "@Remind **@team1 @team2** -m Your reminder message -t MM/DD/YYYY hh:mm am/pm",
+                    style: "Long",
+                },
+                {
+                    title: "Team reminder instructions",
+                    value:
+                        "Make sure you, as a user, and the bot are added to the team you are trying to remind," +
+                        "or the reminder will not send.",
+                    style: "Short",
                 },
                 {
                     title: "For help",
