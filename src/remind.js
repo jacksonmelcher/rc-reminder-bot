@@ -28,7 +28,6 @@ const remind = async () => {
                 for (const m of mentions) {
                     if (m.type === "Team") {
                         try {
-                            console.log(m);
                             await bot.sendMessage(m.id, {
                                 attachments: [
                                     {
