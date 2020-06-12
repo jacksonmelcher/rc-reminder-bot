@@ -11,15 +11,12 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
-    const { type, message, bot, group } = event;
+    const { type } = event;
 
     switch (type) {
         case "Message4Bot":
-            // if (message.mentions.length > 1) {
-            await handleTeamMessage4Bot(event);
-            // } else {
-            // await handlePersonalMessage4Bot(event);
-            // }
+            await handleMessage4Bot(event);
+
             break;
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
@@ -27,84 +24,7 @@ export const eventHandler = async (event) => {
     }
 };
 
-const handlePersonalMessage4Bot = async (event) => {
-    const { text, group, bot } = event;
-
-    const mode = await determineResponse(event);
-    if (mode) {
-        console.log("Calling CreateReminder()");
-        const message = await createReminder(event);
-        let reminderText = message.text;
-        let timeCreated = message.timeCreated;
-        let creator = message.creator;
-        let creatorId = message.creatorId;
-        let reminderTime = message.reminderTime;
-        let duration = message.duration;
-        let timezone = message.timezone;
-        if (message === false) {
-            console.log("message was returned as false");
-
-            await bot.sendMessage(group.id, timeAlreadyHappened);
-        } else {
-            const service = await Service.create({
-                name: "Remind",
-                botId: bot.id,
-                groupId: group.id,
-                userId: creatorId,
-                data: {
-                    reminderText,
-                    timeCreated,
-                    creator,
-                    reminderTime,
-                    duration,
-                    timezone,
-                },
-            });
-            console.log("SERVICE OBJECT:");
-
-            console.log(service.data);
-            console.log("HUMANIZED: " + service.data.duration.humanize());
-
-            await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
-            });
-        }
-
-        //     console.log(args);
-
-        //     if (text === "-h" || text === "help" || text === "-help") {
-        //         console.log("USER ASKED FOR HELP");
-
-        //         await bot.sendMessage(group.id, joinedGroup);
-        //     } else if (text === "-i" || text === "-issue" || text === "issue") {
-        //         console.log("USER ISSUE");
-        //         await bot.sendMessage(group.id, issueText);
-        //     } else if (text === "clear") {
-        //         console.log("CALLED CLEAR");
-        //         const res = await removeAll(userId);
-        //         await bot.sendMessage(group.id, res);
-        //     } else if (text === "-l" || text === "-list" || text === "list") {
-        //         console.log("CALLED LIST");
-        //         await list(event);
-        //     } else if (
-        //         args[0] === "-r" ||
-        //         args[0] === "-remove" ||
-        //         args[0] === "remove"
-        //     ) {
-        //         console.log("CALLED REMOVE");
-        //         let text = await remove(args, event);
-        //         await bot.sendMessage(group.id, text);
-        //     } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
-        //         console.log("NO -t OR -m");
-
-        //         await bot.sendMessage(group.id, noArgsText);
-        //     } else if (args.includes("-t") && args.includes("-m")) {
-    }
-    //     }
-    // }
-};
-
-const handleTeamMessage4Bot = async (event) => {
+const handleMessage4Bot = async (event) => {
     const { bot, group } = event;
 
     // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
