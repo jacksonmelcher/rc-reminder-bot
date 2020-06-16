@@ -8,48 +8,54 @@ export const joinedGroup = {
             },
             title: "Instructions",
             text:
-                "Hi, I am a reminder bot. I can be used to remind you or a whole team of items at a specified " +
-                "time. To use me you can send me a direct message or add me to a team. I am the first iteration" +
-                " and lack features. As time passes and with your feedback, I will be updated with new features.",
+                "Hi, I am a reminder bot. I can be used to remind you, or a whole team, of events at a specified " +
+                "time.\nTo use me for personal use, you can send me a direct message or add me to a team.",
 
             fields: [
                 {
-                    title: "Create a reminder",
+                    title: "Personal reminder instructions",
+                    value:
+                        "Send **@Reminder** a direct message with the syntax described below.",
+                    style: "Long",
+                },
+                {
+                    title: "Personal Reminder Syntax",
                     value:
                         "@Remind **-m** Your reminder message **-t** MM/DD/YYYY hh:mm am/pm",
                     style: "Long",
                 },
                 {
-                    title: "Create a reminder for teams",
+                    title: "Team reminder instructions",
                     value:
-                        "@Remind **@team1 @team2** -m Your reminder message -t MM/DD/YYYY hh:mm am/pm",
+                        "Make sure **you and me** are added to the team you are trying to remind," +
+                        " or the reminder will not send.",
                     style: "Long",
                 },
                 {
-                    title: "Team reminder instructions",
+                    title: "Team Reminder Syntax",
                     value:
-                        "Make sure you, as a user, and the bot are added to the team you are trying to remind," +
-                        "or the reminder will not send.",
-                    style: "Short",
+                        "@Reminder **@team1 @team2** -m Your reminder message -t MM/DD/YYYY hh:mm am/pm",
+                    style: "Long",
                 },
+
                 {
                     title: "For help",
-                    value: "@Remind **help** or @Remind **-h**",
+                    value: "@Reminder **help** or @Remind **-h**",
                     style: "Short",
                 },
                 {
                     title: "To submit a bug/issue",
-                    value: "@Remind **issue** or @Remind **-i**",
+                    value: "@Reminder **issue** or @Remind **-i**",
                     style: "Short",
                 },
                 {
                     title: "Clear ALL your existing reminders",
-                    value: "@Remind **clear** or @Remind **-c**",
+                    value: "@Reminder **clear** or @Remind **-c**",
                     style: "Short",
                 },
                 {
                     title: "List all active reminders",
-                    value: "@Remind **list** or @Remind **-l**",
+                    value: "@Reminder **list** or @Remind **-l**",
                     style: "Short",
                 },
             ],
