@@ -1,7 +1,6 @@
 import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
 import moment from "moment-timezone";
-import mnmt from "moment";
 
 import {
     issueText,
@@ -12,104 +11,99 @@ import {
 } from "./responses/index";
 
 export const eventHandler = async (event) => {
-    // console.log("========================== EVENT ===========================");
-    // console.log(event);
-    const { type, message, bot, group } = event;
+    const { type } = event;
+
     switch (type) {
         case "Message4Bot":
-            if (message.mentions.length > 1) {
-                // const newTeam = message.mentions[1];
-                await bot.sendMessage(group.id, {
-                    text:
-                        "Sending reminders to other teams will be availible soon.",
-                });
-            } else {
-                await handleMessage4Bot(event);
-            }
+            await handleMessage4Bot(event);
+
             break;
         case "BotJoinGroup":
             await handleBotJoinedGroup(event);
+            break;
     }
 };
 
 const handleMessage4Bot = async (event) => {
-    const { text, group, bot, userId } = event;
-    let args = [];
+    const { bot, group } = event;
 
-    if (typeof text !== "undefined") {
-        args = text.split(" ");
-    }
-    if (text === "-h" || text === "help" || text === "-help") {
-        console.log("USER ASKED FOR HELP");
+    // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
 
-        await bot.sendMessage(group.id, joinedGroup);
-
-        return helpText;
-    } else if (text === "-i" || text === "-issue" || text === "issue") {
-        console.log("USER ISSUE");
-        await bot.sendMessage(group.id, issueText);
-
-        return issueText;
-    } else if (text === "clear") {
-        console.log("CALLED CLEAR");
-        const res = await removeAll(userId);
-        await bot.sendMessage(group.id, res);
-    } else if (text === "-l" || text === "-list" || text === "list") {
-        console.log("CALLED LIST");
-        await list(event);
-    } else if (
-        text.includes("-r") ||
-        text.includes("-remove") ||
-        text.includes("remove")
-    ) {
-        console.log("CALLED REMOVE");
-        let text = await remove(args, event);
-        await bot.sendMessage(group.id, text);
-    } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
-        console.log("NO -t OR -m");
-
-        await bot.sendMessage(group.id, noArgsText);
-
-        return noArgsText;
-    } else if (args.includes("-t") && args.includes("-m")) {
-        console.log("Calling CreateReminder()");
-        const message = await createReminder(args, event);
-        let text = message.text;
-        let timeCreated = message.timeCreated;
-        let creator = message.creator;
-        let creatorId = message.creatorId;
-        let reminderTime = message.reminderTime;
-        let duration = message.duration;
-        let timezone = message.timezone;
-        if (message === false) {
-            console.log("message was returned as false");
-
-            await bot.sendMessage(group.id, timeAlreadyHappened);
-            return;
+    const mode = await determineResponse(event);
+    if (mode) {
+        const message = await createReminder(event);
+        if (!message) {
+            await bot.sendMessage(group.id, {
+                text: "Time has already happened",
+            });
         } else {
+            let reminderText = message.text;
+            let timeCreated = message.timeCreated;
+            let creator = message.creator;
+            let creatorId = message.creatorId;
+            let reminderTime = message.reminderTime;
+            let duration = message.duration;
+            let timezone = message.timezone;
+            let teamMentions = message.teamMentions;
             const service = await Service.create({
                 name: "Remind",
                 botId: bot.id,
                 groupId: group.id,
                 userId: creatorId,
                 data: {
-                    text,
+                    reminderText,
                     timeCreated,
                     creator,
                     reminderTime,
                     duration,
                     timezone,
+                    teamMentions,
                 },
             });
             console.log("SERVICE OBJECT:");
 
-            // console.log(service.data);
-            // console.log("HUMANIZED: " + service.data.duration.humanize());
+            console.log(service.data);
+            console.log("HUMANIZED: " + service.data.duration.humanize());
 
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰`,
+                text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
             });
         }
+    }
+};
+const determineResponse = async (event) => {
+    const { text, group, bot } = event;
+    let args = [];
+    if (typeof text !== "undefined") {
+        args = text.split(" ");
+
+        if (text === "-h" || text === "help" || text === "-help") {
+            console.log("USER ASKED FOR HELP");
+            await bot.sendMessage(group.id, joinedGroup);
+        } else if (text === "-i" || text === "-issue" || text === "issue") {
+            console.log("USER ISSUE");
+            await bot.sendMessage(group.id, issueText);
+        } else if (text === "clear") {
+            console.log("CALLED CLEAR");
+            await removeAll(event);
+        } else if (text === "-l" || text === "-list" || text === "list") {
+            console.log("CALLED LIST");
+            await list(event);
+        } else if (
+            args[0] === "-r" ||
+            args[0] === "-remove" ||
+            args[0] === "remove"
+        ) {
+            console.log("CALLED REMOVE");
+            await remove(args, event);
+        } else if (args.indexOf("-t") === -1 || args.indexOf("-m") === -1) {
+            console.log("NO -t OR -m");
+            await bot.sendMessage(group.id, noArgsText);
+        } else if (args.includes("-t") && args.includes("-m")) {
+            return true;
+        }
+    } else {
+        return false;
     }
 };
 
@@ -122,11 +116,15 @@ const removeAll = async ({ userId }) => {
         return { text: "Array empty" };
     } else {
         for (let i = 0; i < service.length; i++) {
-            console.log("SERVICE: " + service[i].userId);
+            // console.log("SERVICE: " + service[i].userId);
             await service[i].destroy();
         }
         return { text: "Cleared" };
     }
+};
+const clear = async ({ bot, userId }) => {
+    const res = await removeAll(userId);
+    await bot.sendMessage(group.id, res);
 };
 
 const remove = async (args, { bot, group, userId }) => {
@@ -171,7 +169,8 @@ const list = async ({ bot, userId, group }) => {
                 title: moment
                     .tz(s.data.reminderTime, s.data.timezone)
                     .format("MMMM Do YYYY, h:mm a"),
-                value: `*${s.data.text}* \n**ID:** ${s.id.toString()}`,
+
+                value: `*${s.data.reminderText}* \n**ID:** ${s.id.toString()}`,
                 style: "Long",
             };
             tempArr.push(tempField);

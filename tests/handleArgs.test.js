@@ -5,10 +5,14 @@
 //     issueText,
 //     noArgsText,
 //     joinedGroup,
+
+//     testEvent,
 // } from "../responses/index";
 
+// let event = testEvent;
 // const testHelpEvent = {
-//     type: "Message4Bot",
+// type: "Message4Bot",
+
 //     text: "help",
 // };
 // const testIssueEvent = {
