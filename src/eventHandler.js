@@ -65,8 +65,9 @@ const handleMessage4Bot = async (event) => {
             console.log(service.data);
             console.log("HUMANIZED: " + service.data.duration.humanize());
 
+            // , you wil be reminded in ${service.data.duration.humanize()
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰, you wil be reminded in ${service.data.duration.humanize()}`,
+                text: `Reminder set ⏰`,
             });
         }
     }
