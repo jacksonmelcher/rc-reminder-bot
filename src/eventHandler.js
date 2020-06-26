@@ -67,15 +67,15 @@ const handleMessage4Bot = async (event) => {
                 return `![:Team](${teamMention.id}) `;
             });
             let tempTime = service.data.reminderTime;
-            let timeConfirm = moment(tempTime);
+            let timeConfirm = moment
+                .tz(tempTime, service.data.timezone)
+                .format("MMMM Do YYYY, h:mm a");
 
             // , you wil be reminded in ${service.data.duration.humanize()
             await bot.sendMessage(group.id, {
                 text: `Reminder set, I  will send a reminder to ${
                     teams.length > 0 ? teams : `you`
-                } on **${timeConfirm.format(
-                    "MMMM Do YYYY, h:mm a"
-                )}**.\nHere is a preview:`,
+                } on **${timeConfirm}**.\nHere is a preview:`,
                 attachments: [
                     {
                         type: "Card",
