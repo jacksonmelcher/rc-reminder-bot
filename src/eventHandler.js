@@ -62,12 +62,27 @@ const handleMessage4Bot = async (event) => {
             });
             console.log("SERVICE OBJECT:");
 
-            console.log(service.data);
-            console.log("HUMANIZED: " + service.data.duration.humanize());
+            console.log(service.data.teamMentions);
+            let teams = service.data.teamMentions.map((teamMention) => {
+                return `![:Team](${teamMention.id}) `;
+            });
 
             // , you wil be reminded in ${service.data.duration.humanize()
             await bot.sendMessage(group.id, {
-                text: `Reminder set ⏰`,
+                text: `Reminder set, I  will send a reminder to ${
+                    teams.length > 0 ? teams : `you`
+                } on **${service.data.reminderTime.format(
+                    "MMMM Do YYYY, h:mm a"
+                )}**.\nHere is a preview:`,
+                attachments: [
+                    {
+                        type: "Card",
+                        text: `**${service.data.reminderText}**`,
+                        footnote: {
+                            text: `Reminder created by ${service.data.creator}`,
+                        },
+                    },
+                ],
             });
         }
     }
