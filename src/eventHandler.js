@@ -2,13 +2,7 @@ import { createReminder } from "./createReminder";
 import { Service } from "ringcentral-chatbot/dist/models";
 import moment from "moment-timezone";
 
-import {
-    issueText,
-    helpText,
-    noArgsText,
-    joinedGroup,
-    timeAlreadyHappened,
-} from "./responses/index";
+import { issueText, noArgsText, joinedGroup } from "./responses/index";
 
 export const eventHandler = async (event) => {
     const { type } = event;
@@ -27,7 +21,7 @@ export const eventHandler = async (event) => {
 const handleMessage4Bot = async (event) => {
     const { bot, group } = event;
 
-    // FIXME Need to add some sort of check to see if the bot has been added to the groups allready.
+    // FIXME Need to add some sort of check to see if the bot has been added to the groups already.
 
     const mode = await determineResponse(event);
     if (mode) {
@@ -60,7 +54,6 @@ const handleMessage4Bot = async (event) => {
                     teamMentions,
                 },
             });
-            console.log("SERVICE OBJECT:");
 
             console.log(service.data.teamMentions);
             let teams = service.data.teamMentions.map((teamMention) => {
@@ -89,6 +82,7 @@ const handleMessage4Bot = async (event) => {
         }
     }
 };
+
 const determineResponse = async (event) => {
     const { text, group, bot } = event;
     let args = [];
